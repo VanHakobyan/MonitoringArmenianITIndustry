@@ -16,7 +16,9 @@ namespace MonitoringIT.DAL.Models
         public int CommitCount { get; set; }
         public int BranchCount { get; set; }
         public string Readme { get; set; }
+        public int ProfileId { get; set; }
 
+        public Profiles Profile { get; set; }
         public ICollection<Languages> Languages { get; set; }
     }
 }

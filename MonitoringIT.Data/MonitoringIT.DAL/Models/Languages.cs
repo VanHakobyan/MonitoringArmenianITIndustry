@@ -8,7 +8,7 @@ namespace MonitoringIT.DAL.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Procent { get; set; }
-        public int? RepositoryId { get; set; }
+        public int RepositoryId { get; set; }
 
         public Repositories Repository { get; set; }
     }

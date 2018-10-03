@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Text;
 
 namespace MonitoringIT.Data.Common
@@ -14,5 +16,10 @@ namespace MonitoringIT.Data.Common
         public List<string> ContributorsUrl { get; set; }
         public string Readme { get; set; }
         public List<Language> Lenguages { get; set; }
+
+        //[ForeignKey("Profile")]
+        //public int ProfileId { get; set; }
+        //public Profile Profile { get; set; }
+
     }
 }

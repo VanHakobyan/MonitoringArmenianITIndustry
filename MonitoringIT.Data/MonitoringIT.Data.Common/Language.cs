@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace MonitoringIT.Data.Common
@@ -9,5 +10,9 @@ namespace MonitoringIT.Data.Common
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Procent { get; set; }
+
+        //[ForeignKey("Repository")]
+        //public int RepositoryId { get; set; }
+        //public Repository Repository { get; set; }
     }
 }

@@ -7,13 +7,16 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using MonitoringIT.Data.Common;
+//using MonitoringIT.DAL.Models;
+//using Proxy = MonitoringIT.DAL.Models.Proxy;
 
 namespace MonitoringIT.Data.ProxyParser
 {
     public class HidemeParser
     {
         private static string url = "https://hidemyna.me/en/proxy-list/?start={page}#list";
-        public async Task<string> SendGetRequest(string uri)
+        private async Task<string> SendGetRequest(string uri)
         {
             string response = "";
 
@@ -51,14 +54,14 @@ namespace MonitoringIT.Data.ProxyParser
             return response;
         }
 
-        public async Task<string> GetContent(int pageNumber)
+        private async Task<string> GetContent(int pageNumber)
         {
             return await SendGetRequest(url.Replace("{page}", pageNumber.ToString()));
 
         }
-        public async Task<List<ProxyModel>> GetProxy()
+        public async Task<List<Proxy>> GetProxy()
         {
-            var proxyList = new List<ProxyModel>();
+            var proxyList = new List<Proxy>();
             HtmlDocument document = new HtmlDocument();
             var pageSource = await GetContent(64);
             document.LoadHtml(pageSource);
@@ -75,7 +78,7 @@ namespace MonitoringIT.Data.ProxyParser
                     {
                         try
                         {
-                            var proxy = new ProxyModel
+                            var proxy = new Proxy
                             {
                                 Ip = childNode.ChildNodes[0].InnerText,
                                 Port = childNode.ChildNodes[1].InnerText,

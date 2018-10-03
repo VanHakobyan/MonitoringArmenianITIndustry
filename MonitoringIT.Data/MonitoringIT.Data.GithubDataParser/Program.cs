@@ -10,6 +10,8 @@ using HtmlAgilityPack;
 using MonitoringIT.Data.ProxyParser;
 using MonitoringIT.DAL.Models;
 using Newtonsoft.Json;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 
 namespace MonitoringIT.Data.GithubDataParser
 {
@@ -17,20 +19,27 @@ namespace MonitoringIT.Data.GithubDataParser
     {
         static string Url = @"https://github.com/search?l=&o=desc&p={page}&q=location%3Aarmenia&s=repositories&ref=advsearch&type=Users&utf8=%E2%9C%93&_pjax=%23js-pjax-container";
         private static string rootGithub = @"https://github.com/";
-        private static List<ProxyModel> Proxies;
+        private static List<Proxies> Proxies;
         private static List<string> _links = new List<string>();
         static void Main(string[] args)
         {
-
-            var hidemeParser = new HidemeParser();
-            var proxies = hidemeParser.GetProxy().Result.Where(x => x.Type.Contains("HTTPS")).ToList();
-            var proxyJson = JsonConvert.SerializeObject(proxies);
-            File.WriteAllText(@"D:\proxies.json", proxyJson);
-            Proxies = proxies;
-            GetGithubUrls(_links);
-
-            var linksJson = JsonConvert.SerializeObject(_links);
-            //File.WriteAllText(@"D:\linksGithub.json", linksJson);
+            MonitoringContext db = new MonitoringContext();
+            //HidemeParser hidemeParser=new HidemeParser();
+            //var proxys = hidemeParser.GetProxy().Result;
+            //db.Proxies.AddRange(proxys.Select(x => new Proxies{Ip = x.Ip,Type = x.Type,Port = x.Port,Country = x.Country}));
+            //db.SaveChanges();
+            Proxies = db.Proxies.Where(x=>x.Type=="HTTPS").ToList();
+            //GetGithubUrls(_links);
+            
+            var profileFirefox = new FirefoxProfile("C:\\Users\\vanik.hakobyan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\fu4ylhbv.f9p3vimg.Test");
+            var driver = new FirefoxDriver(new FirefoxOptions { Profile = profileFirefox });
+            foreach (var link in _links)
+            {
+                driver.Navigate().GoToUrl(link);
+                Thread.Sleep(2000);
+                var profile = GetGithubProfileSelenum(driver.PageSource, link);
+                if (profile != null) db.Profiles.Add(profile);
+            }
             Console.WriteLine();
         }
         //E37962750
@@ -68,6 +77,45 @@ namespace MonitoringIT.Data.GithubDataParser
             }
         }
 
+
+        public static Profiles GetGithubProfileSelenum(string content, string link)
+        {
+            var document = new HtmlDocument();
+            document.LoadHtml(content);
+
+            try
+            {
+                var imageUrl = document.DocumentNode.SelectSingleNode(".//img[@class='avatar width-full rounded-2']").GetAttributeValue("src", "");
+                var email = document.DocumentNode.SelectSingleNode(".//a[@class='u-email']").GetAttributeValue("href", "").Split(new[] { "mailto:" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+                var name = document.DocumentNode.SelectSingleNode(".//span[@class='p-name vcard-fullname d-block overflow-hidden']").InnerText;
+                var userName = document.DocumentNode.SelectSingleNode(".//span[@class='p-nickname vcard-username d-block']").InnerText;
+                var company = document.DocumentNode.SelectSingleNode(".//a[@class='user-mention']").InnerText;
+                var location = document.DocumentNode.SelectSingleNode(".//span[@class='p-label']").InnerText;
+                var social = document.DocumentNode.SelectSingleNode(".//a[@class='u-url']").InnerText;
+                var bio = document.DocumentNode.SelectSingleNode(".//div[@class='p-note user-profile-bio']").InnerText;
+                var starCount = document.DocumentNode.SelectSingleNode(".//span[@class='Counter']").InnerText;
+
+                var profile = new Profiles
+                {
+                    Url = link,
+                    Bio = bio,
+                    BlogOrWebsite = social,
+                    Company = company,
+                    Email = email,
+                    ImageUrl = imageUrl,
+                    Location = location,
+                    Name = name,
+                    UserName = userName,
+                    StarsCount = int.Parse(starCount)
+                };
+                return profile;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
         public void GetGitHubData()
         {
             var urlJson = File.ReadAllText(@"D:\linksGithub.json");
@@ -83,7 +131,7 @@ namespace MonitoringIT.Data.GithubDataParser
                     try
                     {
                         var contentProfile = client.DownloadString(url);
-                        var document=new HtmlDocument();
+                        var document = new HtmlDocument();
                         document.LoadHtml(contentProfile);
 
                     }

@@ -9,6 +9,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MonitoringIT.DAL\MonitoringIT.DAL.csproj" />
+    <ProjectReference Include="..\MonitoringIT.Data.Common\MonitoringIT.Data.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.8.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>

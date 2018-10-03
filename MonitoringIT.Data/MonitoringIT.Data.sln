@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.ProxyPars
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.DAL", "MonitoringIT.DAL\MonitoringIT.DAL.csproj", "{87BC8483-9884-42D0-AB64-8182F8BA9E76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.EF", "MonitoringIT.Data.EF\MonitoringIT.Data.EF.csproj", "{6DC1D478-E211-420D-AD97-7367DF4A6DCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{87BC8483-9884-42D0-AB64-8182F8BA9E76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87BC8483-9884-42D0-AB64-8182F8BA9E76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87BC8483-9884-42D0-AB64-8182F8BA9E76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DC1D478-E211-420D-AD97-7367DF4A6DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC1D478-E211-420D-AD97-7367DF4A6DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DC1D478-E211-420D-AD97-7367DF4A6DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DC1D478-E211-420D-AD97-7367DF4A6DCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

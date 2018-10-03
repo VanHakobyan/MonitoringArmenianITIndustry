@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MonitoringIT.Data.Common
 {
-    public class ProfileModel
+    public class Profile
     {
         public int Id { get; set; }
         public string UserName { get; set; }
