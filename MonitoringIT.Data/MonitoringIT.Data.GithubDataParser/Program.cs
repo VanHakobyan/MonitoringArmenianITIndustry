@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using Microsoft.EntityFrameworkCore;
 using MonitoringIT.Data.ProxyParser;
 using MonitoringIT.DAL.Models;
 using Newtonsoft.Json;
@@ -35,7 +36,8 @@ namespace MonitoringIT.Data.GithubDataParser
 
             //db.SaveChanges();
             Proxies = db.Proxies.Where(x => x.Type == "HTTPS").OrderByDescending(x => x).ToList();
-            var profileses = db.Profiles.ToList();
+            var profileses = db.Profiles.Include(x=>x.Repositories).ThenInclude(x=>x.Languages).ToList();
+           
             foreach (var profile in profileses)
             {
                 Thread.Sleep(5000);
@@ -47,15 +49,15 @@ namespace MonitoringIT.Data.GithubDataParser
                 }
             }
 
-            //var profileFirefox = new FirefoxProfile("C:\\Users\\vanik.hakobyan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\fu4ylhbv.f9p3vimg.Test");
-            //var driver = new FirefoxDriver(new FirefoxOptions { Profile = profileFirefox });
-            //foreach (var link in db.Profiles.Select(x => x.Url).ToList())
-            //{
-            //    driver.Navigate().GoToUrl(link);
-            //    Thread.Sleep(2000);
-            //    var profile = GetGithubProfileSelenum(driver.PageSource, link);
-            //    if (profile != null) db.Profiles.Add(profile);
-            //}
+            var profileFirefox = new FirefoxProfile("C:\\Users\\vanik.hakobyan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\fu4ylhbv.f9p3vimg.Test");
+            var driver = new FirefoxDriver(new FirefoxOptions { Profile = profileFirefox });
+            foreach (var link in db.Profiles.Select(x => x.Url).ToList())
+            {
+                driver.Navigate().GoToUrl(link);
+                Thread.Sleep(2000);
+                var profile = GetGithubProfileSelenum(driver.PageSource, link);
+                if (profile != null) db.Profiles.Add(profile);
+            }
             //db.SaveChanges();
             Console.WriteLine();
         }
