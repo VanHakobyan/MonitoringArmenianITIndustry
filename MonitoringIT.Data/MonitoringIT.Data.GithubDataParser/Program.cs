@@ -36,8 +36,8 @@ namespace MonitoringIT.Data.GithubDataParser
 
             //db.SaveChanges();
             Proxies = db.Proxies.Where(x => x.Type == "HTTPS").OrderByDescending(x => x).ToList();
-            var profileses = db.Profiles.Include(x=>x.Repositories).ThenInclude(x=>x.Languages).ToList();
-           
+            var profileses = db.Profiles.Include(x => x.Repositories).ThenInclude(x => x.Languages).ToList();
+
             foreach (var profile in profileses)
             {
                 Thread.Sleep(5000);
@@ -58,7 +58,7 @@ namespace MonitoringIT.Data.GithubDataParser
                 var profile = GetGithubProfileSelenum(driver.PageSource, link);
                 if (profile != null) db.Profiles.Add(profile);
             }
-            //db.SaveChanges();
+
             Console.WriteLine();
         }
 
@@ -177,7 +177,7 @@ namespace MonitoringIT.Data.GithubDataParser
                 {
                     try
                     {
-                        
+
                         var client = new WebClient();
                         var wpNested = new WebProxy($"{Proxies[proxyCounterNested].Ip}:{Proxies[proxyCounterNested].Port}");
                         client.Proxy = wpNested;
@@ -185,7 +185,7 @@ namespace MonitoringIT.Data.GithubDataParser
                         Thread.Sleep(3500);
                         var repoDoc = new HtmlDocument();
                         repoDoc.LoadHtml(repoData);
-                        var starsCount = repoDoc.DocumentNode.SelectSingleNode(".//a[@class='social-count js-social-count']")?.InnerText?.Replace("\n","")?.Replace("\r", "")?.Replace("\t", "")?.Trim();
+                        var starsCount = repoDoc.DocumentNode.SelectSingleNode(".//a[@class='social-count js-social-count']")?.InnerText?.Replace("\n", "")?.Replace("\r", "")?.Replace("\t", "")?.Trim();
                         var forksCount = repoDoc.DocumentNode.SelectNodes(".//a[@class='social-count']")?.LastOrDefault()?.InnerText?.Replace("\n", "")?.Replace("\r", "")?.Replace("\t", "")?.Trim();
                         var readme = repoDoc.DocumentNode.SelectSingleNode(".//article[@class='markdown-body entry-content']")?.InnerHtml;
 
@@ -201,7 +201,7 @@ namespace MonitoringIT.Data.GithubDataParser
                         var numberSummary = repoDoc.DocumentNode.SelectNodes(".//ul[@class='numbers-summary']");
                         if (numberSummary != null)
                         {
-                            var summary = numberSummary[0].ChildNodes?.Where(x=>x.OuterHtml.Contains("li"))?.ToList();
+                            var summary = numberSummary[0].ChildNodes?.Where(x => x.OuterHtml.Contains("li"))?.ToList();
                             int.TryParse(summary[0].InnerText?.Replace("commits", "").Replace("\n", "")?.Replace("\r", "")?.Replace("\t", "")?.Trim(), out var commitsCount);
                             int.TryParse(summary[1].InnerText?.Replace("branch", "").Replace("\n", "")?.Replace("\r", "")?.Replace("\t", "")?.Trim(), out var branchsCount);
                             int.TryParse(summary[3].InnerText?.Replace("contributor", "").Replace("\n", "")?.Replace("\r", "")?.Replace("\t", "")?.Trim(), out var contributorsCount);
@@ -223,7 +223,7 @@ namespace MonitoringIT.Data.GithubDataParser
                                 {
                                     var language = new Languages();
                                     language.Name = langs[i]?.InnerText;
-                                    decimal.TryParse(percents[i]?.InnerText.Replace("%",""), out var p);
+                                    decimal.TryParse(percents[i]?.InnerText.Replace("%", ""), out var p);
                                     language.Procent = p;
                                     repo.Languages.Add(language);
                                 }
@@ -253,34 +253,6 @@ namespace MonitoringIT.Data.GithubDataParser
             }
             return repositories;
 
-        }
-        public void GetGitHubData()
-        {
-            var urlJson = File.ReadAllText(@"D:\linksGithub.json");
-            var listUrls = JsonConvert.DeserializeObject<List<string>>(urlJson);
-            var proxyCounter = 0;
-            foreach (var url in listUrls)
-            {
-                while (true)
-                {
-                    var client = new WebClient();
-                    var wp = new WebProxy($"{Proxies[proxyCounter].Ip}:{Proxies[proxyCounter].Port}");
-                    client.Proxy = wp;
-                    try
-                    {
-                        var contentProfile = client.DownloadString(url);
-                        var document = new HtmlDocument();
-                        document.LoadHtml(contentProfile);
-
-                    }
-                    catch (Exception e)
-                    {
-                        proxyCounter++;
-                    }
-
-                }
-
-            }
         }
     }
 }
