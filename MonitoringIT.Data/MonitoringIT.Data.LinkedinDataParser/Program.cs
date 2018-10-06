@@ -53,17 +53,7 @@ namespace MonitoringIT.Data.LinkedinDataParser
                 //var repositoryPage = webClient.DownloadString(linkedinArmeninanLinkCSYSU.Replace("{page}",i.ToString()));
 
                 driver.Navigate().GoToUrl(linkedinArmeninanLinkCSYSU.Replace("{page}", i.ToString()));
-                driver.ExecuteScript("scroll(0, 100);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 150);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 200);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 500);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 800);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 1000);");
+                Scroll(driver);
                 var repositoryPage = driver.PageSource;
                 Thread.Sleep(10000);
                 GetLink(repositoryPage, listOfLinks);
@@ -77,17 +67,7 @@ namespace MonitoringIT.Data.LinkedinDataParser
                 //webClient.Proxy = wp;
                 //var repositoryPage = webClient.DownloadString(linkedinArmeninanLinkCSOtherSelected);
                 driver.Navigate().GoToUrl(linkedinArmeninanLinkCSOtherSelected.Replace("{page}", i.ToString()));
-                driver.ExecuteScript("scroll(0, 100);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 150);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 200);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 500);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 800);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 1000);");
+                Scroll(driver);
                 var repositoryPage = driver.PageSource;
                 Thread.Sleep(10000);
                 GetLink(repositoryPage, listOfLinks);
@@ -102,17 +82,7 @@ namespace MonitoringIT.Data.LinkedinDataParser
                 //webClient.Proxy = wp;
                 //var repositoryPage = webClient.DownloadString(linkedinArmeninanLinkSO);
                 driver.Navigate().GoToUrl(linkedinArmeninanLinkSO.Replace("{page}", i.ToString()));
-                driver.ExecuteScript("scroll(0, 100);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 150);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 200);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 500);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 800);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 1000);");
+                Scroll(driver);
                 var repositoryPage = driver.PageSource;
                 Thread.Sleep(10000);
                 GetLink(repositoryPage, listOfLinks);
@@ -127,17 +97,7 @@ namespace MonitoringIT.Data.LinkedinDataParser
                 //webClient.Proxy = wp;
                 //var repositoryPage = webClient.DownloadString(linkedinArmeninanLinkDeveloper);
                 driver.Navigate().GoToUrl(linkedinArmeninanLinkDeveloper.Replace("{page}", i.ToString()));
-                driver.ExecuteScript("scroll(0, 100);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 150);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 200);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 500);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 800);");
-                Thread.Sleep(250);
-                driver.ExecuteScript("scroll(0, 1000);");
+                Scroll(driver);
                 var repositoryPage = driver.PageSource;
                 Thread.Sleep(10000);
                 GetLink(repositoryPage, listOfLinks);
@@ -149,6 +109,21 @@ namespace MonitoringIT.Data.LinkedinDataParser
             File.WriteAllText("D:\\linkedin4.json", serializeObject4);
 
 
+        }
+
+        private static void Scroll(FirefoxDriver driver)
+        {
+            driver.ExecuteScript("scroll(0, 100);");
+            Thread.Sleep(250);
+            driver.ExecuteScript("scroll(0, 150);");
+            Thread.Sleep(250);
+            driver.ExecuteScript("scroll(0, 200);");
+            Thread.Sleep(250);
+            driver.ExecuteScript("scroll(0, 500);");
+            Thread.Sleep(250);
+            driver.ExecuteScript("scroll(0, 800);");
+            Thread.Sleep(250);
+            driver.ExecuteScript("scroll(0, 1000);");
         }
 
         public static void GetLink(string content, List<string> _links)

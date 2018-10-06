@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.EF", "Mon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.LinkedinDataParser", "MonitoringIT.Data.LinkedinDataParser\MonitoringIT.Data.LinkedinDataParser.csproj", "{A58FB35E-5B7D-4E3A-B9AD-0230AA315630}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.LinkedinPageParser", "MonitoringIT.Data.LinkedinPageParser\MonitoringIT.Data.LinkedinPageParser.csproj", "{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{A58FB35E-5B7D-4E3A-B9AD-0230AA315630}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A58FB35E-5B7D-4E3A-B9AD-0230AA315630}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A58FB35E-5B7D-4E3A-B9AD-0230AA315630}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
