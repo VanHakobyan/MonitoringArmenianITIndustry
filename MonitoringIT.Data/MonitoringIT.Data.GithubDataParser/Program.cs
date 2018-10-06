@@ -26,7 +26,7 @@ namespace MonitoringIT.Data.GithubDataParser
         private const string repoUrlString = "?tab=repositories";
         static void Main(string[] args)
         {
-            MonitoringContext db = new MonitoringContext();
+            var db = new MonitoringContext();
             //HidemeParser pr=new HidemeParser();
             //var proxies = pr.GetProxy().Result.ToList();
             //foreach (var proxy in proxies)

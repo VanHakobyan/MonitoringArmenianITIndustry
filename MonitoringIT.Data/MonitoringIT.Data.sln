@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.Common", "MonitoringIT.Data.Common\MonitoringIT.Data.Common.csproj", "{7EC68600-E4B0-4CD5-802F-35CDDD87C829}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonitoringIT.Data.Common", "MonitoringIT.Data.Common\MonitoringIT.Data.Common.csproj", "{7EC68600-E4B0-4CD5-802F-35CDDD87C829}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.GithubDataParser", "MonitoringIT.Data.GithubDataParser\MonitoringIT.Data.GithubDataParser.csproj", "{14A18DE8-8E9F-44E7-924B-0D107A8FDCCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.ProxyParser", "MonitoringIT.Data.ProxyParser\MonitoringIT.Data.ProxyParser.csproj", "{779DC66E-AC5B-4D67-B143-BB844F313469}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonitoringIT.Data.ProxyParser", "MonitoringIT.Data.ProxyParser\MonitoringIT.Data.ProxyParser.csproj", "{779DC66E-AC5B-4D67-B143-BB844F313469}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.DAL", "MonitoringIT.DAL\MonitoringIT.DAL.csproj", "{87BC8483-9884-42D0-AB64-8182F8BA9E76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonitoringIT.DAL", "MonitoringIT.DAL\MonitoringIT.DAL.csproj", "{87BC8483-9884-42D0-AB64-8182F8BA9E76}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.EF", "MonitoringIT.Data.EF\MonitoringIT.Data.EF.csproj", "{6DC1D478-E211-420D-AD97-7367DF4A6DCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.LinkedinDataParser", "MonitoringIT.Data.LinkedinDataParser\MonitoringIT.Data.LinkedinDataParser.csproj", "{A58FB35E-5B7D-4E3A-B9AD-0230AA315630}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{6DC1D478-E211-420D-AD97-7367DF4A6DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DC1D478-E211-420D-AD97-7367DF4A6DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DC1D478-E211-420D-AD97-7367DF4A6DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A58FB35E-5B7D-4E3A-B9AD-0230AA315630}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A58FB35E-5B7D-4E3A-B9AD-0230AA315630}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A58FB35E-5B7D-4E3A-B9AD-0230AA315630}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A58FB35E-5B7D-4E3A-B9AD-0230AA315630}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
