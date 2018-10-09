@@ -148,6 +148,10 @@
       <Project>{87BC8483-9884-42D0-AB64-8182F8BA9E76}</Project>
       <Name>MonitoringIT.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MonitoringIT.Data.LinkedinPageParser\MonitoringIT.Data.LinkedinPageParser.csproj">
+      <Project>{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}</Project>
+      <Name>MonitoringIT.Data.LinkedinPageParser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

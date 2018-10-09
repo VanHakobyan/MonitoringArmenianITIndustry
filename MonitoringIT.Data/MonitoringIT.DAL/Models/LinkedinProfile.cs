@@ -11,6 +11,7 @@ namespace MonitoringIT.DAL.Models
             LinkedinExperience = new HashSet<LinkedinExperience>();
             LinkedinInterest = new HashSet<LinkedinInterest>();
             LinkedinLanguage = new HashSet<LinkedinLanguage>();
+            LinkedinSkill = new HashSet<LinkedinSkill>();
         }
 
         public int Id { get; set; }
@@ -32,5 +33,6 @@ namespace MonitoringIT.DAL.Models
         public ICollection<LinkedinExperience> LinkedinExperience { get; set; }
         public ICollection<LinkedinInterest> LinkedinInterest { get; set; }
         public ICollection<LinkedinLanguage> LinkedinLanguage { get; set; }
+        public ICollection<LinkedinSkill> LinkedinSkill { get; set; }
     }
 }

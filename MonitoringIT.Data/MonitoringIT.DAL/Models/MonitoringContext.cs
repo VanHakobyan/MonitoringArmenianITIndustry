@@ -21,6 +21,7 @@ namespace MonitoringIT.DAL.Models
         public virtual DbSet<LinkedinInterest> LinkedinInterest { get; set; }
         public virtual DbSet<LinkedinLanguage> LinkedinLanguage { get; set; }
         public virtual DbSet<LinkedinProfile> LinkedinProfile { get; set; }
+        public virtual DbSet<LinkedinSkill> LinkedinSkill { get; set; }
         public virtual DbSet<MigrationHistory> MigrationHistory { get; set; }
         public virtual DbSet<Profiles> Profiles { get; set; }
         public virtual DbSet<Proxies> Proxies { get; set; }
@@ -134,6 +135,18 @@ namespace MonitoringIT.DAL.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Website).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<LinkedinSkill>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.HasOne(d => d.LikedinProfile)
+                    .WithMany(p => p.LinkedinSkill)
+                    .HasForeignKey(d => d.LikedinProfileId)
+                    .HasConstraintName("FK_LinkedinSkill_LinkedinProfile");
             });
 
             modelBuilder.Entity<MigrationHistory>(entity =>
