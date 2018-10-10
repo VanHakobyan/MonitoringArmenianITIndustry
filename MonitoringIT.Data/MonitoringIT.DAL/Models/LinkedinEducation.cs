@@ -9,6 +9,7 @@ namespace MonitoringIT.DAL.Models
         public string Name { get; set; }
         public string Time { get; set; }
         public int LinkedinProfileId { get; set; }
+        public string Title { get; set; }
 
         public LinkedinProfile LinkedinProfile { get; set; }
     }

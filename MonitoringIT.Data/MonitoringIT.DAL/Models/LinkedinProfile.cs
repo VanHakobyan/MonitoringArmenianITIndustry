@@ -23,7 +23,7 @@ namespace MonitoringIT.DAL.Models
         public string Company { get; set; }
         public int? ConnectionCount { get; set; }
         public string Website { get; set; }
-        public byte[] Phone { get; set; }
+        public string Phone { get; set; }
         public string Email { get; set; }
         public string Birthday { get; set; }
         public DateTime? Connected { get; set; }
