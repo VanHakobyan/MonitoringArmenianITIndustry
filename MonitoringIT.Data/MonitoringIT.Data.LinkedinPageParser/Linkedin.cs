@@ -19,12 +19,11 @@ namespace MonitoringIT.Data.LinkedinPageParser
     public class Linkedin
     {
         private static List<string> _linkedinLinks;
-        private static List<LinkedinProfile> LinkedinProfiles = new List<LinkedinProfile>();
-        FirefoxDriver _firefoxDriver;
+        private readonly FirefoxDriver _firefoxDriver;
 
         public Linkedin()
         {
-            using (MonitoringEntities entities = new MonitoringEntities())
+            using (var entities = new MonitoringEntities())
             {
                 var links = entities.LinkedinProfiles.Select(x => x.Username).ToList().Select(x => $"https://www.linkedin.com/in/{x}").ToList();
                 _linkedinLinks = links;
@@ -36,6 +35,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
         {
             foreach (var linkedinLink in _linkedinLinks)
             {
+                
                 _firefoxDriver.Navigate().GoToUrl(linkedinLink);
                 Thread.Sleep(3000);
                 Scroll(_firefoxDriver);
@@ -60,7 +60,6 @@ namespace MonitoringIT.Data.LinkedinPageParser
                             monitoringEntities.LinkedinProfiles.Add(linkedinProfile);
                             monitoringEntities.SaveChanges();
                         }
-                        LinkedinProfiles.Add(linkedinProfile);
                     }
                     catch (Exception e)
                     {
@@ -316,9 +315,9 @@ namespace MonitoringIT.Data.LinkedinPageParser
             Thread.Sleep(800);
         }
 
-        private string StringBeauty(string s) => s?.Replace("\r", "").Replace("\n", "").Replace("\t", "").Trim();
+        private static string StringBeauty(string s) => s?.Replace("\r", "").Replace("\n", "").Replace("\t", "").Trim();
 
-        private string HtmlDecode(string s) => s == null ? null : WebUtility.HtmlDecode(s);
+        private static string HtmlDecode(string s) => s == null ? null : WebUtility.HtmlDecode(s);
 
 
     }
