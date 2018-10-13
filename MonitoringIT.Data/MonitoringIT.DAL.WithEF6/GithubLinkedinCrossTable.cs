@@ -12,13 +12,10 @@ namespace MonitoringIT.DAL.WithEF6
     using System;
     using System.Collections.Generic;
     
-    public partial class LinkedinSkill
+    public partial class GithubLinkedinCrossTable
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public Nullable<int> EndorsedCount { get; set; }
-        public int LinkedinProfileId { get; set; }
-    
-        public virtual LinkedinProfile LinkedinProfile { get; set; }
+        public int GithubUserId { get; set; }
+        public int LinkedinUserId { get; set; }
     }
 }

@@ -8,8 +8,8 @@ namespace MonitoringIT.DAL.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int? EndorsedCount { get; set; }
-        public int? LikedinProfileId { get; set; }
+        public int? LinkedinProfileId { get; set; }
 
-        public LinkedinProfile LikedinProfile { get; set; }
+        public LinkedinProfile LinkedinProfile { get; set; }
     }
 }

@@ -4,14 +4,22 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MonitoringModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MonitoringModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="GithubLinkedinCrossTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GithubUserId" Type="int" Nullable="false" />
+          <Property Name="LinkedinUserId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Languages">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" />
-          <Property Name="Procent" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Percent" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="RepositoryId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LinkedinEducation">
@@ -78,7 +86,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar(max)" />
           <Property Name="EndorsedCount" Type="int" />
-          <Property Name="LikedinProfileId" Type="int" />
+          <Property Name="LinkedinProfileId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Profiles">
           <Key>
@@ -198,18 +206,19 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LinkedinSkill_LinkedinProfile">
-          <End Role="LinkedinProfile" Type="Self.LinkedinProfile" Multiplicity="0..1" />
+          <End Role="LinkedinProfile" Type="Self.LinkedinProfile" Multiplicity="1" />
           <End Role="LinkedinSkill" Type="Self.LinkedinSkill" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LinkedinProfile">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="LinkedinSkill">
-              <PropertyRef Name="LikedinProfileId" />
+              <PropertyRef Name="LinkedinProfileId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="MonitoringModelStoreContainer">
+          <EntitySet Name="GithubLinkedinCrossTable" EntityType="Self.GithubLinkedinCrossTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Languages" EntityType="Self.Languages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LinkedinEducation" EntityType="Self.LinkedinEducation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LinkedinExperience" EntityType="Self.LinkedinExperience" Schema="dbo" store:Type="Tables" />
@@ -249,17 +258,26 @@
             <End Role="LinkedinSkill" EntitySet="LinkedinSkill" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MonitoringModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="GithubLinkedinCrossTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GithubUserId" Type="Int32" Nullable="false" />
+          <Property Name="LinkedinUserId" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="Language">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Procent" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Percent" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="RepositoryId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Repository" Relationship="Self.FK_dbo_Languages_dbo_Repositories_RepositoryId" FromRole="Languages" ToRole="Repositories" />
         </EntityType>
@@ -267,7 +285,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Time" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="LinkedinProfileId" Type="Int32" Nullable="false" />
@@ -278,7 +296,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Company" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Time" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -290,7 +308,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="FollowersCount" Type="Int32" />
           <Property Name="LinkedinProfileId" Type="Int32" Nullable="false" />
@@ -300,7 +318,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="LinkedinProfileId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="LinkedinProfile" Relationship="Self.FK_LinkedinLanguage_LinkedinProfile" FromRole="LinkedinLanguage" ToRole="LinkedinProfile" />
@@ -309,7 +327,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Specialty" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -333,10 +351,10 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="EndorsedCount" Type="Int32" />
-          <Property Name="LikedinProfileId" Type="Int32" />
+          <Property Name="LinkedinProfileId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="LinkedinProfile" Relationship="Self.FK_LinkedinSkill_LinkedinProfile" FromRole="LinkedinSkill" ToRole="LinkedinProfile" />
         </EntityType>
         <EntityType Name="Profile">
@@ -446,14 +464,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LinkedinSkill_LinkedinProfile">
-          <End Role="LinkedinProfile" Type="Self.LinkedinProfile" Multiplicity="0..1" />
+          <End Role="LinkedinProfile" Type="Self.LinkedinProfile" Multiplicity="1" />
           <End Role="LinkedinSkill" Type="Self.LinkedinSkill" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LinkedinProfile">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="LinkedinSkill">
-              <PropertyRef Name="LikedinProfileId" />
+              <PropertyRef Name="LinkedinProfileId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -472,6 +490,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="MonitoringEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="GithubLinkedinCrossTables" EntityType="Self.GithubLinkedinCrossTable" />
           <EntitySet Name="Languages" EntityType="Self.Language" />
           <EntitySet Name="LinkedinEducations" EntityType="Self.LinkedinEducation" />
           <EntitySet Name="LinkedinExperiences" EntityType="Self.LinkedinExperience" />
@@ -517,12 +536,21 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MonitoringModelStoreContainer" CdmEntityContainer="MonitoringEntities">
+          <EntitySetMapping Name="GithubLinkedinCrossTables">
+            <EntityTypeMapping TypeName="MonitoringModel.GithubLinkedinCrossTable">
+              <MappingFragment StoreEntitySet="GithubLinkedinCrossTable">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GithubUserId" ColumnName="GithubUserId" />
+                <ScalarProperty Name="LinkedinUserId" ColumnName="LinkedinUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Languages">
             <EntityTypeMapping TypeName="MonitoringModel.Language">
               <MappingFragment StoreEntitySet="Languages">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Procent" ColumnName="Procent" />
+                <ScalarProperty Name="Percent" ColumnName="Percent" />
                 <ScalarProperty Name="RepositoryId" ColumnName="RepositoryId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -595,7 +623,7 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="EndorsedCount" ColumnName="EndorsedCount" />
-                <ScalarProperty Name="LikedinProfileId" ColumnName="LikedinProfileId" />
+                <ScalarProperty Name="LinkedinProfileId" ColumnName="LinkedinProfileId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

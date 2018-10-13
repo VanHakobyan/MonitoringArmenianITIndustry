@@ -21,55 +21,54 @@ namespace MonitoringIT.Data.LinkedinPageParser
         private static List<string> _linkedinLinks;
         private static List<LinkedinProfile> LinkedinProfiles = new List<LinkedinProfile>();
         FirefoxDriver _firefoxDriver;
+
         public Linkedin()
         {
-            //using (MonitoringContext db = new MonitoringContext())
-            //{
-            //    _linkedinLinks = db.Profiles.Where(x => x.BlogOrWebsite.Contains("linkedin")).Select(x=>x.BlogOrWebsite).ToList();
-            //}
-            _linkedinLinks = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(@"D:\linkedinFull.json"));
-            _firefoxDriver = new FirefoxDriver();
+            using (MonitoringEntities entities = new MonitoringEntities())
+            {
+                var links = entities.LinkedinProfiles.Select(x => x.Username).ToList().Select(x => $"https://www.linkedin.com/in/{x}").ToList();
+                _linkedinLinks = links;
+                _firefoxDriver = new FirefoxDriver();
+            }
         }
 
         public void GetAlLinkedinProfiles()
         {
-            using (MonitoringEntities db = new MonitoringEntities())
+            foreach (var linkedinLink in _linkedinLinks)
             {
-                foreach (var linkedinLink in _linkedinLinks)
+                _firefoxDriver.Navigate().GoToUrl(linkedinLink);
+                Thread.Sleep(3000);
+                Scroll(_firefoxDriver);
+                try
                 {
-                    _firefoxDriver.Navigate().GoToUrl(linkedinLink);
-                    Thread.Sleep(3000);
-                    Scroll(_firefoxDriver);
+                    var seeMore = _firefoxDriver.FindElementByXPath(".//button[@data-control-name='skill_details']");
+                    seeMore?.Click();
+                }
+                catch (Exception e)
+                {
+
+                }
+                var linkedinProfile = GetProfile(_firefoxDriver.PageSource);
+                Thread.Sleep(1000);
+                if (linkedinProfile != null)
+                {
                     try
                     {
-                        var seeMore = _firefoxDriver.FindElementByXPath(".//button[@data-control-name='skill_details']");
-                        seeMore?.Click();
+                        linkedinProfile.Username = linkedinLink.Split(new[] { "in/" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.TrimEnd('/');
+                        using (MonitoringEntities monitoringEntities = new MonitoringEntities())
+                        {
+                            monitoringEntities.LinkedinProfiles.Add(linkedinProfile);
+                            monitoringEntities.SaveChanges();
+                        }
+                        LinkedinProfiles.Add(linkedinProfile);
                     }
                     catch (Exception e)
                     {
-
-                    }
-                    var linkedinProfile = GetProfile(_firefoxDriver.PageSource);
-                    Thread.Sleep(1000);
-                    if (linkedinProfile != null)
-                    {
-                        try
-                        {
-                            linkedinProfile.Username = linkedinLink.Split(new[] { "in/" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.TrimEnd('/');
-                            using (MonitoringEntities monitoringEntities=new MonitoringEntities())
-                            {
-                                monitoringEntities.LinkedinProfiles.Add(linkedinProfile);
-                                monitoringEntities.SaveChanges(); 
-                            }
-                            LinkedinProfiles.Add(linkedinProfile);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                        }
+                        Console.WriteLine(e.Message);
                     }
                 }
             }
+
         }
         public LinkedinProfile GetProfile(string content)
         {
@@ -78,13 +77,14 @@ namespace MonitoringIT.Data.LinkedinPageParser
             var linkedinProfile = new LinkedinProfile();
             try
             {
-                var fullName = document.DocumentNode.SelectSingleNode(".//h1[@class='pv-top-card-section__name inline Sans-26px-black-85%']")?.InnerText;
-                var specialty = document.DocumentNode.SelectSingleNode(".//h2[@class='pv-top-card-section__headline mt1 Sans-19px-black-85%']")?.InnerText;
-                var location = document.DocumentNode.SelectSingleNode(".//h3[@class='pv-top-card-section__location Sans-17px-black-55%-dense mt1 inline-block']")?.InnerText;
+                var fullName = document.DocumentNode.SelectSingleNode(".//h1[starts-with(@class,'pv-top-card-section__name')]")?.InnerText;
+                var specialty = document.DocumentNode.SelectSingleNode(".//h2[starts-with(@class,'pv-top-card-section__headline')]")?.InnerText;
+                var location = document.DocumentNode.SelectSingleNode(".//h3[starts-with(@class,'pv-top-card-section__location')]")?.InnerText;
                 var company = document.DocumentNode.SelectSingleNode(".//span[@class='lt-line-clamp__line lt-line-clamp__line--last']")?.InnerText;
                 var education = document.DocumentNode.SelectSingleNode(".//span[starts-with(@class,'pv-top-card-v2-section__entity-name pv-top-card-v2-section__school-name')]")?.InnerText;
-                var connectionCountStr = document.DocumentNode.SelectSingleNode(".//span[@class='pv-top-card-v2-section__entity-name pv-top-card-v2-section__connections ml2 Sans-15px-black-85%']")?.InnerText;
-                var imageUrl = document.DocumentNode.SelectSingleNode(".//div[@class='pv-top-card-section__photo presence-entity__image EntityPhoto-circle-9 ember-view']")?.GetAttributeValue("style", "")?.Split(new[] { "url(&quot;" }, StringSplitOptions.RemoveEmptyEntries)?.ElementAt(1)?.TrimEnd(';', ')', ';');
+                var connectionCountStr = document.DocumentNode.SelectSingleNode(".//span[starts-with(@class,'pv-top-card-v2-section__entity-name pv-top-card-v2-section__connections')]")?.InnerText;
+                var imageUrlArray = document.DocumentNode.SelectSingleNode(".//div[starts-with(@class,'pv-top-card-section__photo presence-entity__image')]")?.GetAttributeValue("style", "")?.Split(new[] { "url(&quot;" }, StringSplitOptions.RemoveEmptyEntries);
+                var imageUrl = imageUrlArray?.Count() == 0 || imageUrlArray == null ? null : imageUrlArray?.ElementAt(1)?.TrimEnd(';', ')', ';');
                 linkedinProfile.FullName = StringBeauty(fullName);
                 linkedinProfile.Specialty = StringBeauty(specialty);
                 linkedinProfile.Location = StringBeauty(location);
@@ -101,7 +101,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
             var experienceSection = document.DocumentNode.SelectSingleNode(".//section[@id='experience-section']");
             if (experienceSection != null)
             {
-                var companyCollection = experienceSection.SelectNodes(".//div[@class='pv-entity__summary-info pv-entity__summary-info--v2']");
+                var companyCollection = experienceSection.SelectNodes(".//div[starts-with(@class,'pv-entity__summary-info')]");
                 if (companyCollection != null)
                 {
 
@@ -122,7 +122,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
                             linkedinExperience.Location = StringBeauty(locationCompany);
 
                             linkedinProfile.LinkedinExperiences.Add(linkedinExperience);
-              }
+                        }
                         catch (Exception e)
                         {
 
@@ -133,7 +133,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
             var educationSection = document.DocumentNode.SelectSingleNode(".//section[@id='education-section']");
             if (educationSection != null)
             {
-                var educationCollection = educationSection.SelectNodes(".//div[@class='pv-entity__summary-info ']");
+                var educationCollection = educationSection.SelectNodes(".//div[starts-with(@class,'pv-entity__summary-info')]");
                 if (educationCollection != null)
                 {
                     linkedinProfile.LinkedinEducations = new List<LinkedinEducation>();
@@ -143,8 +143,8 @@ namespace MonitoringIT.Data.LinkedinPageParser
                         {
                             var linkedinEducation = new LinkedinEducation();
                             var university = education.SelectSingleNode(".//h3")?.InnerText;
-                            linkedinEducation.Name = StringBeauty(university);
-                            var titleCol = education.SelectNodes(".//span[@class='pv-entity__comma-item']")?.Select(x => x.InnerText);
+                            linkedinEducation.Name = HtmlDecode(StringBeauty(university));
+                            var titleCol = education.SelectNodes(".//span[starts-with(@class,'pv-entity__comma-item')]")?.Select(x => x.InnerText);
                             if (titleCol != null)
                             {
                                 var title = StringBeauty(string.Join(" of ", titleCol));
@@ -179,13 +179,13 @@ namespace MonitoringIT.Data.LinkedinPageParser
                         var linkedinSkill = new LinkedinSkill();
                         try
                         {
-                            var skillName = skillItem.SelectSingleNode(".//p[@class='pv-skill-category-entity__name ']")?.InnerText;
+                            var skillName = skillItem.SelectSingleNode(".//p[starts-with(@class,'pv-skill-category-entity__name')]")?.InnerText;
                             var uproveCount = skillItem.SelectSingleNode(".//span[starts-with(@class,'pv-skill-category-entity__endorsement-count')]")?.InnerText;
                             linkedinSkill.Name = StringBeauty(skillName);
                             int.TryParse(StringBeauty(uproveCount), out var uproveInt);
                             linkedinSkill.EndorsedCount = uproveInt;
 
-                            linkedinProfile.LinkedinSkills.Add(linkedinSkill); 
+                            linkedinProfile.LinkedinSkills.Add(linkedinSkill);
                         }
                         catch (Exception e)
                         {
@@ -237,7 +237,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
                         {
                             var linkedinInterest = new LinkedinLanguage { Name = StringBeauty(accomplishmentItem.InnerText) };
 
-                            linkedinProfile.LinkedinLanguages.Add(linkedinInterest); 
+                            linkedinProfile.LinkedinLanguages.Add(linkedinInterest);
                         }
                         catch (Exception e)
                         {
@@ -247,7 +247,6 @@ namespace MonitoringIT.Data.LinkedinPageParser
 
                 }
             }
-
 
             try
             {
@@ -268,10 +267,24 @@ namespace MonitoringIT.Data.LinkedinPageParser
                 linkedinProfile.Birthday = StringBeauty(birthday);
                 linkedinProfile.Website = StringBeauty(website);
                 //linkedinProfile.Username = StringBeauty(userName);
+                Thread.Sleep(250);
+                var findElementByXPathClose = _firefoxDriver.FindElementByXPath(".//button[@class='artdeco-dismiss']");
+                findElementByXPathClose?.Click();
+                Thread.Sleep(250);
             }
             catch (Exception e)
             {
 
+            }
+            try
+            {
+                var findElementByXPath = _firefoxDriver.FindElementByXPath(".//button[starts-with(@class,'pv-s-profile-actions pv-s-profile-actions--connect')]");
+                findElementByXPath?.Click();
+                //pv-s-profile-actions pv-s-profile-actions--connect
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
             return linkedinProfile;
         }
@@ -292,12 +305,15 @@ namespace MonitoringIT.Data.LinkedinPageParser
             driver.ExecuteScript("scroll(0, 1000);");
             Thread.Sleep(250);
             driver.ExecuteScript("scroll(0, 1100);");
-            Thread.Sleep(250);
+            Thread.Sleep(650);
             driver.ExecuteScript("scroll(0, 1500);");
-            Thread.Sleep(250);
+            Thread.Sleep(950);
             driver.ExecuteScript("scroll(0, 2000);");
             Thread.Sleep(500);
+            driver.ExecuteScript("scroll(0, 1000);");
+            Thread.Sleep(800);
             driver.ExecuteScript("scroll(0, 0);");
+            Thread.Sleep(800);
         }
 
         private string StringBeauty(string s) => s?.Replace("\r", "").Replace("\n", "").Replace("\t", "").Trim();

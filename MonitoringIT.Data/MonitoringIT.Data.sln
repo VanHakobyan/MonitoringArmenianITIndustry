@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.LinkedinP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.DAL.WithEF6", "MonitoringIT.DAL.WithEF6\MonitoringIT.DAL.WithEF6.csproj", "{3FC560E3-9FBF-4F99-A4F8-0532785516F4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web.Backend", "Web.Backend", "{E1D083DC-BC88-4864-8D7E-13B43C7557C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

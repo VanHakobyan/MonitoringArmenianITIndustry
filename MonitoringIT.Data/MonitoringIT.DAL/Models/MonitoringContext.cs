@@ -15,6 +15,7 @@ namespace MonitoringIT.DAL.Models
         {
         }
 
+        public virtual DbSet<GithubLinkedinCrossTable> GithubLinkedinCrossTable { get; set; }
         public virtual DbSet<Languages> Languages { get; set; }
         public virtual DbSet<LinkedinEducation> LinkedinEducation { get; set; }
         public virtual DbSet<LinkedinExperience> LinkedinExperience { get; set; }
@@ -31,7 +32,6 @@ namespace MonitoringIT.DAL.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Monitoring;Trusted_Connection=True;");
             }
         }
@@ -51,8 +51,6 @@ namespace MonitoringIT.DAL.Models
 
             modelBuilder.Entity<LinkedinEducation>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Name).IsUnicode(false);
 
                 entity.Property(e => e.Time).IsUnicode(false);
@@ -68,8 +66,6 @@ namespace MonitoringIT.DAL.Models
 
             modelBuilder.Entity<LinkedinExperience>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Company).IsUnicode(false);
 
                 entity.Property(e => e.Location).IsUnicode(false);
@@ -87,8 +83,6 @@ namespace MonitoringIT.DAL.Models
 
             modelBuilder.Entity<LinkedinInterest>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Name).IsUnicode(false);
 
                 entity.HasOne(d => d.LinkedinProfile)
@@ -100,8 +94,6 @@ namespace MonitoringIT.DAL.Models
 
             modelBuilder.Entity<LinkedinLanguage>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Name).IsUnicode(false);
 
                 entity.HasOne(d => d.LinkedinProfile)
@@ -113,8 +105,6 @@ namespace MonitoringIT.DAL.Models
 
             modelBuilder.Entity<LinkedinProfile>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Birthday).IsUnicode(false);
 
                 entity.Property(e => e.Company).IsUnicode(false);
@@ -146,13 +136,11 @@ namespace MonitoringIT.DAL.Models
 
             modelBuilder.Entity<LinkedinSkill>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
                 entity.Property(e => e.Name).IsUnicode(false);
 
-                entity.HasOne(d => d.LikedinProfile)
+                entity.HasOne(d => d.LinkedinProfile)
                     .WithMany(p => p.LinkedinSkill)
-                    .HasForeignKey(d => d.LikedinProfileId)
+                    .HasForeignKey(d => d.LinkedinProfileId)
                     .HasConstraintName("FK_LinkedinSkill_LinkedinProfile");
             });
 

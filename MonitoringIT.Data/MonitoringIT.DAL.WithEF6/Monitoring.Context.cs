@@ -25,6 +25,7 @@ namespace MonitoringIT.DAL.WithEF6
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<GithubLinkedinCrossTable> GithubLinkedinCrossTables { get; set; }
         public virtual DbSet<Language> Languages { get; set; }
         public virtual DbSet<LinkedinEducation> LinkedinEducations { get; set; }
         public virtual DbSet<LinkedinExperience> LinkedinExperiences { get; set; }

@@ -16,7 +16,7 @@ namespace MonitoringIT.DAL.WithEF6
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal Procent { get; set; }
+        public decimal Percent { get; set; }
         public int RepositoryId { get; set; }
     
         public virtual Repository Repository { get; set; }

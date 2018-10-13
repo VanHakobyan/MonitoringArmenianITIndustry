@@ -24,7 +24,6 @@ namespace MonitoringIT.DAL.WithEF6
             this.LinkedinSkills = new HashSet<LinkedinSkill>();
         }
     
-
         public int Id { get; set; }
         public string Username { get; set; }
         public string FullName { get; set; }
