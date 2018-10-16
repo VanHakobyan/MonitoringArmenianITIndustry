@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -21,6 +22,9 @@ namespace MonitoringIT.Data.LinkedinPageParser
         private static List<string> _linkedinLinks;
         private readonly FirefoxDriver _firefoxDriver;
 
+        private readonly string _email = ConfigurationManager.AppSettings["email"];
+        private readonly string _password = ConfigurationManager.AppSettings["password"];
+
         public Linkedin()
         {
             using (var entities = new MonitoringEntities())
@@ -38,8 +42,8 @@ namespace MonitoringIT.Data.LinkedinPageParser
             Thread.Sleep(5000);
             var email = _firefoxDriver.FindElementByXPath(".//input[@id='login-email']");
             var password = _firefoxDriver.FindElementByXPath(".//input[@id='login-password']");
-            email?.SendKeys("van19962009@mail.ru");
-            password?.SendKeys("VAN606580");
+            email?.SendKeys(_email);
+            password?.SendKeys(_password);
             var signin = _firefoxDriver.FindElementByXPath(".//input[@id='login-submit']");
 
             signin?.Click();
