@@ -224,7 +224,7 @@ namespace MonitoringIT.Data.GithubDataParser
                                     var language = new Languages();
                                     language.Name = langs[i]?.InnerText;
                                     decimal.TryParse(percents[i]?.InnerText.Replace("%", ""), out var p);
-                                    language.Procent = p;
+                                    language.Percent = p;
                                     repo.Languages.Add(language);
                                 }
                                 catch (Exception e)

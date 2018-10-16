@@ -29,13 +29,27 @@ namespace MonitoringIT.Data.LinkedinPageParser
                 _linkedinLinks = links;
                 _firefoxDriver = new FirefoxDriver();
             }
+            Login();
         }
 
-        public void GetAlLinkedinProfiles()
+        public void Login()
         {
+            _firefoxDriver.Navigate().GoToUrl("https://www.linkedin.com/");
+            Thread.Sleep(5000);
+            var email = _firefoxDriver.FindElementByXPath(".//input[@id='login-email']");
+            var password = _firefoxDriver.FindElementByXPath(".//input[@id='login-password']");
+            email?.SendKeys("van19962009@mail.ru");
+            password?.SendKeys("VAN606580");
+            var signin = _firefoxDriver.FindElementByXPath(".//input[@id='login-submit']");
+
+            signin?.Click();
+        }
+        public void GetAlLinkedinProfiles(List<string> links = null)
+        {
+            if (links != null) _linkedinLinks = links;
             foreach (var linkedinLink in _linkedinLinks)
             {
-                
+
                 _firefoxDriver.Navigate().GoToUrl(linkedinLink);
                 Thread.Sleep(3000);
                 Scroll(_firefoxDriver);
