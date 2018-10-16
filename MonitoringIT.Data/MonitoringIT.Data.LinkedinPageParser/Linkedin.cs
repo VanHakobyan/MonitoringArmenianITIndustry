@@ -67,11 +67,11 @@ namespace MonitoringIT.Data.LinkedinPageParser
                     try
                     {
                         linkedinProfile.Username = linkedinLink.Split(new[] { "in/" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.TrimEnd('/');
-                        //using (MonitoringEntities monitoringEntities = new MonitoringEntities())
-                        //{
-                            //monitoringEntities.LinkedinProfiles.Add(linkedinProfile);
-                            //monitoringEntities.SaveChanges();
-                        //}
+                        using (MonitoringEntities monitoringEntities = new MonitoringEntities())
+                        {
+                            monitoringEntities.LinkedinProfiles.Add(linkedinProfile);
+                            monitoringEntities.SaveChanges();
+                        }
                         jsons.Add(JsonConvert.SerializeObject(linkedinProfile,Formatting.Indented));
                     }
                     catch (Exception e)
@@ -337,6 +337,14 @@ namespace MonitoringIT.Data.LinkedinPageParser
             driver.ExecuteScript("scroll(0, 1500);");
             Thread.Sleep(950);
             driver.ExecuteScript("scroll(0, 2000);");
+            Thread.Sleep(500);
+            driver.ExecuteScript("scroll(0, 3000);");
+            Thread.Sleep(400);
+            driver.ExecuteScript("scroll(0, 4000);");
+            Thread.Sleep(300);
+            driver.ExecuteScript("scroll(0, 6000);");
+            Thread.Sleep(300);
+            driver.ExecuteScript("scroll(0, 9000);");
             Thread.Sleep(500);
             driver.ExecuteScript("scroll(0, 1000);");
             Thread.Sleep(800);
