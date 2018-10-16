@@ -19,8 +19,9 @@ namespace MonitoringIT.Data.LinkedinPageParser
 {
     public class Linkedin
     {
-        private static List<string> _linkedinLinks;
-        private readonly FirefoxDriver _firefoxDriver;
+        public static List<string> _linkedinLinks;
+        private  readonly FirefoxDriver _driver;
+
 
         private readonly string _email = ConfigurationManager.AppSettings["email"];
         private readonly string _password = ConfigurationManager.AppSettings["password"];
@@ -31,53 +32,47 @@ namespace MonitoringIT.Data.LinkedinPageParser
             {
                 var links = entities.LinkedinProfiles.Select(x => x.Username).ToList().Select(x => $"https://www.linkedin.com/in/{x}").ToList();
                 _linkedinLinks = links;
-                _firefoxDriver = new FirefoxDriver();
+                _driver = new FirefoxDriver();
             }
             Login();
         }
 
         public void Login()
         {
-            _firefoxDriver.Navigate().GoToUrl("https://www.linkedin.com/");
+            _driver.Navigate().GoToUrl("https://www.linkedin.com/");
             Thread.Sleep(5000);
-            var email = _firefoxDriver.FindElementByXPath(".//input[@id='login-email']");
-            var password = _firefoxDriver.FindElementByXPath(".//input[@id='login-password']");
+            var email = _driver.FindElementByXPath(".//input[@id='login-email']");
+            var password = _driver.FindElementByXPath(".//input[@id='login-password']");
             email?.SendKeys(_email);
             password?.SendKeys(_password);
-            var signin = _firefoxDriver.FindElementByXPath(".//input[@id='login-submit']");
+            var signin = _driver.FindElementByXPath(".//input[@id='login-submit']");
 
             signin?.Click();
         }
-        public void GetAlLinkedinProfiles(List<string> links = null)
+        public List<string> GetAlLinkedinProfiles(List<string> links = null)
         {
+            var jsons = new List<string>();
             if (links != null) _linkedinLinks = links;
             foreach (var linkedinLink in _linkedinLinks)
             {
 
-                _firefoxDriver.Navigate().GoToUrl(linkedinLink);
-                Thread.Sleep(3000);
-                Scroll(_firefoxDriver);
-                try
-                {
-                    var seeMore = _firefoxDriver.FindElementByXPath(".//button[@data-control-name='skill_details']");
-                    seeMore?.Click();
-                }
-                catch (Exception e)
-                {
-
-                }
-                var linkedinProfile = GetProfile(_firefoxDriver.PageSource);
+                _driver.Navigate().GoToUrl(linkedinLink);
+                Thread.Sleep(4000);
+                Scroll(_driver);
+                
+                var linkedinProfile = GetProfile(_driver.PageSource);
                 Thread.Sleep(1000);
                 if (linkedinProfile != null)
                 {
                     try
                     {
                         linkedinProfile.Username = linkedinLink.Split(new[] { "in/" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.TrimEnd('/');
-                        using (MonitoringEntities monitoringEntities = new MonitoringEntities())
-                        {
-                            monitoringEntities.LinkedinProfiles.Add(linkedinProfile);
-                            monitoringEntities.SaveChanges();
-                        }
+                        //using (MonitoringEntities monitoringEntities = new MonitoringEntities())
+                        //{
+                            //monitoringEntities.LinkedinProfiles.Add(linkedinProfile);
+                            //monitoringEntities.SaveChanges();
+                        //}
+                        jsons.Add(JsonConvert.SerializeObject(linkedinProfile,Formatting.Indented));
                     }
                     catch (Exception e)
                     {
@@ -86,7 +81,22 @@ namespace MonitoringIT.Data.LinkedinPageParser
                 }
             }
 
+            return jsons;
+
         }
+
+        private static void SeeMoreSkills(FirefoxDriver jsExecutor)
+        {
+            try
+            {
+                var seeMore = jsExecutor.FindElementByXPath(".//button[@data-control-name='skill_details']");
+                seeMore?.Click();
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
         public LinkedinProfile GetProfile(string content)
         {
             var document = new HtmlDocument();
@@ -107,7 +117,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
                 linkedinProfile.Location = StringBeauty(location);
                 linkedinProfile.Company = StringBeauty(company);
                 linkedinProfile.Education = StringBeauty(education);
-                int.TryParse(StringBeauty(connectionCountStr?.Replace("connections", "")), out var conCountInt);
+                int.TryParse(StringBeauty(connectionCountStr?.Replace("connections", "")?.Replace("+","")), out var conCountInt);
                 linkedinProfile.ConnectionCount = conCountInt;
                 linkedinProfile.ImageUrl = HtmlDecode(imageUrl);
             }
@@ -128,7 +138,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
                         try
                         {
                             var linkedinExperience = new LinkedinExperience();
-                            var title = experince.SelectSingleNode(".//h3")?.InnerText;
+                            var title = experince.SelectSingleNode(".//h3")?.InnerText?.Replace("Title","");
                             var companyName = experince.SelectSingleNode(".//span[@class='pv-entity__secondary-title']")?.InnerText;
                             var range = experince.SelectSingleNode(".//h4[starts-with(@class,'pv-entity__date-range')]")?.SelectNodes(".//span")?.Last()?.InnerText;
                             var locationCompany = experince.SelectSingleNode(".//h4[starts-with(@class,'pv-entity__location')]")?.SelectNodes(".//span")?.Last()?.InnerText;
@@ -268,10 +278,10 @@ namespace MonitoringIT.Data.LinkedinPageParser
             try
             {
                 var documentInfo = new HtmlDocument();
-                var findElementByXPath = _firefoxDriver.FindElementByXPath(".//a[@data-control-name='contact_see_more']");
+                var findElementByXPath = _driver.FindElementByXPath(".//a[@data-control-name='contact_see_more']");
                 findElementByXPath.Click();
                 Thread.Sleep(700);
-                documentInfo.LoadHtml(_firefoxDriver.PageSource);
+                documentInfo.LoadHtml(_driver.PageSource);
                 var phone = documentInfo.DocumentNode.SelectSingleNode(".//section[@class='pv-contact-info__contact-type ci-phone']")?.SelectSingleNode(".//span[@class='Sans-15px-black-85%']")?.InnerText;
                 var email = documentInfo.DocumentNode.SelectSingleNode(".//section[@class='pv-contact-info__contact-type ci-email']")?.SelectSingleNode(".//a[@class='pv-contact-info__contact-link Sans-15px-black-85%']")?.GetAttributeValue("href", "")?.Replace("mailto:", "");
                 var birthday = documentInfo.DocumentNode.SelectSingleNode(".//section[@class='pv-contact-info__contact-type ci-birthday']")?.SelectSingleNode(".//a[@class='pv-contact-info__contact-item Sans-15px-black-85%']")?.InnerText;
@@ -285,7 +295,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
                 linkedinProfile.Website = StringBeauty(website);
                 //linkedinProfile.Username = StringBeauty(userName);
                 Thread.Sleep(250);
-                var findElementByXPathClose = _firefoxDriver.FindElementByXPath(".//button[@class='artdeco-dismiss']");
+                var findElementByXPathClose = _driver.FindElementByXPath(".//button[@class='artdeco-dismiss']");
                 findElementByXPathClose?.Click();
                 Thread.Sleep(250);
             }
@@ -295,7 +305,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
             }
             try
             {
-                var findElementByXPath = _firefoxDriver.FindElementByXPath(".//button[starts-with(@class,'pv-s-profile-actions pv-s-profile-actions--connect')]");
+                var findElementByXPath = _driver.FindElementByXPath(".//button[starts-with(@class,'pv-s-profile-actions pv-s-profile-actions--connect')]");
                 findElementByXPath?.Click();
                 //pv-s-profile-actions pv-s-profile-actions--connect
             }
@@ -307,7 +317,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
         }
 
 
-        private static void Scroll(IJavaScriptExecutor driver)
+        private static void Scroll(FirefoxDriver driver)
         {
             driver.ExecuteScript("scroll(0, 100);");
             Thread.Sleep(250);
@@ -321,6 +331,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
             Thread.Sleep(250);
             driver.ExecuteScript("scroll(0, 1000);");
             Thread.Sleep(250);
+            SeeMoreSkills(driver);
             driver.ExecuteScript("scroll(0, 1100);");
             Thread.Sleep(650);
             driver.ExecuteScript("scroll(0, 1500);");

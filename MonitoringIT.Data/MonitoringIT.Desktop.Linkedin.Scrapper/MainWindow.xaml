@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MonitoringIT.Desktop.Linkedin.Scrapper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Linkedin Scrapper" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -13,9 +13,16 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical" Grid.Row="0" Margin="10" HorizontalAlignment="Center">
-            <TextBlock Text="Enter link" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="16" Width="75" Margin="12" FontWeight="Bold"/>
-            <TextBox Name="LinkBox" Width="730" Height="39" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <Button Name="ScrapButton" Content="Start Scrapping" Width="106" Height="28" HorizontalAlignment="Center" Margin="15" Click="ScrapButton_Click"></Button>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="30,10" HorizontalAlignment="Center" Width="732">
+            <TextBlock Text="Enter link" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="16" Width="108" Margin="12" FontWeight="Bold" Foreground="#FF007ACC" FontFamily="Viner Hand ITC" TextAlignment="Center"/>
+            <!--<TextBox Name="LinkBox" Width="730" Height="39" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="#FF0072B0" FontSize="14" FontFamily="Ravie"/>-->
+            <ComboBox Margin="10,5,0,5" IsEditable="True" x:Name="Url" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="712" ></ComboBox>
+            <Button Name="ScrapButton" Content="Start Scrapping" Width="106" Height="28" HorizontalAlignment="Center" Margin="15" Click="ScrapButton_Click" Foreground="#FF007ACC" FontWeight="Bold" FontFamily="UniCyrillic" FontSize="16"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Margin="10" HorizontalAlignment="Center">
+            <TextBlock Text="JSON profile" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="16" Width="121" Margin="12" FontWeight="Bold" Foreground="#FF007ACC" FontFamily="TruthARM Black" TextAlignment="Center"/>
+            <TextBox Name="JSONcontent" VerticalAlignment="Center" Height="151" Width="731" Foreground="#FFFFB666" FontWeight="Bold" VerticalScrollBarVisibility="Auto" ></TextBox>
         </StackPanel>
     </Grid>
 </Window>
