@@ -59,7 +59,6 @@ namespace Lib.MonitoringIT.Data.ProxyParser
         private async Task<string> GetContent(int pageNumber, string cookie = null)
         {
             return await SendGetRequest(url.Replace("{page}", pageNumber.ToString()), cookie);
-
         }
         public async Task<List<Proxy>> GetProxy(string cookie = null)
         {
