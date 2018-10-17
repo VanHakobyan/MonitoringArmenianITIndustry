@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,7 +22,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
     public class Linkedin
     {
         public static List<string> _linkedinLinks;
-        private  readonly FirefoxDriver _driver;
+        private readonly FirefoxDriver _driver;
 
 
         private readonly string _email = ConfigurationManager.AppSettings["email"];
@@ -59,20 +61,31 @@ namespace MonitoringIT.Data.LinkedinPageParser
                 _driver.Navigate().GoToUrl(linkedinLink);
                 Thread.Sleep(4000);
                 Scroll(_driver);
-                
+
                 var linkedinProfile = GetProfile(_driver.PageSource);
                 Thread.Sleep(1000);
                 if (linkedinProfile != null)
                 {
                     try
                     {
-                        linkedinProfile.Username = linkedinLink.Split(new[] { "in/" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.TrimEnd('/');
+                        var username = linkedinLink.Split(new[] { "in/" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.TrimEnd('/');
+                        linkedinProfile.Username = username;
                         using (MonitoringEntities monitoringEntities = new MonitoringEntities())
                         {
-                            monitoringEntities.LinkedinProfiles.Add(linkedinProfile);
+                            var user = monitoringEntities.LinkedinProfiles.Where(x => x.Username == username).ToList().FirstOrDefault();
+                            if (user != null)
+                            {
+                                UpdateLinkedinProfile(linkedinProfile, user);
+                                //monitoringEntities.Entry(user).State = EntityState.Modified;
+                                monitoringEntities.LinkedinProfiles.AddOrUpdate(user);
+                            }
+                            else
+                            {
+                                monitoringEntities.LinkedinProfiles.Add(linkedinProfile); 
+                            }
                             monitoringEntities.SaveChanges();
                         }
-                        jsons.Add(JsonConvert.SerializeObject(linkedinProfile,Formatting.Indented));
+                        jsons.Add(JsonConvert.SerializeObject(linkedinProfile, Formatting.Indented,new JsonSerializerSettings(){ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
                     }
                     catch (Exception e)
                     {
@@ -83,6 +96,27 @@ namespace MonitoringIT.Data.LinkedinPageParser
 
             return jsons;
 
+        }
+
+        private static void UpdateLinkedinProfile(LinkedinProfile linkedinProfile, LinkedinProfile user)
+        {
+            if (linkedinProfile.LinkedinEducations.Count != 0 && user.LinkedinEducations.Count==0) user.LinkedinEducations = linkedinProfile.LinkedinEducations;
+            if (linkedinProfile.LinkedinExperiences.Count != 0 && user.LinkedinExperiences.Count==0) user.LinkedinExperiences = linkedinProfile.LinkedinExperiences;
+            if (linkedinProfile.LinkedinSkills.Count != 0 && user.LinkedinSkills.Count==0) user.LinkedinSkills = linkedinProfile.LinkedinSkills;
+            if (linkedinProfile.LinkedinInterests.Count != 0 && user.LinkedinInterests.Count==0) user.LinkedinInterests = linkedinProfile.LinkedinInterests;
+            if (linkedinProfile.LinkedinLanguages.Count != 0 && user.LinkedinLanguages.Count==0) user.LinkedinLanguages = linkedinProfile.LinkedinLanguages;
+            if (linkedinProfile.Birthday != null) user.Birthday = linkedinProfile.Birthday;
+            if (linkedinProfile.Company != null) user.Company = linkedinProfile.Company;
+            if (linkedinProfile.Connected != null) user.Connected = linkedinProfile.Connected;
+            if (linkedinProfile.ConnectionCount != null) user.ConnectionCount = linkedinProfile.ConnectionCount;
+            if (linkedinProfile.Email != null) user.Email = linkedinProfile.Email;
+            if (linkedinProfile.FullName != null) user.FullName = linkedinProfile.FullName;
+            if (linkedinProfile.Location != null) user.Location = linkedinProfile.Location;
+            if (linkedinProfile.Specialty != null) user.Specialty = linkedinProfile.Specialty;
+            if (linkedinProfile.ImageUrl != null) user.ImageUrl = linkedinProfile.ImageUrl;
+            if (linkedinProfile.Website != null) user.Website = linkedinProfile.Website;
+            if (linkedinProfile.Education != null) user.Education = linkedinProfile.Education;
+            if (linkedinProfile.Phone != null) user.Phone = linkedinProfile.Phone;
         }
 
         private static void SeeMoreSkills(FirefoxDriver jsExecutor)
@@ -117,7 +151,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
                 linkedinProfile.Location = StringBeauty(location);
                 linkedinProfile.Company = StringBeauty(company);
                 linkedinProfile.Education = StringBeauty(education);
-                int.TryParse(StringBeauty(connectionCountStr?.Replace("connections", "")?.Replace("+","")), out var conCountInt);
+                int.TryParse(StringBeauty(connectionCountStr?.Replace("connections", "")?.Replace("+", "")), out var conCountInt);
                 linkedinProfile.ConnectionCount = conCountInt;
                 linkedinProfile.ImageUrl = HtmlDecode(imageUrl);
             }
@@ -138,7 +172,7 @@ namespace MonitoringIT.Data.LinkedinPageParser
                         try
                         {
                             var linkedinExperience = new LinkedinExperience();
-                            var title = experince.SelectSingleNode(".//h3")?.InnerText?.Replace("Title","");
+                            var title = experince.SelectSingleNode(".//h3")?.InnerText?.Replace("Title", "");
                             var companyName = experince.SelectSingleNode(".//span[@class='pv-entity__secondary-title']")?.InnerText;
                             var range = experince.SelectSingleNode(".//h4[starts-with(@class,'pv-entity__date-range')]")?.SelectNodes(".//span")?.Last()?.InnerText;
                             var locationCompany = experince.SelectSingleNode(".//h4[starts-with(@class,'pv-entity__location')]")?.SelectNodes(".//span")?.Last()?.InnerText;

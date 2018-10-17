@@ -26,13 +26,16 @@ namespace MonitoringIT.Desktop.Linkedin.Scrapper
         public MainWindow()
         {
             InitializeComponent();
-            Url.ItemsSource = links;
+            var countPage = links.Count / 30 + 1;
+            PageUrl.ItemsSource = Enumerable.Range(1, countPage).ToList();
+            Url.ItemsSource = links.Take(30);
         }
 
         static MainWindow()
         {
             _linkedin = new Data.LinkedinPageParser.Linkedin();
             links = Data.LinkedinPageParser.Linkedin._linkedinLinks;
+
         }
 
         private async void ScrapButton_Click(object sender, RoutedEventArgs e)
@@ -41,6 +44,11 @@ namespace MonitoringIT.Desktop.Linkedin.Scrapper
             var alLinkedinProfiles = _linkedin.GetAlLinkedinProfiles(new List<string> { link });
             if (alLinkedinProfiles != null) JSONcontent.Text = alLinkedinProfiles.FirstOrDefault();
             await Task.Delay(100);
+        }
+
+        private void PageUrl_OnSelected(object sender, RoutedEventArgs e)
+        {
+            Url.ItemsSource = links.Skip(((int)PageUrl.SelectedValue - 1) * 30).Take(30);
         }
     }
 }
