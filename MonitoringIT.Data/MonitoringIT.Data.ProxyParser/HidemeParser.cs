@@ -15,10 +15,10 @@ namespace MonitoringIT.Data.ProxyParser
 {
     public class HidemeParser
     {
-        private static string url = "https://hidemyna.me/en/proxy-list/?start={page}#list";
-        private async Task<string> SendGetRequest(string uri)
+        private static string url = "https://hidemyna.me/en/proxy-list/?type=s?start={page}#list";
+        private async Task<string> SendGetRequest(string uri, string cookie = null)
         {
-            string response = "";
+            var response = "";
 
             try
             {
@@ -35,18 +35,22 @@ namespace MonitoringIT.Data.ProxyParser
                 request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
                 //request.Headers.Add("accept-encoding", "gzip, deflate, br");
                 request.Headers.Add("accept-language", "en-US,en;q=0.9,hy;q=0.8,mt;q=0.7");
-                request.Headers.Add("cookie", "__cfduid=d1ae88318939213b04cfacf832c13dcd01538472442; t=77147791; _ga=GA1.2.1018644514.1538472449; PAPVisitorId=9f9ae6258d224e6294217fb075b2JRTI; _ym_uid=1538472449103520384; _ym_d=1538472449; cf_clearance=4e80684244099ed8aa899026e579d38d8c77f0d5-1538660779-86400-150; _gid=GA1.2.1858249337.1538660781; _dc_gtm_UA-90263203-1=1; _gat_UA-90263203-1=1; _ym_wasSynced=%7B%22time%22%3A1538660781271%2C%22params%22%3A%7B%22webvisor%22%3A%7B%22date%22%3A%222011-10-31%2016%3A20%3A50%22%7D%2C%22eu%22%3A0%7D%2C%22bkParams%22%3A%7B%7D%7D; _ym_isad=2; _ym_visorc_42065329=w; jv_enter_ts_EBSrukxUuA=1538660783088; jv_visits_count_EBSrukxUuA=2; jv_refer_EBSrukxUuA=https%3A%2F%2Fhidemyna.me%2Fen%2Fproxy-list%2F%3Fstart%3D64; jv_utm_EBSrukxUuA=; jv_pages_count_EBSrukxUuA=1");
+                request.Headers.Add("cookie", cookie ?? "__cfduid=d1ae88318939213b04cfacf832c13dcd01538472442; t=77147791; _ga=GA1.2.1018644514.1538472449; PAPVisitorId=9f9ae6258d224e6294217fb075b2JRTI; _ym_uid=1538472449103520384; _ym_d=1538472449; cf_clearance=ffba3b7646abf7cf13ef1a18f3954722dec8bfd3-1539766744-86400-150; _gid=GA1.2.1745799551.1539766746; _ym_wasSynced=%7B%22time%22%3A1539766746101%2C%22params%22%3A%7B%22eu%22%3A0%7D%2C%22bkParams%22%3A%7B%7D%7D; _ym_isad=2; jv_enter_ts_EBSrukxUuA=1539766748993; jv_visits_count_EBSrukxUuA=3; jv_refer_EBSrukxUuA=https%3A%2F%2Fhidemyna.me%2Fen%2Fproxy-list%2F%3Fstart%3D21504; jv_utm_EBSrukxUuA=; _dc_gtm_UA-90263203-1=1; _ym_visorc_42065329=w; _gat_UA-90263203-1=1; jv_pages_count_EBSrukxUuA=4");
                 using (var stream = (await request.GetResponseAsync()).GetResponseStream())
                 {
-                    stream.ReadTimeout = 30000;
-                    using (var streamReader = new StreamReader(stream, Encoding.GetEncoding("UTF-8")))
+                    if (stream != null)
                     {
-                        response = streamReader.ReadToEnd();
+                        stream.ReadTimeout = 30000;
+                        using (var streamReader = new StreamReader(stream, Encoding.GetEncoding("UTF-8")))
+                        {
+                            response = streamReader.ReadToEnd();
+                        }
                     }
                 }
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 Thread.Sleep(1000);
             }
 
@@ -54,16 +58,16 @@ namespace MonitoringIT.Data.ProxyParser
             return response;
         }
 
-        private async Task<string> GetContent(int pageNumber)
+        private async Task<string> GetContent(int pageNumber, string cookie = null)
         {
-            return await SendGetRequest(url.Replace("{page}", pageNumber.ToString()));
+            return await SendGetRequest(url.Replace("{page}", pageNumber.ToString()), cookie);
 
         }
-        public async Task<List<Proxy>> GetProxy()
+        public async Task<List<Proxy>> GetProxy(string cookie = null)
         {
             var proxyList = new List<Proxy>();
             HtmlDocument document = new HtmlDocument();
-            var pageSource = await GetContent(64);
+            var pageSource = await GetContent(64,cookie);
             document.LoadHtml(pageSource);
             var pagination = document.DocumentNode.SelectSingleNode(".//div[@class='proxy__pagination']");
             var lastPageIndex = pagination.FirstChild.LastChild.InnerText;
@@ -98,7 +102,7 @@ namespace MonitoringIT.Data.ProxyParser
                 catch (Exception e)
                 {
 
-                    
+
                 }
             }
             return proxyList;

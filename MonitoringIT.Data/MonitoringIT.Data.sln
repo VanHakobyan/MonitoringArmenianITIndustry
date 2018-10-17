@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{3B03
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Desktop.Linkedin.Scrapper", "MonitoringIT.Desktop.Linkedin.Scrapper\MonitoringIT.Desktop.Linkedin.Scrapper.csproj", "{763CEE66-5AA4-4AE8-8F91-A6EEEBC25E86}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.DATA.Github.Scrapper.Lib", "MonitoringIT.DATA.Github.Scrapper.Lib\MonitoringIT.DATA.Github.Scrapper.Lib.csproj", "{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +165,22 @@ Global
 		{763CEE66-5AA4-4AE8-8F91-A6EEEBC25E86}.Release|x64.Build.0 = Release|Any CPU
 		{763CEE66-5AA4-4AE8-8F91-A6EEEBC25E86}.Release|x86.ActiveCfg = Release|Any CPU
 		{763CEE66-5AA4-4AE8-8F91-A6EEEBC25E86}.Release|x86.Build.0 = Release|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Debug|ARM.Build.0 = Debug|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Debug|x64.Build.0 = Debug|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Debug|x86.Build.0 = Debug|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Release|ARM.ActiveCfg = Release|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Release|ARM.Build.0 = Release|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Release|x64.ActiveCfg = Release|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Release|x64.Build.0 = Release|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Release|x86.ActiveCfg = Release|Any CPU
+		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

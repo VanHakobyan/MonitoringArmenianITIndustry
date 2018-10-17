@@ -40,6 +40,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.8.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.8.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -157,6 +163,10 @@
     <ProjectReference Include="..\MonitoringIT.Data.Common\MonitoringIT.Data.Common.csproj">
       <Project>{7ec68600-e4b0-4cd5-802f-35cddd87c829}</Project>
       <Name>MonitoringIT.Data.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonitoringIT.DATA.Github.Scrapper.Lib\MonitoringIT.DATA.Github.Scrapper.Lib.csproj">
+      <Project>{2ccb1ad1-66a0-43ed-969d-26a4c13271c3}</Project>
+      <Name>MonitoringIT.DATA.Github.Scrapper.Lib</Name>
     </ProjectReference>
     <ProjectReference Include="..\MonitoringIT.Data.ProxyParser\MonitoringIT.Data.ProxyParser.csproj">
       <Project>{779dc66e-ac5b-4d67-b143-bb844f313469}</Project>
