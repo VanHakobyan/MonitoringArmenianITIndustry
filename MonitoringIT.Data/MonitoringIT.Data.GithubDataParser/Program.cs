@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using HtmlAgilityPack;
+using Lib.MonitoringIT.DATA.Github.Scrapper;
 using Microsoft.EntityFrameworkCore;
 using MonitoringIT.DAL.Models;
-using MonitoringIT.DATA.Github.Scrapper.Lib;
 using OpenQA.Selenium.Firefox;
 
 namespace MonitoringIT.Data.GithubDataParser
@@ -15,7 +15,7 @@ namespace MonitoringIT.Data.GithubDataParser
     {
         static void Main()
         {
-            GithubScrapper githubScrapper=new GithubScrapper();
+            var githubScrapper=new GithubScrapper();
             githubScrapper.Start();
         }
     }

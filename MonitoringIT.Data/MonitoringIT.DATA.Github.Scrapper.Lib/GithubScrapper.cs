@@ -4,15 +4,13 @@ using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using Database.MonitoringIT.DAL.WithEF6;
 using HtmlAgilityPack;
-using MonitoringIT.Data.ProxyParser;
-using MonitoringIT.DAL.WithEF6;
+using Lib.MonitoringIT.Data.ProxyParser;
 using OpenQA.Selenium.Firefox;
 
-namespace MonitoringIT.DATA.Github.Scrapper.Lib
+namespace Lib.MonitoringIT.DATA.Github.Scrapper
 {
     public class GithubScrapper
     {

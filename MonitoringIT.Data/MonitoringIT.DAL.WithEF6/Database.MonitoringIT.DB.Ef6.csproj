@@ -7,8 +7,8 @@
     <ProjectGuid>{3FC560E3-9FBF-4F99-A4F8-0532785516F4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MonitoringIT.DAL.WithEF6</RootNamespace>
-    <AssemblyName>MonitoringIT.DAL.WithEF6</AssemblyName>
+    <RootNamespace>Database.MonitoringIT.DAL.WithEF6</RootNamespace>
+    <AssemblyName>Database.MonitoringIT.DAL.WithEF6</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

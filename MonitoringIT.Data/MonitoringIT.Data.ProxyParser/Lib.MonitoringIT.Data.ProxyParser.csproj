@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Lib.MonitoringIT.Data.ProxyParser</AssemblyName>
+    <RootNamespace>Lib.MonitoringIT.Data.ProxyParser</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MonitoringIT.DAL\MonitoringIT.DAL.csproj" />
+    <ProjectReference Include="..\MonitoringIT.DAL\Database.MonitoringIT.DB.EfCore.csproj" />
     <ProjectReference Include="..\MonitoringIT.Data.Common\MonitoringIT.Data.Common.csproj" />
   </ItemGroup>
 

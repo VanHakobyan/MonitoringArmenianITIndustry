@@ -156,21 +156,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MonitoringIT.DAL\MonitoringIT.DAL.csproj">
+    <ProjectReference Include="..\MonitoringIT.DAL\Database.MonitoringIT.DB.EfCore.csproj">
       <Project>{87bc8483-9884-42d0-ab64-8182f8ba9e76}</Project>
-      <Name>MonitoringIT.DAL</Name>
+      <Name>Database.MonitoringIT.DB.EfCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\MonitoringIT.Data.Common\MonitoringIT.Data.Common.csproj">
       <Project>{7ec68600-e4b0-4cd5-802f-35cddd87c829}</Project>
       <Name>MonitoringIT.Data.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MonitoringIT.DATA.Github.Scrapper.Lib\MonitoringIT.DATA.Github.Scrapper.Lib.csproj">
+    <ProjectReference Include="..\MonitoringIT.DATA.Github.Scrapper.Lib\Lib.MonitoringIT.DATA.Github.Scrapper.csproj">
       <Project>{2ccb1ad1-66a0-43ed-969d-26a4c13271c3}</Project>
-      <Name>MonitoringIT.DATA.Github.Scrapper.Lib</Name>
+      <Name>Lib.MonitoringIT.DATA.Github.Scrapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MonitoringIT.Data.ProxyParser\MonitoringIT.Data.ProxyParser.csproj">
+    <ProjectReference Include="..\MonitoringIT.Data.ProxyParser\Lib.MonitoringIT.Data.ProxyParser.csproj">
       <Project>{779dc66e-ac5b-4d67-b143-bb844f313469}</Project>
-      <Name>MonitoringIT.Data.ProxyParser</Name>
+      <Name>Lib.MonitoringIT.Data.ProxyParser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

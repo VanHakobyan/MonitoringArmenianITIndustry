@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using HtmlAgilityPack;
+using Lib.MonitoringIT.Data.Linkedin.Scrapper;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
@@ -28,7 +29,7 @@ namespace MonitoringIT.Data.LinkedinDataParser
         static void Main(string[] args)
         {
 
-            var linkedin = new Linkedin.Scrapper.Lib.Linkedin();
+            var linkedin = new Linkedin();
             var alLinkedinProfiles = linkedin.GetAlLinkedinProfiles();
 
 

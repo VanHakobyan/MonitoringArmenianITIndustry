@@ -7,8 +7,8 @@
     <ProjectGuid>{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MonitoringIT.Data.Linkedin.Scrapper.Lib</RootNamespace>
-    <AssemblyName>MonitoringIT.Data.Linkedin.Scrapper.Lib</AssemblyName>
+    <RootNamespace>Lib.MonitoringIT.Data.Linkedin.Scrapper</RootNamespace>
+    <AssemblyName>Lib.MonitoringIT.Data.Linkedin.Scrapper</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -133,9 +133,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MonitoringIT.DAL.WithEF6\MonitoringIT.DAL.WithEF6.csproj">
+    <ProjectReference Include="..\MonitoringIT.DAL.WithEF6\Database.MonitoringIT.DB.Ef6.csproj">
       <Project>{3FC560E3-9FBF-4F99-A4F8-0532785516F4}</Project>
-      <Name>MonitoringIT.DAL.WithEF6</Name>
+      <Name>Database.MonitoringIT.DB.Ef6</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

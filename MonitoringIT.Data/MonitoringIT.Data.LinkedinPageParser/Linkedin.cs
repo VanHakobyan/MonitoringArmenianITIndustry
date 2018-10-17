@@ -1,23 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Entity;
 using System.Data.Entity.Migrations;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using Database.MonitoringIT.DAL.WithEF6;
 using HtmlAgilityPack;
-using MonitoringIT.DAL.WithEF6;
 using Newtonsoft.Json;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 
-
-namespace MonitoringIT.Data.Linkedin.Scrapper.Lib
+namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
 {
     public class Linkedin
     {

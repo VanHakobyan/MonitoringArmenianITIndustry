@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MonitoringIT.DAL.WithEF6
+namespace Database.MonitoringIT.DAL.WithEF6
 {
     using System;
     using System.Collections.Generic;

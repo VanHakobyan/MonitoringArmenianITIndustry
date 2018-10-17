@@ -8,10 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using MonitoringIT.Data.Common;
-//using MonitoringIT.DAL.Models;
-//using Proxy = MonitoringIT.DAL.Models.Proxy;
 
-namespace MonitoringIT.Data.ProxyParser
+namespace Lib.MonitoringIT.Data.ProxyParser
 {
     public class HidemeParser
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MonitoringIT.DATA.Github.Scrapper.Lib</RootNamespace>
-    <AssemblyName>MonitoringIT.DATA.Github.Scrapper.Lib</AssemblyName>
+    <RootNamespace>Lib.MonitoringIT.DATA.Github.Scrapper</RootNamespace>
+    <AssemblyName>Lib.MonitoringIT.DATA.Github.Scrapper</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -60,17 +60,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MonitoringIT.DAL.WithEF6\MonitoringIT.DAL.WithEF6.csproj">
+    <ProjectReference Include="..\MonitoringIT.DAL.WithEF6\Database.MonitoringIT.DB.Ef6.csproj">
       <Project>{3fc560e3-9fbf-4f99-a4f8-0532785516f4}</Project>
-      <Name>MonitoringIT.DAL.WithEF6</Name>
+      <Name>Database.MonitoringIT.DB.Ef6</Name>
     </ProjectReference>
     <ProjectReference Include="..\MonitoringIT.Data.Common\MonitoringIT.Data.Common.csproj">
       <Project>{7EC68600-E4B0-4CD5-802F-35CDDD87C829}</Project>
       <Name>MonitoringIT.Data.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MonitoringIT.Data.ProxyParser\MonitoringIT.Data.ProxyParser.csproj">
+    <ProjectReference Include="..\MonitoringIT.Data.ProxyParser\Lib.MonitoringIT.Data.ProxyParser.csproj">
       <Project>{779DC66E-AC5B-4D67-B143-BB844F313469}</Project>
-      <Name>MonitoringIT.Data.ProxyParser</Name>
+      <Name>Lib.MonitoringIT.Data.ProxyParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace MonitoringIT.Desktop.Linkedin.Scrapper
+namespace Desktop.MonitoringIT.Desktop.Linkedin.Scrapper
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static Data.Linkedin.Scrapper.Lib.Linkedin _linkedin;
+        private static global::Lib.MonitoringIT.Data.Linkedin.Scrapper.Linkedin _linkedin;
         private static List<string> links;
         public MainWindow()
         {
@@ -25,8 +22,8 @@ namespace MonitoringIT.Desktop.Linkedin.Scrapper
 
         static MainWindow()
         {
-            _linkedin = new Data.Linkedin.Scrapper.Lib.Linkedin();
-            links = Data.Linkedin.Scrapper.Lib.Linkedin._linkedinLinks;
+            _linkedin = new global::Lib.MonitoringIT.Data.Linkedin.Scrapper.Linkedin();
+            links = global::Lib.MonitoringIT.Data.Linkedin.Scrapper.Linkedin._linkedinLinks;
 
         }
 
