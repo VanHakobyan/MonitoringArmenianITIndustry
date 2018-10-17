@@ -106,9 +106,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MonitoringIT.Data.LinkedinPageParser\MonitoringIT.Data.LinkedinPageParser.csproj">
+    <ProjectReference Include="..\MonitoringIT.Data.LinkedinPageParser\MonitoringIT.Data.Linkedin.Scrapper.Lib.csproj">
       <Project>{0cd4e8dc-9fa0-4bbe-bd38-a77a88d9bcea}</Project>
-      <Name>MonitoringIT.Data.LinkedinPageParser</Name>
+      <Name>MonitoringIT.Data.Linkedin.Scrapper.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

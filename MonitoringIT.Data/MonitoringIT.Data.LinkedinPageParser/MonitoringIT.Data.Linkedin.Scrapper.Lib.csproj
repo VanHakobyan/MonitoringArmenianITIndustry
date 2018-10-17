@@ -7,8 +7,8 @@
     <ProjectGuid>{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MonitoringIT.Data.LinkedinPageParser</RootNamespace>
-    <AssemblyName>MonitoringIT.Data.LinkedinPageParser</AssemblyName>
+    <RootNamespace>MonitoringIT.Data.Linkedin.Scrapper.Lib</RootNamespace>
+    <AssemblyName>MonitoringIT.Data.Linkedin.Scrapper.Lib</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

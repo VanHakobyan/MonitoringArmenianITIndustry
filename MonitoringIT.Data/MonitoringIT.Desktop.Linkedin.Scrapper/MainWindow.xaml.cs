@@ -5,14 +5,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MonitoringIT.Desktop.Linkedin.Scrapper
 {
@@ -21,7 +13,7 @@ namespace MonitoringIT.Desktop.Linkedin.Scrapper
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static Data.LinkedinPageParser.Linkedin _linkedin;
+        private static Data.Linkedin.Scrapper.Lib.Linkedin _linkedin;
         private static List<string> links;
         public MainWindow()
         {
@@ -33,8 +25,8 @@ namespace MonitoringIT.Desktop.Linkedin.Scrapper
 
         static MainWindow()
         {
-            _linkedin = new Data.LinkedinPageParser.Linkedin();
-            links = Data.LinkedinPageParser.Linkedin._linkedinLinks;
+            _linkedin = new Data.Linkedin.Scrapper.Lib.Linkedin();
+            links = Data.Linkedin.Scrapper.Lib.Linkedin._linkedinLinks;
 
         }
 

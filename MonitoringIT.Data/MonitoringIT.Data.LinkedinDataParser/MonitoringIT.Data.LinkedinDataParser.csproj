@@ -110,6 +110,7 @@
       <HintPath>..\packages\System.ComponentModel.Annotations.4.5.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SqlClient, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SqlClient.4.5.1\lib\net461\System.Data.SqlClient.dll</HintPath>
@@ -154,9 +155,9 @@
       <Project>{87BC8483-9884-42D0-AB64-8182F8BA9E76}</Project>
       <Name>MonitoringIT.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MonitoringIT.Data.LinkedinPageParser\MonitoringIT.Data.LinkedinPageParser.csproj">
+    <ProjectReference Include="..\MonitoringIT.Data.LinkedinPageParser\MonitoringIT.Data.Linkedin.Scrapper.Lib.csproj">
       <Project>{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}</Project>
-      <Name>MonitoringIT.Data.LinkedinPageParser</Name>
+      <Name>MonitoringIT.Data.Linkedin.Scrapper.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

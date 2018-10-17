@@ -17,7 +17,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 
 
-namespace MonitoringIT.Data.LinkedinPageParser
+namespace MonitoringIT.Data.Linkedin.Scrapper.Lib
 {
     public class Linkedin
     {

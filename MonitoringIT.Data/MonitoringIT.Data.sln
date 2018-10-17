@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonitoringIT.DAL", "Monitor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.LinkedinDataParser", "MonitoringIT.Data.LinkedinDataParser\MonitoringIT.Data.LinkedinDataParser.csproj", "{A58FB35E-5B7D-4E3A-B9AD-0230AA315630}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.LinkedinPageParser", "MonitoringIT.Data.LinkedinPageParser\MonitoringIT.Data.LinkedinPageParser.csproj", "{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.Data.Linkedin.Scrapper.Lib", "MonitoringIT.Data.LinkedinPageParser\MonitoringIT.Data.Linkedin.Scrapper.Lib.csproj", "{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitoringIT.DAL.WithEF6", "MonitoringIT.DAL.WithEF6\MonitoringIT.DAL.WithEF6.csproj", "{3FC560E3-9FBF-4F99-A4F8-0532785516F4}"
 EndProject
