@@ -30,7 +30,7 @@ namespace MonitoringIT.Data.LinkedinDataParser
         {
 
             var linkedin = new Linkedin();
-            var alLinkedinProfiles = linkedin.GetAlLinkedinProfiles();
+            var alLinkedinProfiles = linkedin.GetAllLinkedinProfiles();
 
 
             var profileFirefox = new FirefoxProfile(FirefoxProfilePath);

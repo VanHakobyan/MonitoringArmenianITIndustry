@@ -21,6 +21,10 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
         private readonly string _email = ConfigurationManager.AppSettings["email"];
         private readonly string _password = ConfigurationManager.AppSettings["password"];
 
+
+        /// <summary>
+        /// Ctor 
+        /// </summary>
         public Linkedin()
         {
             using (var entities = new MonitoringEntities())
@@ -32,6 +36,9 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             Login();
         }
 
+        /// <summary>
+        /// Login linkedin using selenum and some login and password
+        /// </summary>
         public void Login()
         {
             _driver.Navigate().GoToUrl("https://www.linkedin.com/");
@@ -44,7 +51,13 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
 
             signin?.Click();
         }
-        public List<string> GetAlLinkedinProfiles(List<string> links = null)
+
+        /// <summary>
+        /// Get all linkedin profiles using links in db or links from param
+        /// </summary>
+        /// <param name="links">List of linkedin links</param>
+        /// <returns></returns>
+        public List<string> GetAllLinkedinProfiles(List<string> links = null)
         {
             var jsons = new List<string>();
             if (links != null) _linkedinLinks = links;
@@ -91,6 +104,11 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
 
         }
 
+        /// <summary>
+        /// Updateing linkedin profile information
+        /// </summary>
+        /// <param name="linkedinProfile">Linkedin profile object</param>
+        /// <param name="user">Linkedin profile in db</param>
         private static void UpdateLinkedinProfile(LinkedinProfile linkedinProfile, LinkedinProfile user)
         {
             if (linkedinProfile.LinkedinEducations.Count != 0 && user.LinkedinEducations.Count==0) user.LinkedinEducations = linkedinProfile.LinkedinEducations;
@@ -112,6 +130,10 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             if (linkedinProfile.Phone != null) user.Phone = linkedinProfile.Phone;
         }
 
+        /// <summary>
+        /// See more skill
+        /// </summary>
+        /// <param name="jsExecutor">Selenium driver</param>
         private static void SeeMoreSkills(FirefoxDriver jsExecutor)
         {
             try
@@ -124,6 +146,11 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             }
         }
 
+        /// <summary>
+        /// Get profile model from HTML content 
+        /// </summary>
+        /// <param name="content">HTML content</param>
+        /// <returns>LinkedinProfile</returns>
         public LinkedinProfile GetProfile(string content)
         {
             var document = new HtmlDocument();
@@ -343,7 +370,10 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             return linkedinProfile;
         }
 
-
+        /// <summary>
+        /// Scroll in page
+        /// </summary>
+        /// <param name="driver">Selenium driver</param>
         private static void Scroll(FirefoxDriver driver)
         {
             driver.ExecuteScript("scroll(0, 100);");
@@ -378,9 +408,18 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             driver.ExecuteScript("scroll(0, 0);");
             Thread.Sleep(800);
         }
-
+        /// <summary>
+        /// String normalizer
+        /// </summary>
+        /// <param name="s">string content</param>
+        /// <returns>Normal string</returns>
         private static string StringBeauty(string s) => s?.Replace("\r", "").Replace("\n", "").Replace("\t", "").Trim();
 
+        /// <summary>
+        /// Html decoder
+        /// </summary>
+        /// <param name="s">Encoded string</param>
+        /// <returns>Decoded string</returns>
         private static string HtmlDecode(string s) => s == null ? null : WebUtility.HtmlDecode(s);
 
 
