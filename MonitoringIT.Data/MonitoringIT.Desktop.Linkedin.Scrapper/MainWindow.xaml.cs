@@ -30,7 +30,7 @@ namespace Desktop.MonitoringIT.Desktop.Linkedin.Scrapper
         private async void ScrapButton_Click(object sender, RoutedEventArgs e)
         {
             var link = Url.Text;
-            var alLinkedinProfiles = _linkedin.GetAlLinkedinProfiles(new List<string> { link });
+            var alLinkedinProfiles = _linkedin.GetAllLinkedinProfiles(new List<string> { link });
             if (alLinkedinProfiles != null) JSONcontent.Text = alLinkedinProfiles.FirstOrDefault();
             await Task.Delay(100);
         }

@@ -14,6 +14,13 @@ namespace Lib.MonitoringIT.Data.ProxyParser
     public class HidemeParser
     {
         private static string url = "https://hidemyna.me/en/proxy-list/?type=s?start={page}#list";
+
+        /// <summary>
+        /// Get request 
+        /// </summary>
+        /// <param name="uri">Url</param>
+        /// <param name="cookie">Cookie in site</param>
+        /// <returns></returns>
         private async Task<string> SendGetRequest(string uri, string cookie = null)
         {
             var response = "";
@@ -56,10 +63,22 @@ namespace Lib.MonitoringIT.Data.ProxyParser
             return response;
         }
 
+        /// <summary>
+        /// Get content from page number
+        /// </summary>
+        /// <param name="pageNumber">Page number</param>
+        /// <param name="cookie">Cookie</param>
+        /// <returns>Task</returns>
         private async Task<string> GetContent(int pageNumber, string cookie = null)
         {
             return await SendGetRequest(url.Replace("{page}", pageNumber.ToString()), cookie);
         }
+
+        /// <summary>
+        /// Get list of proxies
+        /// </summary>
+        /// <param name="cookie"></param>
+        /// <returns>Task&lt;List&lt;Proxy&gt;&gt;</returns>
         public async Task<List<Proxy>> GetProxy(string cookie = null)
         {
             var proxyList = new List<Proxy>();
