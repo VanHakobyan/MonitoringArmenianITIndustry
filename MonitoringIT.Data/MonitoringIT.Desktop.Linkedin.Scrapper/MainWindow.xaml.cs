@@ -12,6 +12,10 @@ namespace Desktop.MonitoringIT.Desktop.Linkedin.Scrapper
     {
         private static global::Lib.MonitoringIT.Data.Linkedin.Scrapper.Linkedin _linkedin;
         private static List<string> links;
+
+        /// <summary>
+        /// Ctor
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -20,6 +24,9 @@ namespace Desktop.MonitoringIT.Desktop.Linkedin.Scrapper
             Url.ItemsSource = links.Take(30);
         }
 
+        /// <summary>
+        /// Static ctor
+        /// </summary>
         static MainWindow()
         {
             _linkedin = new global::Lib.MonitoringIT.Data.Linkedin.Scrapper.Linkedin();
@@ -27,6 +34,11 @@ namespace Desktop.MonitoringIT.Desktop.Linkedin.Scrapper
 
         }
 
+        /// <summary>
+        /// Start scrapping
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void ScrapButton_Click(object sender, RoutedEventArgs e)
         {
             var link = Url.Text;
@@ -35,6 +47,11 @@ namespace Desktop.MonitoringIT.Desktop.Linkedin.Scrapper
             await Task.Delay(100);
         }
 
+        /// <summary>
+        /// Pagination
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PageUrl_OnSelected(object sender, RoutedEventArgs e)
         {
             Url.ItemsSource = links.Skip(((int)PageUrl.SelectedValue - 1) * 30).Take(30);
