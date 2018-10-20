@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Desktop.MonitoringIT.Desktop.Linkedin.Scrapper
+namespace Desktop.MonitoringIT.Linkedin.Scrapper
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

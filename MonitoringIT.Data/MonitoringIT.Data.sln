@@ -21,13 +21,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web.Backend", "Web.Backend"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{3B032286-F4C9-446F-93AA-761D21721939}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop.MonitoringIT.Desktop.Linkedin.Scrapper", "MonitoringIT.Desktop.Linkedin.Scrapper\Desktop.MonitoringIT.Desktop.Linkedin.Scrapper.csproj", "{763CEE66-5AA4-4AE8-8F91-A6EEEBC25E86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop.MonitoringIT.Linkedin.Scrapper", "MonitoringIT.Desktop.Linkedin.Scrapper\Desktop.MonitoringIT.Linkedin.Scrapper.csproj", "{763CEE66-5AA4-4AE8-8F91-A6EEEBC25E86}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.MonitoringIT.DATA.Github.Scrapper", "MonitoringIT.DATA.Github.Scrapper.Lib\Lib.MonitoringIT.DATA.Github.Scrapper.csproj", "{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{D85F3CFE-A73F-4F47-8305-EEEFEF3F3523}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataBase", "DataBase", "{42C94B4A-EB4D-48F8-82F0-EE906DCB05C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop.MonitoringIT.Github.Scrapper", "Desktop.MonitoringIT.Github.Scrapper\Desktop.MonitoringIT.Github.Scrapper.csproj", "{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -185,6 +187,22 @@ Global
 		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Release|x64.Build.0 = Release|Any CPU
 		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Release|x86.ActiveCfg = Release|Any CPU
 		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}.Release|x86.Build.0 = Release|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Debug|ARM.Build.0 = Debug|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Debug|x64.Build.0 = Debug|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Debug|x86.Build.0 = Debug|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Release|ARM.ActiveCfg = Release|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Release|ARM.Build.0 = Release|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Release|x64.ActiveCfg = Release|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Release|x64.Build.0 = Release|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Release|x86.ActiveCfg = Release|Any CPU
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -196,6 +214,7 @@ Global
 		{3FC560E3-9FBF-4F99-A4F8-0532785516F4} = {42C94B4A-EB4D-48F8-82F0-EE906DCB05C1}
 		{763CEE66-5AA4-4AE8-8F91-A6EEEBC25E86} = {3B032286-F4C9-446F-93AA-761D21721939}
 		{2CCB1AD1-66A0-43ED-969D-26A4C13271C3} = {D85F3CFE-A73F-4F47-8305-EEEFEF3F3523}
+		{1494EE21-7E61-40E7-BF6B-BEFC03117AE7} = {3B032286-F4C9-446F-93AA-761D21721939}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {27C7089F-1860-4C58-86E7-F079CE27FDDA}
