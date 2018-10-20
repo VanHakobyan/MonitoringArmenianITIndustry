@@ -40,6 +40,12 @@ namespace MonitoringIT.Data.LinkedinDataParser
 
         }
 
+        /// <summary>
+        /// Get link specified ցconditions
+        /// </summary>
+        /// <param name="driver">Selenum</param>
+        /// <param name="pathToSave">Saving path</param>
+        /// <param name="pageCount">Page count</param>
         private static void GetLinks(FirefoxDriver driver, string pathToSave, int pageCount)
         {
             var listOfLinks = new List<string>();
@@ -56,6 +62,10 @@ namespace MonitoringIT.Data.LinkedinDataParser
             File.WriteAllText(pathToSave, serializeObject);
         }
 
+        /// <summary>
+        /// Scroling in page
+        /// </summary>
+        /// <param name="driver">Selenum</param>
         private static void Scroll(IJavaScriptExecutor driver)
         {
             driver.ExecuteScript("scroll(0, 100);");
@@ -71,6 +81,12 @@ namespace MonitoringIT.Data.LinkedinDataParser
             driver.ExecuteScript("scroll(0, 1000);");
         }
 
+
+        /// <summary>
+        /// Get link from HTML
+        /// </summary>
+        /// <param name="content">HTML content</param>
+        /// <param name="links">List of links</param>
         public static void GetLink(string content, List<string> links)
         {
             var document = new HtmlDocument();
