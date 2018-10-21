@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using Database.MonitoringIT.DAL.WithEF6;
 using HtmlAgilityPack;
 using Lib.MonitoringIT.Data.ProxyParser;
@@ -20,8 +22,18 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
 
         private const string RootGithub = @"https://github.com/";
         private static List<Proxy> _proxies;
-        private const string RepoUrlString = "?tab=repositories";
 
+        private List<string> githubUrls;
+
+        private const string RepoUrlString = "?tab=repositories";
+        private static FirefoxDriver driver;
+
+
+        static GithubScrapper()
+        {
+            var profileFirefox = new FirefoxProfile(FirefoxProfilePath);
+            driver = new FirefoxDriver(new FirefoxOptions { Profile = profileFirefox });
+        }
         /// <summary>
         /// Start all scrapping methods
         /// </summary>
@@ -30,6 +42,57 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
             ScrapProxyFromHideMe();
             GetRepositories();
             GetGithubProfileSelenum();
+        }
+
+
+        public void LoadProxy()
+        {
+            using (var db = new MonitoringEntities())
+            {
+                _proxies = db.Proxies.Where(x => x.Type == "HTTPS").ToList();
+            }
+        }
+        public async Task<Profile> GetNewGithubProfile(string link)
+        {
+            Profile profile;
+            using (var db = new MonitoringEntities())
+            {
+                try
+                {
+                    driver.Navigate().GoToUrl(link);
+                    Thread.Sleep(2000);
+                    profile = GetGithubProfileSelenum(driver.PageSource, link);
+                    if (profile != null)
+                    {
+                        var repositories = GetRepositories(link);
+                        profile.Repositories = repositories;
+                        if (githubUrls.Contains(link)) ProfileUpdate(profile, link, db);
+                        else db.Profiles.Add(profile);
+                        await db.SaveChangesAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    return null;
+                }
+            }
+            return profile;
+        }
+
+        private void ProfileUpdate(Profile profile, string url, MonitoringEntities db)
+        {
+            var profileInDb = db.Profiles.FirstOrDefault(x => x.Url == url);
+            if (profileInDb == null) return;
+
+            if (!string.IsNullOrEmpty(profile.Bio)) profileInDb.Bio = profile.Bio;
+            if (!string.IsNullOrEmpty(profile.BlogOrWebsite)) profileInDb.BlogOrWebsite = profile.BlogOrWebsite;
+            if (!string.IsNullOrEmpty(profile.Company)) profileInDb.Company = profile.Company;
+            if (!string.IsNullOrEmpty(profile.Email)) profileInDb.Email = profile.Email;
+            if (!string.IsNullOrEmpty(profile.Name)) profileInDb.Name = profile.Name;
+            if (!string.IsNullOrEmpty(profile.Location)) profileInDb.Location = profile.Location;
+            if (!string.IsNullOrEmpty(profile.ImageUrl)) profileInDb.ImageUrl = profile.ImageUrl;
+            if (profileInDb.StarsCount != 0) profileInDb.StarsCount = profile.StarsCount;
+            db.Profiles.AddOrUpdate(profileInDb);
         }
 
         /// <summary>
@@ -89,7 +152,6 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                     db.Proxies.Add(new Proxy { Country = proxy.Country, Port = proxy.Port, Type = proxy.Type, Ip = proxy.Ip });
                 }
                 db.SaveChanges();
-                _proxies = db.Proxies.Where(x => x.Type == "HTTPS").ToList();
             }
         }
 
@@ -98,7 +160,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
         /// Get Github profile urls
         /// </summary>
         /// <returns>all finded profile url</returns>
-        private static List<string> GetGithubUrls()
+        public static List<string> GetGithubUrls()
         {
             var links = new List<string>();
             var proxyCounter = 0;
@@ -300,6 +362,25 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
             }
             return repositories;
 
+        }
+
+        public List<string> LoadUrlInDb()
+        {
+            List<string> urls;
+            using (var db = new MonitoringEntities())
+            {
+                try
+                {
+                    urls = db.Profiles.Select(x => x.Url).ToList();
+                    githubUrls = urls;
+                }
+                catch
+                {
+                    urls = new List<string>();
+                    githubUrls = new List<string>();
+                }
+            }
+            return urls;
         }
     }
 }
