@@ -156,6 +156,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DAL.MonitoringIT\DAL.MonitoringIT.csproj">
+      <Project>{C83562DE-FB55-41E2-B576-8E0C82FF94F3}</Project>
+      <Name>DAL.MonitoringIT</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MonitoringIT.DAL\Database.MonitoringIT.DB.EfCore.csproj">
       <Project>{87bc8483-9884-42d0-ab64-8182f8ba9e76}</Project>
       <Name>Database.MonitoringIT.DB.EfCore</Name>
