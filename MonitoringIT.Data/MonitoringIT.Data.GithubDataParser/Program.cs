@@ -15,7 +15,7 @@ namespace MonitoringIT.Data.GithubDataParser
     {
         static void Main()
         {
-            var githubScrapper=new GithubScrapper();
+            var githubScrapper = new GithubScrapper();
             githubScrapper.Start();
         }
     }
