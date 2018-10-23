@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MonitoringIT.DAL.Models
+namespace Database.MonitoringIT.DB.EfCore.Models
 {
     public partial class LinkedinProfile
     {

@@ -2,12 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace MonitoringIT.DAL.Models
+namespace Database.MonitoringIT.DB.EfCore.Models
 {
     public partial class MonitoringContext : DbContext
     {
+        public string ConnectionString { get; private set; }
         public MonitoringContext()
         {
+        }
+
+
+        public MonitoringContext(string connectionString)
+        {
+            ConnectionString = connectionString;
         }
 
         public MonitoringContext(DbContextOptions<MonitoringContext> options)
@@ -32,7 +39,7 @@ namespace MonitoringIT.DAL.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Monitoring;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Monitoring");
             }
         }
 
@@ -105,6 +112,10 @@ namespace MonitoringIT.DAL.Models
 
             modelBuilder.Entity<LinkedinProfile>(entity =>
             {
+                entity.HasIndex(e => e.Username)
+                    .HasName("UQ__Linkedin__536C85E415D72EF5")
+                    .IsUnique();
+
                 entity.Property(e => e.Birthday).IsUnicode(false);
 
                 entity.Property(e => e.Company).IsUnicode(false);
@@ -128,7 +139,7 @@ namespace MonitoringIT.DAL.Models
                 entity.Property(e => e.Specialty).IsUnicode(false);
 
                 entity.Property(e => e.Username)
-                    .IsRequired()
+                    .HasMaxLength(200)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Website).IsUnicode(false);
@@ -141,6 +152,7 @@ namespace MonitoringIT.DAL.Models
                 entity.HasOne(d => d.LinkedinProfile)
                     .WithMany(p => p.LinkedinSkill)
                     .HasForeignKey(d => d.LinkedinProfileId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_LinkedinSkill_LinkedinProfile");
             });
 
@@ -164,6 +176,10 @@ namespace MonitoringIT.DAL.Models
             modelBuilder.Entity<Profiles>(entity =>
             {
                 entity.Property(e => e.ImageUrl).IsUnicode(false);
+
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Repositories>(entity =>
