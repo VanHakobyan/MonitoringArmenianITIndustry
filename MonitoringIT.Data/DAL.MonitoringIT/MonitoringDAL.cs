@@ -25,10 +25,11 @@ namespace DAL.MonitoringIT
         }
 
 
-        public IGithubProfileDAL _githubProfileDal;
-        public IGithubProfileDAL GithubProfileDal => _githubProfileDal ?? (_githubProfileDal = new GithubProfileDAL(MonitoringContext));
+        public IGithubProfileDAL githubProfileDal;
+        public IGithubProfileDAL GithubProfileDal => githubProfileDal ?? (githubProfileDal = new GithubProfileDAL(MonitoringContext));
 
-
+        public ILinkedinProfileDAL linkedinProfileDal;
+        public ILinkedinProfileDAL LinkedinProfileDal => linkedinProfileDal ?? (linkedinProfileDal = new LinkedinProfileDAL(MonitoringContext));
 
 
 

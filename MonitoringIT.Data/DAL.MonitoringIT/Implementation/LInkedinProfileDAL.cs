@@ -5,9 +5,9 @@ using DAL.MonitoringIT.Interfaces;
 
 namespace DAL.MonitoringIT.Implementation
 {
-    public class LInkedinProfileDAL : BaseDAL, ILinkedinProfileDAL
+    public class LinkedinProfileDAL : BaseDAL, ILinkedinProfileDAL
     {
-        public LInkedinProfileDAL(MonitoringContext dbContext) : base(dbContext)
+        public LinkedinProfileDAL(MonitoringContext dbContext) : base(dbContext)
         {
         }
 

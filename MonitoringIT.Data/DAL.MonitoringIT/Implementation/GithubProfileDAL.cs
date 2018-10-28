@@ -7,7 +7,7 @@ using DAL.MonitoringIT.Interfaces;
 
 namespace DAL.MonitoringIT.Implementation
 {
-    class GithubProfileDAL:BaseDAL,IGithubProfileDAL
+    public class GithubProfileDAL : BaseDAL, IGithubProfileDAL
     {
         public GithubProfileDAL(MonitoringContext dbContext) : base(dbContext)
         {
@@ -15,7 +15,7 @@ namespace DAL.MonitoringIT.Implementation
 
         public List<Profiles> GetAll()
         {
-          return _dbContext.Profiles.ToList();
+            return _dbContext.Profiles.ToList();
         }
     }
 }
