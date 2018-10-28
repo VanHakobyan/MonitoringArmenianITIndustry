@@ -7,13 +7,13 @@ using DAL.MonitoringIT.Interfaces;
 
 namespace DAL.MonitoringIT
 {
-    public class MonitoringDAL:IDisposable
+    public class MonitoringDAL : IDisposable
     {
         private MonitoringContext _monitoringContext;
         private string _connectionString;
 
 
-        private MonitoringContext MonitoringContext=>_monitoringContext??(_monitoringContext=new MonitoringContext(_connectionString));
+        private MonitoringContext MonitoringContext => _monitoringContext ?? (_monitoringContext = new MonitoringContext(_connectionString));
         public MonitoringDAL(MonitoringContext monitoringContext)
         {
             _monitoringContext = monitoringContext;
@@ -26,13 +26,13 @@ namespace DAL.MonitoringIT
 
 
         public IGithubProfileDAL _githubProfileDal;
-        public IGithubProfileDAL GithubProfileDal=>_githubProfileDal??(_githubProfileDal=new GithubProfileDAL(MonitoringContext));
+        public IGithubProfileDAL GithubProfileDal => _githubProfileDal ?? (_githubProfileDal = new GithubProfileDAL(MonitoringContext));
 
 
 
 
 
-        private bool disposed ;
+        private bool disposed;
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
