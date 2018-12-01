@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Database.MonitoringIT.DB.EfCore.Models;
 using DAL.MonitoringIT;
-using DAL.MonitoringIT.Implementation;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -15,16 +10,17 @@ namespace Web.Backend.MonitoringIT.Controllers
     [ApiController]
     public class GithubController : ControllerBase
     {
-        // GET: api/Github
+
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IActionResult Get()
         {
             using (var dal = new MonitoringDAL(""))
             {
                 try
                 {
-                    var data = dal.GithubProfileDal.GetAll();
-                    return Ok(data);
+                    var githubProfiles = dal.GithubProfileDal.GetAll();
+                    if (githubProfiles is null) return NotFound();
+                    return Ok(JsonConvert.SerializeObject(githubProfiles, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
                 catch (Exception e)
                 {
@@ -33,9 +29,8 @@ namespace Web.Backend.MonitoringIT.Controllers
             }
         }
 
-        // GET: api/Github/5
         [HttpGet("{id}")]
-        public ActionResult GetById(int id)
+        public IActionResult GetById(int id)
         {
             using (var dal = new MonitoringDAL(""))
             {
@@ -43,7 +38,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                 {
                     var githubProfile = dal.GithubProfileDal.GetById(id);
                     if (githubProfile is null) return NotFound();
-                    return Ok(githubProfile);
+                    return Ok(JsonConvert.SerializeObject(githubProfile, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
                 catch (Exception e)
                 {
@@ -52,9 +47,8 @@ namespace Web.Backend.MonitoringIT.Controllers
             }
         }
 
-        // GET: api/Github/5
         [HttpGet("user/{username}")]
-        public ActionResult GetByUserName(string username)
+        public IActionResult GetByUserName(string username)
         {
             using (var dal = new MonitoringDAL(""))
             {

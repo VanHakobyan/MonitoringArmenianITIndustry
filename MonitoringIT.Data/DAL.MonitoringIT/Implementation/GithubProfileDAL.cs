@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Database.MonitoringIT.DB.EfCore.Models;
 using DAL.MonitoringIT.Interfaces;
 using Microsoft.EntityFrameworkCore;

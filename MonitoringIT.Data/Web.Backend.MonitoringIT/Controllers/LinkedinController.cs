@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Database.MonitoringIT.DB.EfCore.Models;
 using DAL.MonitoringIT;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Web.Backend.MonitoringIT.Controllers
 {
@@ -22,7 +19,9 @@ namespace Web.Backend.MonitoringIT.Controllers
                 try
                 {
                     var linkedinProfiles = dal.LinkedinProfileDal.GetAll();
-                    return Ok(linkedinProfiles);
+                    if (linkedinProfiles is null) return NotFound();
+                    return Ok(JsonConvert.SerializeObject(linkedinProfiles, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+
                 }
                 catch (Exception e)
                 {
@@ -32,7 +31,7 @@ namespace Web.Backend.MonitoringIT.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult GetById(int id)
+        public IActionResult GetById(int id)
         {
             using (var dal = new MonitoringDAL(""))
             {
@@ -40,7 +39,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                 {
                     var linkedinProfile = dal.LinkedinProfileDal.GetById(id);
                     if (linkedinProfile is null) return NotFound();
-                    return Ok(linkedinProfile);
+                    return Ok(JsonConvert.SerializeObject(linkedinProfile, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
                 catch (Exception e)
                 {
@@ -49,7 +48,7 @@ namespace Web.Backend.MonitoringIT.Controllers
             }
         }
         [HttpGet("user/{username}")]
-        public ActionResult GetByUsername(string username)
+        public IActionResult GetByUsername(string username)
         {
             using (var dal = new MonitoringDAL(""))
             {
@@ -57,7 +56,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                 {
                     var linkedinProfile = dal.LinkedinProfileDal.GetByUserName(username);
                     if (linkedinProfile is null) return NotFound();
-                    return Ok(linkedinProfile);
+                    return Ok(JsonConvert.SerializeObject(linkedinProfile, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
                 catch (Exception e)
                 {
