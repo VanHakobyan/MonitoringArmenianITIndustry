@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Desktop.MonitoringIT.Github.Scrapper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Github scrapper" Height="450" Width="800" WindowStyle="SingleBorderWindow" FontFamily="Verdana">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
