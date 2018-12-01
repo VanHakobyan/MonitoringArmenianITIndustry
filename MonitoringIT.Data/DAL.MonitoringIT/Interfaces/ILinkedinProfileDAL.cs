@@ -9,5 +9,7 @@ namespace DAL.MonitoringIT.Interfaces
     public interface ILinkedinProfileDAL : IBaseDAL
     {
         List<LinkedinProfile> GetAll();
+        LinkedinProfile GetById(int id);
+        LinkedinProfile GetByUserName(string username);
     }
 }
