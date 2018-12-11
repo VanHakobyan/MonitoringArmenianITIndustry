@@ -11,6 +11,11 @@ namespace Web.Backend.MonitoringIT.Controllers
     public class GithubController : ControllerBase
     {
 
+
+        /// <summary>
+        /// Get all github profiles 
+        /// </summary>
+        /// <returns>IActionResult</returns>
         [HttpGet]
         public IActionResult Get()
         {
@@ -29,6 +34,12 @@ namespace Web.Backend.MonitoringIT.Controllers
             }
         }
 
+
+        /// <summary>
+        ///  Get github profile by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>IActionResult</returns>
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -47,6 +58,12 @@ namespace Web.Backend.MonitoringIT.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Get github profile by username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         [HttpGet("user/{username}")]
         public IActionResult GetByUserName(string username)
         {

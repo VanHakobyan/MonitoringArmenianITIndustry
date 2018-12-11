@@ -10,7 +10,10 @@ namespace Web.Backend.MonitoringIT.Controllers
     [ApiController]
     public class LinkedinController : ControllerBase
     {
-        // GET api/values
+        /// <summary>
+        /// Get all linkedin profiles
+        /// </summary>
+        /// <returns>ActionResult of IEnumerable of string></returns>
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
@@ -30,6 +33,11 @@ namespace Web.Backend.MonitoringIT.Controllers
             }
         }
 
+        /// <summary>
+        /// Get linkedin profile by id 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -47,6 +55,13 @@ namespace Web.Backend.MonitoringIT.Controllers
                 }
             }
         }
+
+
+        /// <summary>
+        /// Get linkedin profile by username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         [HttpGet("user/{username}")]
         public IActionResult GetByUsername(string username)
         {
