@@ -172,6 +172,10 @@
       <Project>{2ccb1ad1-66a0-43ed-969d-26a4c13271c3}</Project>
       <Name>Lib.MonitoringIT.DATA.Github.Scrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MonitoringIT.Data.LinkedinPageParser\Lib.MonitoringIT.Data.Linkedin.Scrapper.csproj">
+      <Project>{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}</Project>
+      <Name>Lib.MonitoringIT.Data.Linkedin.Scrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MonitoringIT.Data.ProxyParser\Lib.MonitoringIT.Data.ProxyParser.csproj">
       <Project>{779dc66e-ac5b-4d67-b143-bb844f313469}</Project>
       <Name>Lib.MonitoringIT.Data.ProxyParser</Name>
