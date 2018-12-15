@@ -31,6 +31,7 @@ namespace Desktop.MonitoringIT.Linkedin.Scrapper
         {
             _linkedin = new global::Lib.MonitoringIT.Data.Linkedin.Scrapper.Linkedin();
             links = global::Lib.MonitoringIT.Data.Linkedin.Scrapper.Linkedin._linkedinLinks;
+            links.Reverse();
 
         }
 

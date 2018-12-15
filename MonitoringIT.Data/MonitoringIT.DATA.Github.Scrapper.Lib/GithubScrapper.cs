@@ -17,7 +17,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
     public class GithubScrapper
     {
         private const string Url = @"https://github.com/search?l=&p={page}&q=location%3Aarmenia+repos%3A%3E0&ref=advsearch&type=Users&utf8=%E2%9C%93";
-
+        private readonly string cookie = "__cfduid=d9bcdc52e419046289c9e9682ec7f5dea1544683349; t=88145399; _ga=GA1.2.1449105534.1544683360; PAPVisitorId=7348119cf106a753ce0ccbe4e14rw0d9; _ym_uid=1544683360469056594; _ym_d=1544683360; cf_clearance=a41c0b16b8383f4a447b957f6b5eb1d29839268f-1544880946-86400-150; _gid=GA1.2.1701641829.1544880949; _fbp=fb.1.1544880949046.1812288277; _ym_wasSynced=%7B%22time%22%3A1544880949168%2C%22params%22%3A%7B%22eu%22%3A0%7D%2C%22bkParams%22%3A%7B%7D%7D; _ym_isad=1; _ym_visorc_42065329=w; jv_enter_ts_EBSrukxUuA=1544880951091; jv_visits_count_EBSrukxUuA=2; jv_refer_EBSrukxUuA=https%3A%2F%2Fhidemyna.me%2Fen%2Fproxy-list%2F%3Ftype%3Ds%3Fstart%3D64; jv_utm_EBSrukxUuA=; jv_pages_count_EBSrukxUuA=4";
         public static string FirefoxProfilePath { get; } = ConfigurationManager.AppSettings["FirefoxProfilePath"];
 
         private const string RootGithub = @"https://github.com/";
@@ -32,14 +32,15 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
         static GithubScrapper()
         {
             var profileFirefox = new FirefoxProfile(FirefoxProfilePath);
-            driver = new FirefoxDriver(new FirefoxOptions { Profile = profileFirefox });
+            var option=new FirefoxOptions {Profile = profileFirefox};
+            driver = new FirefoxDriver();
         }
         /// <summary>
         /// Start all scrapping methods
         /// </summary>
         public void Start()
         {
-            ScrapProxyFromHideMe();
+            //ScrapProxyFromHideMe(cookie);
             GetRepositories();
             GetGithubProfileSelenum();
         }
@@ -259,8 +260,8 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
             {
                 try
                 {
-                    var wp = new WebProxy($"{_proxies[proxyCounter].Ip}:{_proxies[proxyCounter].Port}");
-                    webClient.Proxy = wp;
+                    //var wp = new WebProxy($"{_proxies[proxyCounter].Ip}:{_proxies[proxyCounter].Port}");
+                    //webClient.Proxy = wp;
                     var repositoryPage = webClient.DownloadString(linkToRepos);
                     Thread.Sleep(3500);
                     var repoDocument = new HtmlDocument();
@@ -288,8 +289,8 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                     {
 
                         var client = new WebClient();
-                        var wpNested = new WebProxy($"{_proxies[proxyCounterNested].Ip}:{_proxies[proxyCounterNested].Port}");
-                        client.Proxy = wpNested;
+                        //var wpNested = new WebProxy($"{_proxies[proxyCounterNested].Ip}:{_proxies[proxyCounterNested].Port}");
+                        //client.Proxy = wpNested;
                         var repoData = client.DownloadString($"{RootGithub}{repoLink}");
                         Thread.Sleep(3500);
                         var repoDoc = new HtmlDocument();

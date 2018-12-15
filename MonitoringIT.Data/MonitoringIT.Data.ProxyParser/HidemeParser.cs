@@ -84,7 +84,8 @@ namespace Lib.MonitoringIT.Data.ProxyParser
             var proxyList = new List<Proxy>();
             HtmlDocument document = new HtmlDocument();
             var pageSource = await GetContent(64,cookie);
-            document.LoadHtml(pageSource);
+            if (!string.IsNullOrEmpty(pageSource)) document.LoadHtml(pageSource);
+            else return null;
             var pagination = document.DocumentNode.SelectSingleNode(".//div[@class='proxy__pagination']");
             var lastPageIndex = pagination.FirstChild.LastChild.InnerText;
             var lastPageStartWith = int.Parse(lastPageIndex) * 64;
