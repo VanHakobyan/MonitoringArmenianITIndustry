@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using DAL.MonitoringIT;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NLog;
 using Web.Backend.MonitoringIT.Models;
 
 namespace Web.Backend.MonitoringIT.Controllers
@@ -10,62 +13,90 @@ namespace Web.Backend.MonitoringIT.Controllers
     [ApiController]
     public class CrossMapController : ControllerBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        /// Get All Cross Profiles
+        /// </summary>
+        /// <returns>IActionResult</returns>
         [HttpGet("api/crossmap/GetAllCrossProfiles")]
         public IActionResult GetAllCrossProfiles()
         {
-            var crossProfileModels = new List<ProfileCrossModel>();
-            using (var dal = new MonitoringDAL(""))
+            try
             {
-                var crossProfiles = dal.CrossProfileDal.GetAllCrossProfiles();
-                foreach (var crossProfile in crossProfiles)
+                var crossProfileModels = new List<ProfileCrossModel>();
+                using (var dal = new MonitoringDAL(""))
                 {
-                    var crossProfileModel = new ProfileCrossModel
+                    var crossProfiles = dal.CrossProfileDal.GetAllCrossProfiles();
+                    foreach (var crossProfile in crossProfiles)
                     {
-                        LinkedinProfile = dal.LinkedinProfileDal.GetById(crossProfile.LinkedinUserId),
-                        GithubProfile = dal.GithubProfileDal.GetById(crossProfile.GithubUserId)
-                    };
-                    crossProfileModels.Add(crossProfileModel);
+                        var crossProfileModel = new ProfileCrossModel
+                        {
+                            LinkedinProfile = dal.LinkedinProfileDal.GetById(crossProfile.LinkedinUserId),
+                            GithubProfile = dal.GithubProfileDal.GetById(crossProfile.GithubUserId)
+                        };
+                        crossProfileModels.Add(crossProfileModel);
+                    }
                 }
+                Logger.Info($"Messege: {JsonConvert.SerializeObject(crossProfileModels, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                return Ok(JsonConvert.SerializeObject(crossProfileModels, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
             }
-            return Ok(JsonConvert.SerializeObject(crossProfileModels, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
+            }
         }
-
+        /// <summary>
+        /// Get Cross Profile By Username
+        /// </summary>
+        /// <param name="searchModel">Github or Linkedin profiles username</param>
+        /// <returns></returns>
         [HttpPost("api/crossmap/GetCrossProfileByUsername")]
         public IActionResult GetCrossProfileByUsername([FromBody] CrossProfileSearchModel searchModel)
         {
             ProfileCrossModel crossProfileModel;
-            using (MonitoringDAL dal = new MonitoringDAL(string.Empty))
+            try
             {
-                switch (searchModel.ContentType)
+                using (MonitoringDAL dal = new MonitoringDAL(string.Empty))
                 {
-                    case ContentType.Github:
-                        {
-                            var githubProfileId = dal.GithubProfileDal.GetByUserName(searchModel.Username).Id;
-                            var crossProfile = dal.CrossProfileDal.GetCrossProfileByGithubProfileId(githubProfileId);
-                            crossProfileModel = new ProfileCrossModel
+                    switch (searchModel.ContentType)
+                    {
+                        case ContentType.Github:
                             {
-                                LinkedinProfile = dal.LinkedinProfileDal.GetById(crossProfile.LinkedinUserId),
-                                GithubProfile = dal.GithubProfileDal.GetById(crossProfile.GithubUserId)
-                            };
-                        }
-                        break;
-                    case ContentType.Linkedin:
-                        {
-                            var linkedinProfileId = dal.GithubProfileDal.GetByUserName(searchModel.Username).Id;
-                            var crossProfile = dal.CrossProfileDal.GetCrossProfileByGithubProfileId(linkedinProfileId);
-                            crossProfileModel = new ProfileCrossModel
+                                var githubProfileId = dal.GithubProfileDal.GetByUserName(searchModel.Username).Id;
+                                var crossProfile = dal.CrossProfileDal.GetCrossProfileByGithubProfileId(githubProfileId);
+                                crossProfileModel = new ProfileCrossModel
+                                {
+                                    LinkedinProfile = dal.LinkedinProfileDal.GetById(crossProfile.LinkedinUserId),
+                                    GithubProfile = dal.GithubProfileDal.GetById(crossProfile.GithubUserId)
+                                };
+                            }
+                            break;
+                        case ContentType.Linkedin:
                             {
-                                LinkedinProfile = dal.LinkedinProfileDal.GetById(crossProfile.LinkedinUserId),
-                                GithubProfile = dal.GithubProfileDal.GetById(crossProfile.GithubUserId)
-                            };
-                        }
-                        break;
-                    default:
-                        crossProfileModel = null;
-                        break;
+                                var linkedinProfileId = dal.GithubProfileDal.GetByUserName(searchModel.Username).Id;
+                                var crossProfile = dal.CrossProfileDal.GetCrossProfileByGithubProfileId(linkedinProfileId);
+                                crossProfileModel = new ProfileCrossModel
+                                {
+                                    LinkedinProfile = dal.LinkedinProfileDal.GetById(crossProfile.LinkedinUserId),
+                                    GithubProfile = dal.GithubProfileDal.GetById(crossProfile.GithubUserId)
+                                };
+                            }
+                            break;
+                        default:
+                            crossProfileModel = null;
+                            break;
+                    }
                 }
+                Logger.Info($"Messege: {JsonConvert.SerializeObject(crossProfileModel, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                return Ok(JsonConvert.SerializeObject(crossProfileModel, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
             }
-            return Ok(JsonConvert.SerializeObject(crossProfileModel, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
+            }
         }
     }
 }

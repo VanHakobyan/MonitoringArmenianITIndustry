@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using DAL.MonitoringIT;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NLog;
 
 namespace Web.Backend.MonitoringIT.Controllers
 {
@@ -10,7 +12,7 @@ namespace Web.Backend.MonitoringIT.Controllers
     [ApiController]
     public class GithubController : ControllerBase
     {
-
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Get all github profiles 
@@ -19,18 +21,24 @@ namespace Web.Backend.MonitoringIT.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            using (var dal = new MonitoringDAL(""))
+            try
             {
-                try
+                using (var dal = new MonitoringDAL(""))
                 {
                     var githubProfiles = dal.GithubProfileDal.GetAll();
-                    if (githubProfiles is null) return NotFound();
+                    if (githubProfiles is null)
+                    {
+                        Logger.Info("GithubProfiles is null");
+                        return NotFound();
+                    }
+                    Logger.Info($"Messege: {JsonConvert.SerializeObject(githubProfiles, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(githubProfiles, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
-                catch (Exception e)
-                {
-                    return BadRequest();
-                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
             }
         }
 
@@ -43,18 +51,24 @@ namespace Web.Backend.MonitoringIT.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            using (var dal = new MonitoringDAL(""))
+            try
             {
-                try
+                using (var dal = new MonitoringDAL(""))
                 {
                     var githubProfile = dal.GithubProfileDal.GetById(id);
-                    if (githubProfile is null) return NotFound();
+                    if (githubProfile is null)
+                    {
+                        Logger.Info("GithubProfile is null");
+                        return NotFound();
+                    }
+                    Logger.Info($"Messege: {JsonConvert.SerializeObject(githubProfile, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(githubProfile, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
-                catch (Exception e)
-                {
-                    return BadRequest();
-                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
             }
         }
 
@@ -63,22 +77,28 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// Get github profile by username
         /// </summary>
         /// <param name="username"></param>
-        /// <returns></returns>
+        /// <returns>IActionResult</returns>
         [HttpGet("user/{username}")]
         public IActionResult GetByUserName(string username)
         {
-            using (var dal = new MonitoringDAL(""))
+            try
             {
-                try
+                using (var dal = new MonitoringDAL(""))
                 {
                     var githubProfile = dal.GithubProfileDal.GetByUserName(username);
-                    if (githubProfile is null) return NotFound();
-                    return Ok(JsonConvert.SerializeObject(githubProfile,Formatting.Indented,new JsonSerializerSettings{ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
+                    if (githubProfile is null)
+                    {
+                        Logger.Info("GithubProfile is null");
+                        return NotFound();
+                    }
+                    Logger.Info($"Messege: {JsonConvert.SerializeObject(githubProfile, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    return Ok(JsonConvert.SerializeObject(githubProfile, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
-                catch (Exception e)
-                {
-                    return BadRequest();
-                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
             }
         }
 

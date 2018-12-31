@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using DAL.MonitoringIT;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using NLog;
 
 namespace Web.Backend.MonitoringIT.Controllers
 {
@@ -10,6 +12,8 @@ namespace Web.Backend.MonitoringIT.Controllers
     [ApiController]
     public class LinkedinController : ControllerBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Get all linkedin profiles
         /// </summary>
@@ -17,19 +21,24 @@ namespace Web.Backend.MonitoringIT.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            using (var dal = new MonitoringDAL(""))
+            try
             {
-                try
+                using (var dal = new MonitoringDAL(""))
                 {
                     var linkedinProfiles = dal.LinkedinProfileDal.GetAll();
-                    if (linkedinProfiles is null) return NotFound();
+                    if (linkedinProfiles is null)
+                    {
+                        Logger.Info("LinkedinProfiles is null");
+                        return NotFound();
+                    }
+                    Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfiles, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(linkedinProfiles, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
-
                 }
-                catch (Exception e)
-                {
-                    return BadRequest();
-                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
             }
         }
 
@@ -41,18 +50,24 @@ namespace Web.Backend.MonitoringIT.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            using (var dal = new MonitoringDAL(""))
+            try
             {
-                try
+                using (var dal = new MonitoringDAL(""))
                 {
                     var linkedinProfile = dal.LinkedinProfileDal.GetById(id);
-                    if (linkedinProfile is null) return NotFound();
+                    if (linkedinProfile is null)
+                    {
+                        Logger.Info("LinkedinProfile is null");
+                        return NotFound();
+                    }
+                    Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfile, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(linkedinProfile, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
-                catch (Exception e)
-                {
-                    return BadRequest();
-                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
             }
         }
 
@@ -65,18 +80,24 @@ namespace Web.Backend.MonitoringIT.Controllers
         [HttpGet("user/{username}")]
         public IActionResult GetByUsername(string username)
         {
-            using (var dal = new MonitoringDAL(""))
+            try
             {
-                try
+                using (var dal = new MonitoringDAL(""))
                 {
                     var linkedinProfile = dal.LinkedinProfileDal.GetByUserName(username);
-                    if (linkedinProfile is null) return NotFound();
+                    if (linkedinProfile is null)
+                    {
+                        Logger.Info("LinkedinProfile is null");
+                        return NotFound();
+                    }
+                    Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfile, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(linkedinProfile, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
-                catch (Exception e)
-                {
-                    return BadRequest();
-                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
             }
         }
     }
