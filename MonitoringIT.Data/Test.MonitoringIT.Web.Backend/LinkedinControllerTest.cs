@@ -15,15 +15,14 @@ namespace Test.MonitoringIT.Web.Backend
         public LinkedinControllerTest()
         {
             _linkedinController = new LinkedinController();
-
         }
 
-        //[Fact]
-        //public void GetActionTest()
-        //{
-        //    var result = _linkedinController.Get();
-        //    Assert.IsAssignableFrom<IEnumerable<string>>(result);
-        //}
+        [Fact]
+        public void GetActionTest()
+        {
+            var result = _linkedinController.Get();
+            Assert.IsType<OkObjectResult>(result);
+        }
 
         [Fact]
         public void GetByIdActionTest()
