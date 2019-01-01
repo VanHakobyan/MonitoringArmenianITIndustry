@@ -4,10 +4,12 @@ using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using Database.MonitoringIT.DAL.WithEF6;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using NLog;
 using OpenQA.Selenium.Firefox;
 
 namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
@@ -21,19 +23,27 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
         private readonly string _email = ConfigurationManager.AppSettings["email"];
         private readonly string _password = ConfigurationManager.AppSettings["password"];
 
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Ctor 
         /// </summary>
         public Linkedin()
         {
-            using (var entities = new MonitoringEntities())
+            try
             {
-                var links = entities.LinkedinProfiles.Select(x => x.Username).ToList().Select(x => $"https://www.linkedin.com/in/{x}").ToList();
-                _linkedinLinks = links;
-                _driver = new FirefoxDriver();
+                using (var entities = new MonitoringEntities())
+                {
+                    var links = entities.LinkedinProfiles.Select(x => x.Username).ToList().Select(x => $"https://www.linkedin.com/in/{x}").ToList();
+                    _linkedinLinks = links;
+                    _driver = new FirefoxDriver();
+                }
+                Login();
             }
-            Login();
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+            }
         }
 
         /// <summary>
@@ -64,39 +74,46 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             foreach (var linkedinLink in _linkedinLinks)
             {
 
-                _driver.Navigate().GoToUrl(linkedinLink);
-                Thread.Sleep(4000);
-                Scroll(_driver);
-
-                var linkedinProfile = GetProfile(_driver.PageSource);
-                Thread.Sleep(1000);
-                if (linkedinProfile != null)
+                try
                 {
-                    try
+                    _driver.Navigate().GoToUrl(linkedinLink);
+                    Thread.Sleep(4000);
+                    Scroll(_driver);
+
+                    var linkedinProfile = GetProfile(_driver.PageSource);
+                    Thread.Sleep(1000);
+                    if (linkedinProfile != null)
                     {
-                        var username = linkedinLink.Split(new[] { "in/" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.TrimEnd('/');
-                        linkedinProfile.Username = username;
-                        using (MonitoringEntities monitoringEntities = new MonitoringEntities())
+                        try
                         {
-                            var user = monitoringEntities.LinkedinProfiles.Where(x => x.Username == username).ToList().FirstOrDefault();
-                            if (user != null)
+                            var username = linkedinLink.Split(new[] { "in/" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.TrimEnd('/');
+                            linkedinProfile.Username = username;
+                            using (MonitoringEntities monitoringEntities = new MonitoringEntities())
                             {
-                                UpdateLinkedinProfile(linkedinProfile, user);
-                                //monitoringEntities.Entry(user).State = EntityState.Modified;
-                                monitoringEntities.LinkedinProfiles.AddOrUpdate(user);
+                                var user = monitoringEntities.LinkedinProfiles.Where(x => x.Username == username).ToList().FirstOrDefault();
+                                if (user != null)
+                                {
+                                    UpdateLinkedinProfile(linkedinProfile, user);
+                                    //monitoringEntities.Entry(user).State = EntityState.Modified;
+                                    monitoringEntities.LinkedinProfiles.AddOrUpdate(user);
+                                }
+                                else
+                                {
+                                    monitoringEntities.LinkedinProfiles.Add(linkedinProfile);
+                                }
+                                monitoringEntities.SaveChanges();
                             }
-                            else
-                            {
-                                monitoringEntities.LinkedinProfiles.Add(linkedinProfile); 
-                            }
-                            monitoringEntities.SaveChanges();
+                            jsons.Add(JsonConvert.SerializeObject(linkedinProfile, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                         }
-                        jsons.Add(JsonConvert.SerializeObject(linkedinProfile, Formatting.Indented,new JsonSerializerSettings(){ReferenceLoopHandling = ReferenceLoopHandling.Ignore}));
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                 }
             }
 
@@ -105,29 +122,37 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
         }
 
         /// <summary>
-        /// Updateing linkedin profile information
+        /// Update linkedin profile information
         /// </summary>
         /// <param name="linkedinProfile">Linkedin profile object</param>
         /// <param name="user">Linkedin profile in db</param>
         private static void UpdateLinkedinProfile(LinkedinProfile linkedinProfile, LinkedinProfile user)
         {
-            if (linkedinProfile.LinkedinEducations.Count != 0 && user.LinkedinEducations.Count==0) user.LinkedinEducations = linkedinProfile.LinkedinEducations;
-            if (linkedinProfile.LinkedinExperiences.Count != 0 && user.LinkedinExperiences.Count==0) user.LinkedinExperiences = linkedinProfile.LinkedinExperiences;
-            if (linkedinProfile.LinkedinSkills.Count != 0 && user.LinkedinSkills.Count==0) user.LinkedinSkills = linkedinProfile.LinkedinSkills;
-            if (linkedinProfile.LinkedinInterests.Count != 0 && user.LinkedinInterests.Count==0) user.LinkedinInterests = linkedinProfile.LinkedinInterests;
-            if (linkedinProfile.LinkedinLanguages.Count != 0 && user.LinkedinLanguages.Count==0) user.LinkedinLanguages = linkedinProfile.LinkedinLanguages;
-            if (linkedinProfile.Birthday != null) user.Birthday = linkedinProfile.Birthday;
-            if (linkedinProfile.Company != null) user.Company = linkedinProfile.Company;
-            if (linkedinProfile.Connected != null) user.Connected = linkedinProfile.Connected;
-            if (linkedinProfile.ConnectionCount != null) user.ConnectionCount = linkedinProfile.ConnectionCount;
-            if (linkedinProfile.Email != null) user.Email = linkedinProfile.Email;
-            if (linkedinProfile.FullName != null) user.FullName = linkedinProfile.FullName;
-            if (linkedinProfile.Location != null) user.Location = linkedinProfile.Location;
-            if (linkedinProfile.Specialty != null) user.Specialty = linkedinProfile.Specialty;
-            if (linkedinProfile.ImageUrl != null) user.ImageUrl = linkedinProfile.ImageUrl;
-            if (linkedinProfile.Website != null) user.Website = linkedinProfile.Website;
-            if (linkedinProfile.Education != null) user.Education = linkedinProfile.Education;
-            if (linkedinProfile.Phone != null) user.Phone = linkedinProfile.Phone;
+            try
+            {
+                if (linkedinProfile.LinkedinEducations.Count != 0 && user.LinkedinEducations.Count == 0) user.LinkedinEducations = linkedinProfile.LinkedinEducations;
+                if (linkedinProfile.LinkedinExperiences.Count != 0 && user.LinkedinExperiences.Count == 0) user.LinkedinExperiences = linkedinProfile.LinkedinExperiences;
+                if (linkedinProfile.LinkedinSkills.Count != 0 && user.LinkedinSkills.Count == 0) user.LinkedinSkills = linkedinProfile.LinkedinSkills;
+                if (linkedinProfile.LinkedinInterests.Count != 0 && user.LinkedinInterests.Count == 0) user.LinkedinInterests = linkedinProfile.LinkedinInterests;
+                if (linkedinProfile.LinkedinLanguages.Count != 0 && user.LinkedinLanguages.Count == 0) user.LinkedinLanguages = linkedinProfile.LinkedinLanguages;
+                if (linkedinProfile.Birthday != null) user.Birthday = linkedinProfile.Birthday;
+                if (linkedinProfile.Company != null) user.Company = linkedinProfile.Company;
+                if (linkedinProfile.Connected != null) user.Connected = linkedinProfile.Connected;
+                if (linkedinProfile.ConnectionCount != null) user.ConnectionCount = linkedinProfile.ConnectionCount;
+                if (linkedinProfile.Email != null) user.Email = linkedinProfile.Email;
+                if (linkedinProfile.FullName != null) user.FullName = linkedinProfile.FullName;
+                if (linkedinProfile.Location != null) user.Location = linkedinProfile.Location;
+                if (linkedinProfile.Specialty != null) user.Specialty = linkedinProfile.Specialty;
+                if (linkedinProfile.ImageUrl != null) user.ImageUrl = linkedinProfile.ImageUrl;
+                if (linkedinProfile.Website != null) user.Website = linkedinProfile.Website;
+                if (linkedinProfile.Education != null) user.Education = linkedinProfile.Education;
+                if (linkedinProfile.Phone != null) user.Phone = linkedinProfile.Phone;
+
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+            }
         }
 
         /// <summary>
@@ -143,6 +168,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             }
             catch (Exception e)
             {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
             }
         }
 
@@ -154,10 +180,10 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
         public LinkedinProfile GetProfile(string content)
         {
             var document = new HtmlDocument();
-            document.LoadHtml(content);
             var linkedinProfile = new LinkedinProfile();
             try
             {
+                document.LoadHtml(content);
                 var fullName = document.DocumentNode.SelectSingleNode(".//h1[starts-with(@class,'pv-top-card-section__name')]")?.InnerText;
                 var specialty = document.DocumentNode.SelectSingleNode(".//h2[starts-with(@class,'pv-top-card-section__headline')]")?.InnerText;
                 var location = document.DocumentNode.SelectSingleNode(".//h3[starts-with(@class,'pv-top-card-section__location')]")?.InnerText;
@@ -177,6 +203,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             }
             catch (Exception e)
             {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
             }
 
             var experienceSection = document.DocumentNode.SelectSingleNode(".//section[@id='experience-section']");
@@ -206,7 +233,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
                         }
                         catch (Exception e)
                         {
-
+                            Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                         }
                     }
                 }
@@ -243,7 +270,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
                         }
                         catch (Exception e)
                         {
-
+                            Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                         }
                     }
                 }
@@ -270,6 +297,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
                         }
                         catch (Exception e)
                         {
+                            Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                         }
                     }
                 }
@@ -299,7 +327,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
                         }
                         catch (Exception e)
                         {
-
+                            Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                         }
                     }
 
@@ -322,7 +350,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
                         }
                         catch (Exception e)
                         {
-
+                            Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                         }
                     }
 
@@ -355,7 +383,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             }
             catch (Exception e)
             {
-
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
             }
             try
             {
@@ -365,6 +393,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             }
             catch (Exception e)
             {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                 Console.WriteLine(e);
             }
             return linkedinProfile;
