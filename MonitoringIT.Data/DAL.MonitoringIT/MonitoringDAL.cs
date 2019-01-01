@@ -10,7 +10,7 @@ namespace DAL.MonitoringIT
     public class MonitoringDAL : IDisposable
     {
         private MonitoringContext _monitoringContext;
-        private string _connectionString;
+        private readonly string _connectionString;
 
 
         private MonitoringContext MonitoringContext => _monitoringContext ?? (_monitoringContext = new MonitoringContext(_connectionString));
