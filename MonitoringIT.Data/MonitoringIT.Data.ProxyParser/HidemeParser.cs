@@ -110,7 +110,7 @@ namespace Lib.MonitoringIT.Data.ProxyParser
                         }
                         catch (Exception e)
                         {
-
+                            Console.WriteLine(e);
                         }
                     }
                     pageSource = await GetContent(i);
@@ -118,8 +118,7 @@ namespace Lib.MonitoringIT.Data.ProxyParser
                 }
                 catch (Exception e)
                 {
-
-
+                    Console.WriteLine(e);
                 }
             }
             return proxyList;
