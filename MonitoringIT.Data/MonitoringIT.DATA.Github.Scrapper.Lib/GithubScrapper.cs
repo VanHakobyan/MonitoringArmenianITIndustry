@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Database.MonitoringIT.DAL.WithEF6;
 using HtmlAgilityPack;
 using Lib.MonitoringIT.Data.ProxyParser;
+using NLog;
 using OpenQA.Selenium.Firefox;
 
 namespace Lib.MonitoringIT.DATA.Github.Scrapper
@@ -17,7 +18,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
     public class GithubScrapper
     {
         private const string Url = @"https://github.com/search?l=&p={page}&q=location%3Aarmenia+repos%3A%3E0&ref=advsearch&type=Users&utf8=%E2%9C%93";
-        private readonly string cookie = "__cfduid=d9bcdc52e419046289c9e9682ec7f5dea1544683349; t=88145399; _ga=GA1.2.1449105534.1544683360; PAPVisitorId=7348119cf106a753ce0ccbe4e14rw0d9; _ym_uid=1544683360469056594; _ym_d=1544683360; cf_clearance=a41c0b16b8383f4a447b957f6b5eb1d29839268f-1544880946-86400-150; _gid=GA1.2.1701641829.1544880949; _fbp=fb.1.1544880949046.1812288277; _ym_wasSynced=%7B%22time%22%3A1544880949168%2C%22params%22%3A%7B%22eu%22%3A0%7D%2C%22bkParams%22%3A%7B%7D%7D; _ym_isad=1; _ym_visorc_42065329=w; jv_enter_ts_EBSrukxUuA=1544880951091; jv_visits_count_EBSrukxUuA=2; jv_refer_EBSrukxUuA=https%3A%2F%2Fhidemyna.me%2Fen%2Fproxy-list%2F%3Ftype%3Ds%3Fstart%3D64; jv_utm_EBSrukxUuA=; jv_pages_count_EBSrukxUuA=4";
+        //private readonly string cookie = "__cfduid=d9bcdc52e419046289c9e9682ec7f5dea1544683349; t=88145399; _ga=GA1.2.1449105534.1544683360; PAPVisitorId=7348119cf106a753ce0ccbe4e14rw0d9; _ym_uid=1544683360469056594; _ym_d=1544683360; cf_clearance=a41c0b16b8383f4a447b957f6b5eb1d29839268f-1544880946-86400-150; _gid=GA1.2.1701641829.1544880949; _fbp=fb.1.1544880949046.1812288277; _ym_wasSynced=%7B%22time%22%3A1544880949168%2C%22params%22%3A%7B%22eu%22%3A0%7D%2C%22bkParams%22%3A%7B%7D%7D; _ym_isad=1; _ym_visorc_42065329=w; jv_enter_ts_EBSrukxUuA=1544880951091; jv_visits_count_EBSrukxUuA=2; jv_refer_EBSrukxUuA=https%3A%2F%2Fhidemyna.me%2Fen%2Fproxy-list%2F%3Ftype%3Ds%3Fstart%3D64; jv_utm_EBSrukxUuA=; jv_pages_count_EBSrukxUuA=4";
         public static string FirefoxProfilePath { get; } = ConfigurationManager.AppSettings["FirefoxProfilePath"];
 
         private const string RootGithub = @"https://github.com/";
@@ -27,12 +28,13 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
 
         private const string RepoUrlString = "?tab=repositories";
         private static FirefoxDriver driver;
-
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         static GithubScrapper()
         {
+
             var profileFirefox = new FirefoxProfile(FirefoxProfilePath);
-            var option=new FirefoxOptions {Profile = profileFirefox};
+            var option = new FirefoxOptions { Profile = profileFirefox };
             driver = new FirefoxDriver();
         }
         /// <summary>
@@ -42,27 +44,34 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
         {
             //ScrapProxyFromHideMe(cookie);
             GetRepositories();
-            GetGithubProfileSelenum();
+            GetGithubProfileSelenium();
         }
 
 
         public void LoadProxy()
         {
-            using (var db = new MonitoringEntities())
+            try
             {
-                _proxies = db.Proxies.Where(x => x.Type == "HTTPS").ToList();
+                using (var db = new MonitoringEntities())
+                {
+                    _proxies = db.Proxies.Where(x => x.Type == "HTTPS").ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
             }
         }
         public async Task<Profile> GetNewGithubProfile(string link)
         {
             Profile profile;
-            using (var db = new MonitoringEntities())
+            try
             {
-                try
+                using (var db = new MonitoringEntities())
                 {
                     driver.Navigate().GoToUrl(link);
                     Thread.Sleep(2000);
-                    profile = GetGithubProfileSelenum(driver.PageSource, link);
+                    profile = GetGithubProfileSelenium(driver.PageSource, link);
                     if (profile != null)
                     {
                         var repositories = GetRepositories(link);
@@ -72,87 +81,116 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                         await db.SaveChangesAsync();
                     }
                 }
-                catch (Exception e)
-                {
-                    return null;
-                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return null;
             }
             return profile;
         }
 
         private void ProfileUpdate(Profile profile, string url, MonitoringEntities db)
         {
-            var profileInDb = db.Profiles.FirstOrDefault(x => x.Url == url);
-            if (profileInDb == null) return;
-
-            if (!string.IsNullOrEmpty(profile.Bio)) profileInDb.Bio = profile.Bio;
-            if (!string.IsNullOrEmpty(profile.BlogOrWebsite)) profileInDb.BlogOrWebsite = profile.BlogOrWebsite;
-            if (!string.IsNullOrEmpty(profile.Company)) profileInDb.Company = profile.Company;
-            if (!string.IsNullOrEmpty(profile.Email)) profileInDb.Email = profile.Email;
-            if (!string.IsNullOrEmpty(profile.Name)) profileInDb.Name = profile.Name;
-            if (!string.IsNullOrEmpty(profile.Location)) profileInDb.Location = profile.Location;
-            if (!string.IsNullOrEmpty(profile.ImageUrl)) profileInDb.ImageUrl = profile.ImageUrl;
-            if (profileInDb.StarsCount != 0) profileInDb.StarsCount = profile.StarsCount;
-            db.Profiles.AddOrUpdate(profileInDb);
-        }
-
-        /// <summary>
-        /// Get and save in DB Github profile using selenum 
-        /// </summary>
-        public static void GetGithubProfileSelenum()
-        {
-            using (var db = new MonitoringEntities())
+            try
             {
+                var profileInDb = db.Profiles.FirstOrDefault(x => x.Url == url);
+                if (profileInDb == null) return;
 
-                var profileFirefox = new FirefoxProfile(FirefoxProfilePath);
-                var driver = new FirefoxDriver(new FirefoxOptions { Profile = profileFirefox });
-                foreach (var link in db.Profiles.Select(x => x.Url).ToList())
-                {
-                    driver.Navigate().GoToUrl(link);
-                    Thread.Sleep(2000);
-                    var profile = GetGithubProfileSelenum(driver.PageSource, link);
-                    if (profile != null) db.Profiles.AddOrUpdate(profile);
-                }
+                if (!string.IsNullOrEmpty(profile.Bio)) profileInDb.Bio = profile.Bio;
+                if (!string.IsNullOrEmpty(profile.BlogOrWebsite)) profileInDb.BlogOrWebsite = profile.BlogOrWebsite;
+                if (!string.IsNullOrEmpty(profile.Company)) profileInDb.Company = profile.Company;
+                if (!string.IsNullOrEmpty(profile.Email)) profileInDb.Email = profile.Email;
+                if (!string.IsNullOrEmpty(profile.Name)) profileInDb.Name = profile.Name;
+                if (!string.IsNullOrEmpty(profile.Location)) profileInDb.Location = profile.Location;
+                if (!string.IsNullOrEmpty(profile.ImageUrl)) profileInDb.ImageUrl = profile.ImageUrl;
+                if (profileInDb.StarsCount != 0) profileInDb.StarsCount = profile.StarsCount;
+                db.Profiles.AddOrUpdate(profileInDb);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
             }
         }
 
         /// <summary>
-        /// Get and save in DB all  Github profile repasitories
+        /// Get and save in DB Github profile using selenium 
+        /// </summary>
+        public static void GetGithubProfileSelenium()
+        {
+            try
+            {
+                using (var db = new MonitoringEntities())
+                {
+
+                    var profileFirefox = new FirefoxProfile(FirefoxProfilePath);
+                    var driverProfile = new FirefoxDriver(new FirefoxOptions { Profile = profileFirefox });
+                    foreach (var link in db.Profiles.Select(x => x.Url).ToList())
+                    {
+                        driverProfile.Navigate().GoToUrl(link);
+                        Thread.Sleep(2000);
+                        var profile = GetGithubProfileSelenium(driverProfile.PageSource, link);
+                        if (profile != null) db.Profiles.AddOrUpdate(profile);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+
+        /// <summary>
+        /// Get and save in DB all  Github profile repositories
         /// </summary>
         public static void GetRepositories()
         {
-            using (var db = new MonitoringEntities())
+            try
             {
-                var profiles = db.Profiles.ToList();
-                foreach (var profile in profiles)
+                using (var db = new MonitoringEntities())
                 {
-                    Thread.Sleep(5000);
-                    var repositorieses = GetRepositories(profile.Url);
-                    if (repositorieses != null)
+                    var profiles = db.Profiles.ToList();
+                    foreach (var profile in profiles)
                     {
-                        profile.Repositories = repositorieses;
-                        db.SaveChanges();
+                        Thread.Sleep(5000);
+                        var repositories = GetRepositories(profile.Url);
+                        if (repositories != null)
+                        {
+                            profile.Repositories = repositories;
+                            db.SaveChanges();
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
             }
         }
 
 
         /// <summary>
         /// Scrape and save in DB proxies
-        /// <param name="cookie">Hideme request cookie</param>
+        /// <param name="cookie">Hide me request cookie</param>
         /// </summary>
         public static void ScrapProxyFromHideMe(string cookie = null)
         {
             var pr = new HidemeParser();
-            var proxies = pr.GetProxy(cookie).Result.ToList();
-            using (var db = new MonitoringEntities())
+            try
             {
-                foreach (var proxy in proxies)
+                var proxies = pr.GetProxy(cookie).Result.ToList();
+                using (var db = new MonitoringEntities())
                 {
-                    db.Proxies.Add(new Proxy { Country = proxy.Country, Port = proxy.Port, Type = proxy.Type, Ip = proxy.Ip });
+                    foreach (var proxy in proxies)
+                    {
+                        db.Proxies.Add(new Proxy { Country = proxy.Country, Port = proxy.Port, Type = proxy.Type, Ip = proxy.Ip });
+                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
             }
         }
 
@@ -160,7 +198,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
         /// <summary>
         /// Get Github profile urls
         /// </summary>
-        /// <returns>all finded profile url</returns>
+        /// <returns>all find profile url</returns>
         public static List<string> GetGithubUrls()
         {
             var links = new List<string>();
@@ -177,8 +215,8 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                     {
                         var pageSource = client.DownloadString(Url.Replace("{page}", i.ToString()));
                         document.LoadHtml(pageSource);
-                        var profilsNode = document.DocumentNode.SelectSingleNode(".//div[@class='user-list']");
-                        var linksSelect = profilsNode.SelectNodes(".//a").Select(x => x.InnerText).Where(x => !x.Contains("\n")).Select(x => x.Insert(0, RootGithub));
+                        var profileNode = document.DocumentNode.SelectSingleNode(".//div[@class='user-list']");
+                        var linksSelect = profileNode.SelectNodes(".//a").Select(x => x.InnerText).Where(x => !x.Contains("\n")).Select(x => x.Insert(0, RootGithub));
                         foreach (var link in linksSelect)
                         {
                             if (!links.Contains(link) && !link.Contains("/&#")) links.Add(link);
@@ -197,12 +235,12 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
         }
 
         /// <summary>
-        /// Get Gihub profile general information
+        /// Get Github profile general information
         /// </summary>
         /// <param name="content">Github general page HTML content </param>
         /// <param name="link">Github general page url</param>
         /// <returns>General information from profile </returns>
-        public static Profile GetGithubProfileSelenum(string content, string link)
+        public static Profile GetGithubProfileSelenium(string content, string link)
         {
             if (content.Contains("org-name lh-condensed")) return null;
             var document = new HtmlDocument();
@@ -237,6 +275,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
             }
             catch (Exception e)
             {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                 return null;
             }
         }
@@ -249,7 +288,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
         public static List<Repository> GetRepositories(string urlProfile)
         {
             var repositories = new List<Repository>();
-            var proxyCounter = 0;
+            //var proxyCounter = 0;
             var proxyCounterNested = 0;
             var listRepoLink = new List<string>();
             var webClient = new WebClient();
@@ -276,6 +315,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                 }
                 catch (Exception e)
                 {
+                    Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                     Console.WriteLine(e.Message);
                 }
             }
@@ -305,6 +345,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                         }
                         catch (Exception e)
                         {
+                            Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                             Console.WriteLine(e);
                         }
 
@@ -339,6 +380,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                                 }
                                 catch (Exception e)
                                 {
+                                    Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                                     Console.WriteLine(e.Message);
                                 }
 
@@ -356,6 +398,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                     }
                     catch (Exception e)
                     {
+                        Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                         proxyCounterNested++;
                     }
                 }
@@ -375,8 +418,9 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                     urls = db.Profiles.Select(x => x.Url).ToList();
                     githubUrls = urls;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Logger.Error(e, MethodBase.GetCurrentMethod().Name);
                     urls = new List<string>();
                     githubUrls = new List<string>();
                 }
