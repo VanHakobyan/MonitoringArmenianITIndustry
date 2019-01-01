@@ -19,7 +19,7 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// </summary>
         /// <returns>ActionResult of IEnumerable of string></returns>
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IActionResult Get()
         {
             try
             {
