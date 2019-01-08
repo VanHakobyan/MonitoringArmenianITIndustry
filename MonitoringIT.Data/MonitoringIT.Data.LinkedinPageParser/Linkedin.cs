@@ -102,18 +102,19 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
                                     monitoringEntities.LinkedinProfiles.Add(linkedinProfile);
                                 }
                                 monitoringEntities.SaveChanges();
+                                Logger.Info($"So good for profile {username}");
                             }
                             jsons.Add(JsonConvert.SerializeObject(linkedinProfile, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            Logger.Error(e, $"{MethodBase.GetCurrentMethod().Name} -- {linkedinLink}");
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                    Logger.Error(e, $"{MethodBase.GetCurrentMethod().Name} -- {linkedinLink}");
                 }
             }
 
@@ -387,8 +388,11 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             }
             try
             {
-                var findElementByXPath = _driver.FindElementByXPath(".//button[starts-with(@class,'pv-s-profile-actions pv-s-profile-actions--connect')]");
-                findElementByXPath?.Click();
+                var connectButton = _driver.FindElementByXPath(".//button[starts-with(@class,'pv-s-profile-actions pv-s-profile-actions--connect')]");
+                connectButton?.Click();
+                Thread.Sleep(1000);
+                var sendNowButton = _driver.FindElementByXPath(".//button[starts-with(@class,'button-primary-large')]");
+                sendNowButton?.Click();
                 //pv-s-profile-actions pv-s-profile-actions--connect
             }
             catch (Exception e)
@@ -442,7 +446,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
         /// </summary>
         /// <param name="s">string content</param>
         /// <returns>Normal string</returns>
-        private static string StringBeauty(string s) => s?.Replace("\r", "").Replace("\n", "").Replace("\t", "").Trim();
+        private static string StringBeauty(string s) => HtmlDecode(s?.Replace("\r", "").Replace("\n", "").Replace("\t", "").Trim());
 
         /// <summary>
         /// Html decoder

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CE3CC87C-523B-4FC3-A485-CB20497613A2}</ProjectGuid>
+    <ProjectGuid>{4F92AB50-85C1-4359-899A-C21B00372641}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Services.MonitoringIT.Data.Linkedin</RootNamespace>
-    <AssemblyName>Services.MonitoringIT.Data.Linkedin</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <RootNamespace>Services.MonitoringIT.Data.Parser.Github</RootNamespace>
+    <AssemblyName>Services.MonitoringIT.Data.Parser.Github</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -32,46 +32,45 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.8.11.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.8.11\lib\Net45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebDriver, Version=3.141.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selenium.WebDriver.3.141.0\lib\net45\WebDriver.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GithubService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GithubService.Designer.cs">
+      <DependentUpon>GithubService.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MonitoringIT.Data.LinkedinPageParser\Lib.MonitoringIT.Data.Linkedin.Scrapper.csproj">
-      <Project>{0CD4E8DC-9FA0-4BBE-BD38-A77A88D9BCEA}</Project>
-      <Name>Lib.MonitoringIT.Data.Linkedin.Scrapper</Name>
+    <ProjectReference Include="..\MonitoringIT.DATA.Github.Scrapper.Lib\Lib.MonitoringIT.DATA.Github.Scrapper.csproj">
+      <Project>{2CCB1AD1-66A0-43ED-969D-26A4C13271C3}</Project>
+      <Name>Lib.MonitoringIT.DATA.Github.Scrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonitoringIT.Data.ProxyParser\Lib.MonitoringIT.Data.ProxyParser.csproj">
+      <Project>{779dc66e-ac5b-4d67-b143-bb844f313469}</Project>
+      <Name>Lib.MonitoringIT.Data.ProxyParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services.MonitoringIT.Data.Parser.Linkedin\Services.MonitoringIT.Data.Parser.Linkedin.csproj">
+      <Project>{B593FDBA-5813-4A1F-AF25-2153205FFF72}</Project>
+      <Name>Services.MonitoringIT.Data.Parser.Linkedin</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
