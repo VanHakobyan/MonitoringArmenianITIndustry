@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Database.MonitoringIT.DB.EfCore.Models
 {
-    public partial class Repositories
+    public partial class GithubRepository
     {
-        public Repositories()
+        public GithubRepository()
         {
-            Languages = new HashSet<Languages>();
+            Languages = new HashSet<GithubLanguage>();
         }
 
         public int Id { get; set; }
@@ -21,7 +21,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public int? ContributorsCount { get; set; }
         public int? ForksCount { get; set; }
 
-        public Profiles Profile { get; set; }
-        public ICollection<Languages> Languages { get; set; }
+        public GithubProfile GithubProfile { get; set; }
+        public ICollection<GithubLanguage> Languages { get; set; }
     }
 }

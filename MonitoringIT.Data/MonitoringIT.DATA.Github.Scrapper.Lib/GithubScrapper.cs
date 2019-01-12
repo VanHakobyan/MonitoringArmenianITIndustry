@@ -62,9 +62,9 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                 Logger.Error(e, MethodBase.GetCurrentMethod().Name);
             }
         }
-        public async Task<Profile> GetNewGithubProfile(string link)
+        public async Task<GithubProfile> GetNewGithubProfile(string link)
         {
-            Profile profile;
+            GithubProfile profile;
             try
             {
                 using (var db = new MonitoringEntities())
@@ -75,9 +75,9 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                     if (profile != null)
                     {
                         var repositories = GetRepositories(link);
-                        profile.Repositories = repositories;
+                        profile.GithubRepositories = repositories;
                         if (githubUrls.Contains(link)) ProfileUpdate(profile, link, db);
-                        else db.Profiles.Add(profile);
+                        else db.GithubProfiles.Add(profile);
                         await db.SaveChangesAsync();
                     }
                 }
@@ -90,11 +90,11 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
             return profile;
         }
 
-        private void ProfileUpdate(Profile profile, string url, MonitoringEntities db)
+        private void ProfileUpdate(GithubProfile profile, string url, MonitoringEntities db)
         {
             try
             {
-                var profileInDb = db.Profiles.FirstOrDefault(x => x.Url == url);
+                var profileInDb = db.GithubProfiles.FirstOrDefault(x => x.Url == url);
                 if (profileInDb == null) return;
 
                 if (!string.IsNullOrEmpty(profile.Bio)) profileInDb.Bio = profile.Bio;
@@ -105,7 +105,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                 if (!string.IsNullOrEmpty(profile.Location)) profileInDb.Location = profile.Location;
                 if (!string.IsNullOrEmpty(profile.ImageUrl)) profileInDb.ImageUrl = profile.ImageUrl;
                 if (profileInDb.StarsCount != 0) profileInDb.StarsCount = profile.StarsCount;
-                db.Profiles.AddOrUpdate(profileInDb);
+                db.GithubProfiles.AddOrUpdate(profileInDb);
             }
             catch (Exception e)
             {
@@ -125,12 +125,12 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
 
                     var profileFirefox = new FirefoxProfile(FirefoxProfilePath);
                     var driverProfile = new FirefoxDriver(new FirefoxOptions { Profile = profileFirefox });
-                    foreach (var link in db.Profiles.Select(x => x.Url).ToList())
+                    foreach (var link in db.GithubProfiles.Select(x => x.Url).ToList())
                     {
                         driverProfile.Navigate().GoToUrl(link);
                         Thread.Sleep(2000);
                         var profile = GetGithubProfileSelenium(driverProfile.PageSource, link);
-                        if (profile != null) db.Profiles.AddOrUpdate(profile);
+                        if (profile != null) db.GithubProfiles.AddOrUpdate(profile);
                     }
                 }
             }
@@ -149,14 +149,14 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
             {
                 using (var db = new MonitoringEntities())
                 {
-                    var profiles = db.Profiles.ToList();
+                    var profiles = db.GithubProfiles.ToList();
                     foreach (var profile in profiles)
                     {
                         Thread.Sleep(5000);
                         var repositories = GetRepositories(profile.Url);
                         if (repositories != null)
                         {
-                            profile.Repositories = repositories;
+                            profile.GithubRepositories = repositories;
                             db.SaveChanges();
                         }
                     }
@@ -240,7 +240,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
         /// <param name="content">Github general page HTML content </param>
         /// <param name="link">Github general page url</param>
         /// <returns>General information from profile </returns>
-        public static Profile GetGithubProfileSelenium(string content, string link)
+        public static GithubProfile GetGithubProfileSelenium(string content, string link)
         {
             if (content.Contains("org-name lh-condensed")) return null;
             var document = new HtmlDocument();
@@ -258,7 +258,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                 var bio = document.DocumentNode.SelectSingleNode(".//div[@class='p-note user-profile-bio']")?.InnerText;
                 var starCount = document.DocumentNode.SelectSingleNode(".//span[@class='Counter']")?.InnerText?.Replace(" ", "").Replace("\n", "").Replace("\r", " ").Trim() ?? "-1";
 
-                var profile = new Profile
+                var profile = new GithubProfile
                 {
                     Url = link,
                     Bio = bio,
@@ -285,9 +285,9 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
         /// </summary>
         /// <param name="urlProfile">User url</param>
         /// <returns>List of repositories</returns>
-        public static List<Repository> GetRepositories(string urlProfile)
+        public static List<GithubRepository> GetRepositories(string urlProfile)
         {
-            var repositories = new List<Repository>();
+            var repositories = new List<GithubRepository>();
             //var proxyCounter = 0;
             var proxyCounterNested = 0;
             var listRepoLink = new List<string>();
@@ -322,7 +322,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
 
             foreach (var repoLink in listRepoLink)
             {
-                var repo = new Repository();
+                var repo = new GithubRepository();
                 while (true)
                 {
                     try
@@ -365,18 +365,18 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                         var repositoryLangStats = repoDoc.DocumentNode.SelectSingleNode(".//div[@class='repository-lang-stats']");
                         if (repositoryLangStats != null)
                         {
-                            repo.Languages = new List<Language>();
+                            repo.GithubLanguages = new List<GithubLanguage>();
                             var langs = repositoryLangStats.SelectNodes(".//span[@class='lang']");
                             var percents = repositoryLangStats.SelectNodes(".//span[@class='percent']");
                             for (int i = 0; i < langs.Count; i++)
                             {
                                 try
                                 {
-                                    var language = new Language();
+                                    var language = new GithubLanguage();
                                     language.Name = langs[i]?.InnerText;
                                     decimal.TryParse(percents[i]?.InnerText.Replace("%", ""), out var p);
                                     language.Percent = p;
-                                    repo.Languages.Add(language);
+                                    repo.GithubLanguages.Add(language);
                                 }
                                 catch (Exception e)
                                 {
@@ -415,7 +415,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
             {
                 try
                 {
-                    urls = db.Profiles.Select(x => x.Url).ToList();
+                    urls = db.GithubProfiles.Select(x => x.Url).ToList();
                     githubUrls = urls;
                 }
                 catch (Exception e)

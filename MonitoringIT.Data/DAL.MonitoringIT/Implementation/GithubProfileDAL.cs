@@ -12,7 +12,7 @@ namespace DAL.MonitoringIT.Implementation
         {
         }
 
-        public List<Profiles> GetAll()
+        public List<GithubProfile> GetAll()
         {
             var profiles = _dbContext.Profiles.ToList();
             foreach (var profile in profiles)
@@ -27,7 +27,7 @@ namespace DAL.MonitoringIT.Implementation
         }
 
 
-        public Profiles GetById(int id)
+        public GithubProfile GetById(int id)
         {
             var profile = _dbContext.Profiles.Include(x => x.Repositories).ThenInclude(x => x.Languages).FirstOrDefault(x => x.Id == id);
             if (profile is null) return null;
@@ -40,17 +40,17 @@ namespace DAL.MonitoringIT.Implementation
             return profile;
         }
 
-        public List<Profiles> GetAllWithReadme()
+        public List<GithubProfile> GetAllWithReadme()
         {
             return _dbContext.Profiles.ToList();
         }
 
-        public Profiles GetByIdWithReadme(int id)
+        public GithubProfile GetByIdWithReadme(int id)
         {
             return _dbContext.Profiles.Include(x => x.Repositories).ThenInclude(x => x.Languages).FirstOrDefault(x => x.Id == id);
         }
 
-        public Profiles GetByUserName(string username)
+        public GithubProfile GetByUserName(string username)
         {
             return _dbContext.Profiles.Include(x => x.Repositories).ThenInclude(x => x.Languages).FirstOrDefault(x => x.UserName == username);
         }

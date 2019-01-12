@@ -6,23 +6,23 @@
     <edmx:Diagrams>
       <Diagram DiagramId="49523ddffb2442b8a8edf476e402612a" Name="Diagram1">
         <EntityTypeShape EntityType="MonitoringModel.GithubLinkedinCrossTable" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MonitoringModel.Language" Width="1.5" PointX="10.25" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MonitoringModel.LinkedinEducation" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MonitoringModel.LinkedinExperience" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MonitoringModel.LinkedinInterest" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MonitoringModel.LinkedinLanguage" Width="1.5" PointX="3" PointY="10.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MonitoringModel.LinkedinProfile" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MonitoringModel.LinkedinSkill" Width="1.5" PointX="3" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MonitoringModel.Profile" Width="1.5" PointX="5.75" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="MonitoringModel.Proxy" Width="1.5" PointX="7.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MonitoringModel.Repository" Width="1.5" PointX="8" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="MonitoringModel.FK_dbo_Languages_dbo_Repositories_RepositoryId" ManuallyRouted="false" />
         <AssociationConnector Association="MonitoringModel.FK_LinkedinEducation_LinkedinProfile" ManuallyRouted="false" />
         <AssociationConnector Association="MonitoringModel.FK_LinkedinProfile_LinkedinExperience" ManuallyRouted="false" />
         <AssociationConnector Association="MonitoringModel.FK_Interest_LinkedinProfile" ManuallyRouted="false" />
         <AssociationConnector Association="MonitoringModel.FK_LinkedinLanguage_LinkedinProfile" ManuallyRouted="false" />
         <AssociationConnector Association="MonitoringModel.FK_LinkedinSkill_LinkedinProfile" ManuallyRouted="false" />
-        <AssociationConnector Association="MonitoringModel.FK_dbo_Repositories_dbo_Profiles_ProfileId" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MonitoringModel.GithubLanguage" Width="1.5" PointX="9.875" PointY="9.625" />
+        <EntityTypeShape EntityType="MonitoringModel.GithubProfile" Width="1.5" PointX="5.375" PointY="9" />
+        <EntityTypeShape EntityType="MonitoringModel.GithubRepository" Width="1.5" PointX="7.625" PointY="9" />
+        <AssociationConnector Association="MonitoringModel.FK_dbo_Languages_dbo_Repositories_RepositoryId1" />
+        <AssociationConnector Association="MonitoringModel.FK_dbo_Repositories_dbo_Profiles_ProfileId1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -12,27 +12,27 @@ namespace Database.MonitoringIT.DAL.WithEF6
     using System;
     using System.Collections.Generic;
     
-    public partial class Repository
+    public partial class GithubProfile
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Repository()
+        public GithubProfile()
         {
-            this.Languages = new HashSet<Language>();
+            this.GithubRepositories = new HashSet<GithubRepository>();
         }
     
         public int Id { get; set; }
+        public string UserName { get; set; }
         public string Url { get; set; }
+        public string Company { get; set; }
         public string Name { get; set; }
-        public int CommitCount { get; set; }
-        public int BranchCount { get; set; }
-        public string Readme { get; set; }
-        public int ProfileId { get; set; }
-        public Nullable<int> StarsCount { get; set; }
-        public Nullable<int> ContributorsCount { get; set; }
-        public Nullable<int> ForksCount { get; set; }
+        public string Bio { get; set; }
+        public string Location { get; set; }
+        public string Email { get; set; }
+        public string BlogOrWebsite { get; set; }
+        public int StarsCount { get; set; }
+        public string ImageUrl { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Language> Languages { get; set; }
-        public virtual Profile Profile { get; set; }
+        public virtual ICollection<GithubRepository> GithubRepositories { get; set; }
     }
 }

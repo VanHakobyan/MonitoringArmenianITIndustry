@@ -7,10 +7,10 @@ namespace DAL.MonitoringIT.Interfaces
 {
     public interface IGithubProfileDAL:IBaseDAL
     {
-        List<Profiles> GetAll();
-        List<Profiles> GetAllWithReadme();
-        Profiles GetById(int id);
-        Profiles GetByIdWithReadme(int id);
-        Profiles GetByUserName(string username);
+        List<GithubProfile> GetAll();
+        List<GithubProfile> GetAllWithReadme();
+        GithubProfile GetById(int id);
+        GithubProfile GetByIdWithReadme(int id);
+        GithubProfile GetByUserName(string username);
     }
 }

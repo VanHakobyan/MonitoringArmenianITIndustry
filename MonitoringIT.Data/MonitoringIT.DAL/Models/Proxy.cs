@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Database.MonitoringIT.DB.EfCore.Models
 {
-    public partial class Proxies
+    public partial class Proxy
     {
         public int Id { get; set; }
         public string Country { get; set; }

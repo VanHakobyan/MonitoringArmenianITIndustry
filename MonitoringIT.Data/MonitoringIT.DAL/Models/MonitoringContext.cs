@@ -23,7 +23,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         }
 
         public virtual DbSet<GithubLinkedinCrossTable> GithubLinkedinCrossTable { get; set; }
-        public virtual DbSet<Languages> Languages { get; set; }
+        public virtual DbSet<GithubLanguage> Languages { get; set; }
         public virtual DbSet<LinkedinEducation> LinkedinEducation { get; set; }
         public virtual DbSet<LinkedinExperience> LinkedinExperience { get; set; }
         public virtual DbSet<LinkedinInterest> LinkedinInterest { get; set; }
@@ -31,9 +31,9 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public virtual DbSet<LinkedinProfile> LinkedinProfile { get; set; }
         public virtual DbSet<LinkedinSkill> LinkedinSkill { get; set; }
         public virtual DbSet<MigrationHistory> MigrationHistory { get; set; }
-        public virtual DbSet<Profiles> Profiles { get; set; }
-        public virtual DbSet<Proxies> Proxies { get; set; }
-        public virtual DbSet<Repositories> Repositories { get; set; }
+        public virtual DbSet<GithubProfile> Profiles { get; set; }
+        public virtual DbSet<Proxy> Proxies { get; set; }
+        public virtual DbSet<GithubRepository> Repositories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -45,12 +45,12 @@ namespace Database.MonitoringIT.DB.EfCore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Languages>(entity =>
+            modelBuilder.Entity<GithubLanguage>(entity =>
             {
                 entity.HasIndex(e => e.RepositoryId)
                     .HasName("IX_RepositoryId");
 
-                entity.HasOne(d => d.Repository)
+                entity.HasOne(d => d.GithubRepository)
                     .WithMany(p => p.Languages)
                     .HasForeignKey(d => d.RepositoryId)
                     .HasConstraintName("FK_dbo.Languages_dbo.Repositories_RepositoryId");
@@ -173,7 +173,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                     .HasMaxLength(32);
             });
 
-            modelBuilder.Entity<Profiles>(entity =>
+            modelBuilder.Entity<GithubProfile>(entity =>
             {
                 entity.Property(e => e.ImageUrl).IsUnicode(false);
 
@@ -182,12 +182,12 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Repositories>(entity =>
+            modelBuilder.Entity<GithubRepository>(entity =>
             {
                 entity.HasIndex(e => e.ProfileId)
                     .HasName("IX_ProfileId");
 
-                entity.HasOne(d => d.Profile)
+                entity.HasOne(d => d.GithubProfile)
                     .WithMany(p => p.Repositories)
                     .HasForeignKey(d => d.ProfileId)
                     .HasConstraintName("FK_dbo.Repositories_dbo.Profiles_ProfileId");

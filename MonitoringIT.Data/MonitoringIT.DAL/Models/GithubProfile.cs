@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Database.MonitoringIT.DB.EfCore.Models
 {
-    public partial class Profiles
+    public partial class GithubProfile
     {
-        public Profiles()
+        public GithubProfile()
         {
-            Repositories = new HashSet<Repositories>();
+            Repositories = new HashSet<GithubRepository>();
         }
 
         public int Id { get; set; }
@@ -22,6 +22,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public int StarsCount { get; set; }
         public string ImageUrl { get; set; }
 
-        public ICollection<Repositories> Repositories { get; set; }
+        public ICollection<GithubRepository> Repositories { get; set; }
     }
 }

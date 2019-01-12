@@ -12,13 +12,13 @@ namespace Database.MonitoringIT.DAL.WithEF6
     using System;
     using System.Collections.Generic;
     
-    public partial class Language
+    public partial class GithubLanguage
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Percent { get; set; }
         public int RepositoryId { get; set; }
     
-        public virtual Repository Repository { get; set; }
+        public virtual GithubRepository GithubRepository { get; set; }
     }
 }
