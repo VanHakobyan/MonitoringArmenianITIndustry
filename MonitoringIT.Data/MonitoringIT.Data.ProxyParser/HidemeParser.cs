@@ -6,15 +6,25 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Database.MonitoringIT.DAL.WithEF6;
 using HtmlAgilityPack;
 using MonitoringIT.Data.Common;
+using OpenQA.Selenium.Chrome;
 
 namespace Lib.MonitoringIT.Data.ProxyParser
 {
     public class HidemeParser
     {
         private static string url = "https://hidemyna.me/en/proxy-list/?type=s?start={page}#list";
+        private ChromeDriver _chromeDriver;
 
+        public HidemeParser()
+        {
+            var chromeOptions = new ChromeOptions();
+            chromeOptions.AddArguments("headless");
+            _chromeDriver = new ChromeDriver(chromeOptions);
+
+        }
         /// <summary>
         /// Get request 
         /// </summary>
@@ -27,7 +37,6 @@ namespace Lib.MonitoringIT.Data.ProxyParser
 
             try
             {
-                //uri = "https://hidemyna.me/en/proxy-list/?start=21504#list";
                 ServicePointManager.DefaultConnectionLimit = 10;
                 ServicePointManager.Expect100Continue = false;
                 ServicePointManager.DnsRefreshTimeout = 1000;
@@ -36,7 +45,7 @@ namespace Lib.MonitoringIT.Data.ProxyParser
 
                 var request = (HttpWebRequest)WebRequest.Create(uri);
                 request.Method = "GET";
-                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36";
+                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36";
                 request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
                 //request.Headers.Add("accept-encoding", "gzip, deflate, br");
                 request.Headers.Add("accept-language", "en-US,en;q=0.9,hy;q=0.8,mt;q=0.7");
@@ -63,6 +72,16 @@ namespace Lib.MonitoringIT.Data.ProxyParser
             return response;
         }
 
+        public async Task<string> GetContentFromSelenium(string link)
+        {
+            _chromeDriver.Navigate().GoToUrl(link);
+            await Task.Delay(2000);
+            return _chromeDriver.PageSource;
+        }
+
+
+
+
         /// <summary>
         /// Get content from page number
         /// </summary>
@@ -71,7 +90,8 @@ namespace Lib.MonitoringIT.Data.ProxyParser
         /// <returns>Task</returns>
         private async Task<string> GetContent(int pageNumber, string cookie = null)
         {
-            return await SendGetRequest(url.Replace("{page}", pageNumber.ToString()), cookie);
+            return await GetContentFromSelenium(url.Replace("{page}", pageNumber.ToString()));
+            //return await SendGetRequest(url.Replace("{page}", pageNumber.ToString()), cookie);
         }
 
         /// <summary>
@@ -83,7 +103,7 @@ namespace Lib.MonitoringIT.Data.ProxyParser
         {
             var proxyList = new List<Proxy>();
             HtmlDocument document = new HtmlDocument();
-            var pageSource = await GetContent(64,cookie);
+            var pageSource = await GetContent(64, cookie);
             if (!string.IsNullOrEmpty(pageSource)) document.LoadHtml(pageSource);
             else return null;
             var pagination = document.DocumentNode.SelectSingleNode(".//div[@class='proxy__pagination']");

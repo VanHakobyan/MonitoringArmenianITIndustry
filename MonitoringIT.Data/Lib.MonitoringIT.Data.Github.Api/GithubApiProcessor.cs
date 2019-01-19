@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -10,19 +11,36 @@ using System.Threading.Tasks;
 using Database.MonitoringIT.DAL.WithEF6;
 using MonitoringIT.Data.Common;
 using Newtonsoft.Json;
+using Proxy = Database.MonitoringIT.DAL.WithEF6.Proxy;
 
 namespace Lib.MonitoringIT.Data.Github.Api
 {
     public class GithubApiProcessor
     {
         private const string GithubAllArmenianUserUrl = @"https://api.github.com/search/users?q=location:armenia&page={pageNumber}&per_page=100";
+        private List<Proxy> _proxies;
+        private int _proxyIndex = 0;
 
-        public async Task<List<GithubUserRootModel>> GetAllFromApiAsync()
+        public GithubApiProcessor()
+        {
+            LoadProxy();
+        }
+
+        public void LoadProxy()
+        {
+            using (MonitoringEntities db = new MonitoringEntities())
+            {
+                _proxies = db.Proxies.Where(x => x.Type.Contains("HTTP")).ToList();
+            }
+        }
+
+        public List<GithubUserRootModel> GetAllFromApiAsync()
         {
             var allUsers = new List<GithubUserRootModel>();
             for (var i = 1; i <= 10; i++)
             {
-                var allGithubContentJson = await SendGetRequest(GithubAllArmenianUserUrl);
+                var allGithubContentJson = SendGetRequest(GithubAllArmenianUserUrl.Replace("{pageNumber}", i.ToString()));
+                if (allGithubContentJson is null) continue;
                 var githubUserApiAllPage = JsonConvert.DeserializeObject<GithubUserApiAllModel>(allGithubContentJson);
                 allUsers.AddRange(githubUserApiAllPage.items);
             }
@@ -30,27 +48,40 @@ namespace Lib.MonitoringIT.Data.Github.Api
             return allUsers;
         }
 
-        private static async Task<string> SendGetRequest(string url)
+        private string SendGetRequest(string url)
         {
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "Anything");
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var allGithubContentJson = await client.GetStringAsync(url);
+            string allGithubContentJson = null;
+            while (true)
+            {
+                try
+                {
+                    WebClient client = new WebClient();
+                    client.Proxy = new WebProxy($"{_proxies[_proxyIndex].Ip}:{_proxies[_proxyIndex].Port}");
+                    client.Headers.Add(HttpRequestHeader.UserAgent, "Anything");
+                    client.Headers.Add(HttpRequestHeader.ContentType, "applicaton/json");
+                    allGithubContentJson = client.DownloadString(url);
+                    break;
+                }
+                catch
+                {
+                    _proxyIndex++;
+                }
+            }
             return allGithubContentJson;
         }
 
-        public async Task UpdateGithubProfilesInDb()
+        public void UpdateGithubProfilesInDb()
         {
             using (MonitoringEntities db = new MonitoringEntities())
             {
                 var githubProfiles = db.GithubProfiles.ToList();
-                var allFromApi = await GetAllFromApiAsync();
+                var allFromApi = GetAllFromApiAsync();
                 for (var i = 0; i < allFromApi.Count; i++)
                 {
                     var githubApiModel = allFromApi[i];
                     try
                     {
-                        var userJson = await SendGetRequest(githubApiModel.url);
+                        var userJson = SendGetRequest(githubApiModel.url);
                         var userModel = JsonConvert.DeserializeObject<GithubApiUserModel>(userJson);
 
                         var updateProfile = githubProfiles.FirstOrDefault(x => x.UserName == userModel.login);

@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.8.9" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.8.13" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MonitoringIT.DAL.WithEF6\Database.MonitoringIT.DB.Ef6.csproj" />
     <ProjectReference Include="..\MonitoringIT.DAL\Database.MonitoringIT.DB.EfCore.csproj" />
     <ProjectReference Include="..\MonitoringIT.Data.Common\MonitoringIT.Data.Common.csproj" />
   </ItemGroup>
