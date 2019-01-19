@@ -7,7 +7,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
     {
         public GithubProfile()
         {
-            Repositories = new HashSet<GithubRepository>();
+            GithubRepositories = new HashSet<GithubRepository>();
         }
 
         public int Id { get; set; }
@@ -23,6 +23,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public string ImageUrl { get; set; }
         public DateTime? LastUpdate { get; set; }
 
-        public ICollection<GithubRepository> Repositories { get; set; }
+        public ICollection<GithubRepository> GithubRepositories { get; set; }
     }
 }

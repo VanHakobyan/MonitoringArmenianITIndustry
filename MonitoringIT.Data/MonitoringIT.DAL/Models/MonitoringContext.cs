@@ -31,9 +31,9 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public virtual DbSet<LinkedinProfile> LinkedinProfile { get; set; }
         public virtual DbSet<LinkedinSkill> LinkedinSkill { get; set; }
         public virtual DbSet<MigrationHistory> MigrationHistory { get; set; }
-        public virtual DbSet<GithubProfile> Profiles { get; set; }
+        public virtual DbSet<GithubProfile> GithubProfiles { get; set; }
         public virtual DbSet<Proxy> Proxies { get; set; }
-        public virtual DbSet<GithubRepository> Repositories { get; set; }
+        public virtual DbSet<GithubRepository> GithubRepositories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -51,7 +51,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                     .HasName("IX_RepositoryId");
 
                 entity.HasOne(d => d.GithubRepository)
-                    .WithMany(p => p.Languages)
+                    .WithMany(p => p.GithubLanguages)
                     .HasForeignKey(d => d.RepositoryId)
                     .HasConstraintName("FK_dbo.Languages_dbo.Repositories_RepositoryId");
             });
@@ -188,7 +188,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                     .HasName("IX_ProfileId");
 
                 entity.HasOne(d => d.GithubProfile)
-                    .WithMany(p => p.Repositories)
+                    .WithMany(p => p.GithubRepositories)
                     .HasForeignKey(d => d.ProfileId)
                     .HasConstraintName("FK_dbo.Repositories_dbo.Profiles_ProfileId");
             });

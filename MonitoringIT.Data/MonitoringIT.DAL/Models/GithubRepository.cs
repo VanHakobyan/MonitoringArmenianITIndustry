@@ -7,7 +7,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
     {
         public GithubRepository()
         {
-            Languages = new HashSet<GithubLanguage>();
+            GithubLanguages = new HashSet<GithubLanguage>();
         }
 
         public int Id { get; set; }
@@ -22,6 +22,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public int? ForksCount { get; set; }
 
         public GithubProfile GithubProfile { get; set; }
-        public ICollection<GithubLanguage> Languages { get; set; }
+        public ICollection<GithubLanguage> GithubLanguages { get; set; }
     }
 }
