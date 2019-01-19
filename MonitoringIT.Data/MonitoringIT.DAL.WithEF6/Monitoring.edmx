@@ -37,6 +37,7 @@
           <Property Name="BlogOrWebsite" Type="nvarchar(max)" />
           <Property Name="StarsCount" Type="int" Nullable="false" />
           <Property Name="ImageUrl" Type="varchar(max)" />
+          <Property Name="LastUpdate" Type="datetime" />
         </EntityType>
         <EntityType Name="GithubRepository">
           <Key>
@@ -109,6 +110,7 @@
           <Property Name="Birthday" Type="varchar(max)" />
           <Property Name="Connected" Type="datetime" />
           <Property Name="ImageUrl" Type="varchar(max)" />
+          <Property Name="LastUpdate" Type="datetime" />
         </EntityType>
         <EntityType Name="LinkedinSkill">
           <Key>
@@ -335,6 +337,7 @@
           <NavigationProperty Name="LinkedinInterests" Relationship="Self.FK_Interest_LinkedinProfile" FromRole="LinkedinProfile" ToRole="LinkedinInterest" />
           <NavigationProperty Name="LinkedinLanguages" Relationship="Self.FK_LinkedinLanguage_LinkedinProfile" FromRole="LinkedinProfile" ToRole="LinkedinLanguage" />
           <NavigationProperty Name="LinkedinSkills" Relationship="Self.FK_LinkedinSkill_LinkedinProfile" FromRole="LinkedinProfile" ToRole="LinkedinSkill" />
+          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="LinkedinSkill">
           <Key>
@@ -473,6 +476,7 @@
           <Property Name="StarsCount" Type="Int32" Nullable="false" />
           <Property Name="ImageUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="GithubRepositories" Relationship="MonitoringModel.FK_dbo_Repositories_dbo_Profiles_ProfileId1" FromRole="GithubProfile" ToRole="GithubRepository" />
+          <Property Name="LastUpdate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="GithubRepository">
           <Key>
@@ -589,6 +593,7 @@
           <EntitySetMapping Name="LinkedinProfiles">
             <EntityTypeMapping TypeName="MonitoringModel.LinkedinProfile">
               <MappingFragment StoreEntitySet="LinkedinProfile">
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
@@ -629,6 +634,7 @@
           <EntitySetMapping Name="GithubProfiles">
             <EntityTypeMapping TypeName="MonitoringModel.GithubProfile">
               <MappingFragment StoreEntitySet="GithubProfile">
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
                 <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="StarsCount" ColumnName="StarsCount" />
                 <ScalarProperty Name="BlogOrWebsite" ColumnName="BlogOrWebsite" />

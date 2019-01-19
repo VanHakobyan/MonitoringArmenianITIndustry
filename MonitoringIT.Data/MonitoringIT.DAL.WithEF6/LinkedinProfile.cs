@@ -38,6 +38,7 @@ namespace Database.MonitoringIT.DAL.WithEF6
         public string Birthday { get; set; }
         public Nullable<System.DateTime> Connected { get; set; }
         public string ImageUrl { get; set; }
+        public Nullable<System.DateTime> LastUpdate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LinkedinEducation> LinkedinEducations { get; set; }

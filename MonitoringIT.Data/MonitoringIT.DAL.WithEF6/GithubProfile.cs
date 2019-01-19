@@ -31,6 +31,7 @@ namespace Database.MonitoringIT.DAL.WithEF6
         public string BlogOrWebsite { get; set; }
         public int StarsCount { get; set; }
         public string ImageUrl { get; set; }
+        public Nullable<System.DateTime> LastUpdate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GithubRepository> GithubRepositories { get; set; }

@@ -21,6 +21,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public string BlogOrWebsite { get; set; }
         public int StarsCount { get; set; }
         public string ImageUrl { get; set; }
+        public DateTime? LastUpdate { get; set; }
 
         public ICollection<GithubRepository> Repositories { get; set; }
     }
