@@ -97,7 +97,8 @@ namespace Lib.MonitoringIT.Data.Github.Api
                                 BlogOrWebsite = userModel.blog,
                                 Name = userModel.name,
                                 Bio = userModel.bio as string,
-                                Url = userModel.html_url
+                                Url = userModel.html_url,
+                                LastUpdate = DateTime.Now
                             };
                             db.GithubProfiles.Add(newGithubMember);
                         }
@@ -111,6 +112,8 @@ namespace Lib.MonitoringIT.Data.Github.Api
                             if (userModel.name != null) updateProfile.Name = userModel.name;
                             if (userModel.bio != null) updateProfile.Bio = userModel.bio as string;
 
+                            updateProfile.LastUpdate=DateTime.Now;
+                            
                             db.GithubProfiles.AddOrUpdate(updateProfile);
                         }
 

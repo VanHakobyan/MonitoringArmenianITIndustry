@@ -105,6 +105,8 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                 if (!string.IsNullOrEmpty(profile.Location)) profileInDb.Location = profile.Location;
                 if (!string.IsNullOrEmpty(profile.ImageUrl)) profileInDb.ImageUrl = profile.ImageUrl;
                 if (profileInDb.StarsCount != 0) profileInDb.StarsCount = profile.StarsCount;
+
+                profileInDb.LastUpdate = DateTime.Now;
                 db.GithubProfiles.AddOrUpdate(profileInDb);
             }
             catch (Exception e)
@@ -130,7 +132,11 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                         driverProfile.Navigate().GoToUrl(link);
                         Thread.Sleep(2000);
                         var profile = GetGithubProfileSelenium(driverProfile.PageSource, link);
-                        if (profile != null) db.GithubProfiles.AddOrUpdate(profile);
+                        if (profile != null)
+                        {
+                            profile.LastUpdate = DateTime.Now;
+                            db.GithubProfiles.AddOrUpdate(profile);
+                        }
                     }
                 }
             }
