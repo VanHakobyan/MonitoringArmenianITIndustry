@@ -32,9 +32,9 @@ namespace Database.MonitoringIT.DAL.WithEF6
         public virtual DbSet<LinkedinLanguage> LinkedinLanguages { get; set; }
         public virtual DbSet<LinkedinProfile> LinkedinProfiles { get; set; }
         public virtual DbSet<LinkedinSkill> LinkedinSkills { get; set; }
-        public virtual DbSet<Proxy> Proxies { get; set; }
         public virtual DbSet<GithubLanguage> GithubLanguages { get; set; }
         public virtual DbSet<GithubProfile> GithubProfiles { get; set; }
         public virtual DbSet<GithubRepository> GithubRepositories { get; set; }
+        public virtual DbSet<Proxy> Proxies { get; set; }
     }
 }

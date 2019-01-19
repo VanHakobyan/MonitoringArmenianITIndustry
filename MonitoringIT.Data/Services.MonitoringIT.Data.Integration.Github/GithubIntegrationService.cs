@@ -20,8 +20,8 @@ namespace Services.MonitoringIT.Data.Integration.Github
 
         protected override void OnStart(string[] args)
         {
-            GithubApiProcessor apiProcessor=new GithubApiProcessor();
-            var githubUsers = apiProcessor.GetAllAsync().Result;
+            GithubApiProcessor apiProcessor = new GithubApiProcessor();
+            apiProcessor.UpdateGithubProfilesInDb().GetAwaiter().GetResult();
         }
 
         protected override void OnStop()
