@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Database.MonitoringIT.DB.EfCore.Models
+﻿namespace Database.MonitoringIT.DB.EfCore.Models
 {
     public partial class LinkedinExperience
     {
@@ -12,6 +9,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public int LinkedinProfileId { get; set; }
         public string Location { get; set; }
 
-        public LinkedinProfile LinkedinProfile { get; set; }
+        public virtual LinkedinProfile LinkedinProfile { get; set; }
     }
 }

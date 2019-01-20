@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Database.MonitoringIT.DB.EfCore.Models
+﻿namespace Database.MonitoringIT.DB.EfCore.Models
 {
     public partial class LinkedinInterest
     {
@@ -10,6 +7,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public int? FollowersCount { get; set; }
         public int LinkedinProfileId { get; set; }
 
-        public LinkedinProfile LinkedinProfile { get; set; }
+        public virtual LinkedinProfile LinkedinProfile { get; set; }
     }
 }

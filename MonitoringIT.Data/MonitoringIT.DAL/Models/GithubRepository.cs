@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Database.MonitoringIT.DB.EfCore.Models
 {
@@ -7,7 +6,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
     {
         public GithubRepository()
         {
-            GithubLanguages = new HashSet<GithubLanguage>();
+            GithubLanguage = new HashSet<GithubLanguage>();
         }
 
         public int Id { get; set; }
@@ -21,7 +20,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public int? ContributorsCount { get; set; }
         public int? ForksCount { get; set; }
 
-        public GithubProfile GithubProfile { get; set; }
-        public ICollection<GithubLanguage> GithubLanguages { get; set; }
+        public virtual GithubProfile Profile { get; set; }
+        public virtual ICollection<GithubLanguage> GithubLanguage { get; set; }
     }
 }

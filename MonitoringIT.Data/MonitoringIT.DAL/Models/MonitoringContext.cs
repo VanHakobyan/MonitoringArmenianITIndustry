@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Database.MonitoringIT.DB.EfCore.Models
 {
@@ -10,20 +8,19 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public MonitoringContext()
         {
         }
-
-
         public MonitoringContext(string connectionString)
         {
             ConnectionString = connectionString;
         }
-
         public MonitoringContext(DbContextOptions<MonitoringContext> options)
             : base(options)
         {
         }
 
+        public virtual DbSet<GithubLanguage> GithubLanguage { get; set; }
         public virtual DbSet<GithubLinkedinCrossTable> GithubLinkedinCrossTable { get; set; }
-        public virtual DbSet<GithubLanguage> Languages { get; set; }
+        public virtual DbSet<GithubProfile> GithubProfile { get; set; }
+        public virtual DbSet<GithubRepository> GithubRepository { get; set; }
         public virtual DbSet<LinkedinEducation> LinkedinEducation { get; set; }
         public virtual DbSet<LinkedinExperience> LinkedinExperience { get; set; }
         public virtual DbSet<LinkedinInterest> LinkedinInterest { get; set; }
@@ -31,29 +28,57 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public virtual DbSet<LinkedinProfile> LinkedinProfile { get; set; }
         public virtual DbSet<LinkedinSkill> LinkedinSkill { get; set; }
         public virtual DbSet<MigrationHistory> MigrationHistory { get; set; }
-        public virtual DbSet<GithubProfile> GithubProfiles { get; set; }
-        public virtual DbSet<Proxy> Proxies { get; set; }
-        public virtual DbSet<GithubRepository> GithubRepositories { get; set; }
+        public virtual DbSet<Proxy> Proxy { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Monitoring");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Monitoring;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.1-servicing-10028");
+
             modelBuilder.Entity<GithubLanguage>(entity =>
             {
                 entity.HasIndex(e => e.RepositoryId)
                     .HasName("IX_RepositoryId");
 
-                entity.HasOne(d => d.GithubRepository)
-                    .WithMany(p => p.GithubLanguages)
+                entity.Property(e => e.Percent).HasColumnType("decimal(18, 2)");
+
+                entity.HasOne(d => d.Repository)
+                    .WithMany(p => p.GithubLanguage)
                     .HasForeignKey(d => d.RepositoryId)
                     .HasConstraintName("FK_dbo.Languages_dbo.Repositories_RepositoryId");
+            });
+
+            modelBuilder.Entity<GithubProfile>(entity =>
+            {
+                entity.HasIndex(e => e.UserName)
+                    .HasName("UQ__Profiles__C9F284564E99F426")
+                    .IsUnique();
+
+                entity.Property(e => e.ImageUrl).IsUnicode(false);
+
+                entity.Property(e => e.LastUpdate).HasColumnType("datetime");
+
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<GithubRepository>(entity =>
+            {
+                entity.HasIndex(e => e.ProfileId)
+                    .HasName("IX_ProfileId");
+
+                entity.HasOne(d => d.Profile)
+                    .WithMany(p => p.GithubRepository)
+                    .HasForeignKey(d => d.ProfileId)
+                    .HasConstraintName("FK_dbo.Repositories_dbo.Profiles_ProfileId");
             });
 
             modelBuilder.Entity<LinkedinEducation>(entity =>
@@ -132,6 +157,8 @@ namespace Database.MonitoringIT.DB.EfCore.Models
 
                 entity.Property(e => e.ImageUrl).IsUnicode(false);
 
+                entity.Property(e => e.LastUpdate).HasColumnType("datetime");
+
                 entity.Property(e => e.Location).IsUnicode(false);
 
                 entity.Property(e => e.Phone).IsUnicode(false);
@@ -158,7 +185,8 @@ namespace Database.MonitoringIT.DB.EfCore.Models
 
             modelBuilder.Entity<MigrationHistory>(entity =>
             {
-                entity.HasKey(e => new { e.MigrationId, e.ContextKey });
+                entity.HasKey(e => new { e.MigrationId, e.ContextKey })
+                    .HasName("PK_dbo.__MigrationHistory");
 
                 entity.ToTable("__MigrationHistory");
 
@@ -171,26 +199,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                 entity.Property(e => e.ProductVersion)
                     .IsRequired()
                     .HasMaxLength(32);
-            });
-
-            modelBuilder.Entity<GithubProfile>(entity =>
-            {
-                entity.Property(e => e.ImageUrl).IsUnicode(false);
-
-                entity.Property(e => e.UserName)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<GithubRepository>(entity =>
-            {
-                entity.HasIndex(e => e.ProfileId)
-                    .HasName("IX_ProfileId");
-
-                entity.HasOne(d => d.GithubProfile)
-                    .WithMany(p => p.GithubRepositories)
-                    .HasForeignKey(d => d.ProfileId)
-                    .HasConstraintName("FK_dbo.Repositories_dbo.Profiles_ProfileId");
             });
         }
     }

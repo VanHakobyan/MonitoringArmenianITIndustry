@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Database.MonitoringIT.DB.EfCore.Models
+﻿namespace Database.MonitoringIT.DB.EfCore.Models
 {
     public partial class MigrationHistory
     {

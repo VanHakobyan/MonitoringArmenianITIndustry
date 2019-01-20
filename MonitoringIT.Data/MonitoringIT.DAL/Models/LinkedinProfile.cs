@@ -30,10 +30,10 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public string ImageUrl { get; set; }
         public DateTime? LastUpdate { get; set; }
 
-        public ICollection<LinkedinEducation> LinkedinEducation { get; set; }
-        public ICollection<LinkedinExperience> LinkedinExperience { get; set; }
-        public ICollection<LinkedinInterest> LinkedinInterest { get; set; }
-        public ICollection<LinkedinLanguage> LinkedinLanguage { get; set; }
-        public ICollection<LinkedinSkill> LinkedinSkill { get; set; }
+        public virtual ICollection<LinkedinEducation> LinkedinEducation { get; set; }
+        public virtual ICollection<LinkedinExperience> LinkedinExperience { get; set; }
+        public virtual ICollection<LinkedinInterest> LinkedinInterest { get; set; }
+        public virtual ICollection<LinkedinLanguage> LinkedinLanguage { get; set; }
+        public virtual ICollection<LinkedinSkill> LinkedinSkill { get; set; }
     }
 }

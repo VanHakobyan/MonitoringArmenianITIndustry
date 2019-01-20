@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Database.MonitoringIT.DB.EfCore.Models
+﻿namespace Database.MonitoringIT.DB.EfCore.Models
 {
     public partial class GithubLanguage
     {
@@ -10,6 +7,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public decimal Percent { get; set; }
         public int RepositoryId { get; set; }
 
-        public GithubRepository GithubRepository { get; set; }
+        public virtual GithubRepository Repository { get; set; }
     }
 }

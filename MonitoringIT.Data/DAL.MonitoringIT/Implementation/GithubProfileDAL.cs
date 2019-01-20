@@ -14,10 +14,10 @@ namespace DAL.MonitoringIT.Implementation
 
         public List<GithubProfile> GetAll()
         {
-            var profiles = _dbContext.GithubProfiles.ToList();
+            var profiles = _dbContext.GithubProfile.ToList();
             foreach (var profile in profiles)
             {
-                foreach (var profileRepository in profile.GithubRepositories)
+                foreach (var profileRepository in profile.GithubRepository)
                 {
                     profileRepository.Readme = null;
                 }
@@ -29,10 +29,10 @@ namespace DAL.MonitoringIT.Implementation
 
         public GithubProfile GetById(int id)
         {
-            var profile = _dbContext.GithubProfiles.Include(x => x.GithubRepositories).ThenInclude(x => x.GithubLanguages).FirstOrDefault(x => x.Id == id);
+            var profile = _dbContext.GithubProfile.Include(x => x.GithubRepository).ThenInclude(x => x.GithubLanguage).FirstOrDefault(x => x.Id == id);
             if (profile is null) return null;
 
-            foreach (var profileRepository in profile.GithubRepositories)
+            foreach (var profileRepository in profile.GithubRepository)
             {
                 profileRepository.Readme = null;
             }
@@ -42,17 +42,17 @@ namespace DAL.MonitoringIT.Implementation
 
         public List<GithubProfile> GetAllWithReadme()
         {
-            return _dbContext.GithubProfiles.ToList();
+            return _dbContext.GithubProfile.ToList();
         }
 
         public GithubProfile GetByIdWithReadme(int id)
         {
-            return _dbContext.GithubProfiles.Include(x => x.GithubRepositories).ThenInclude(x => x.GithubLanguages).FirstOrDefault(x => x.Id == id);
+            return _dbContext.GithubProfile.Include(x => x.GithubRepository).ThenInclude(x => x.GithubLanguage).FirstOrDefault(x => x.Id == id);
         }
 
         public GithubProfile GetByUserName(string username)
         {
-            return _dbContext.GithubProfiles.Include(x => x.GithubRepositories).ThenInclude(x => x.GithubLanguages).FirstOrDefault(x => x.UserName == username);
+            return _dbContext.GithubProfile.Include(x => x.GithubRepository).ThenInclude(x => x.GithubLanguage).FirstOrDefault(x => x.UserName == username);
         }
     }
 }
