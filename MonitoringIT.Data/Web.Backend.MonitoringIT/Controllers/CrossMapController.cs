@@ -15,6 +15,13 @@ namespace Web.Backend.MonitoringIT.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+
+        [HttpGet("api/crossmap/Test")]
+        public IActionResult Test()
+        {
+            return Ok("Test");
+        }
+
         /// <summary>
         /// Get All Cross Profiles
         /// </summary>
