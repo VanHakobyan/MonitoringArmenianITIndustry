@@ -88,7 +88,6 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
                         {
                             var username = linkedinLink.Split(new[] { "in/" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.TrimEnd('/');
                             linkedinProfile.Username = username;
-                            linkedinProfile.LastUpdate = DateTime.Now;
                             using (MonitoringEntities monitoringEntities = new MonitoringEntities())
                             {
                                 var user = monitoringEntities.LinkedinProfiles.Where(x => x.Username == username).ToList().FirstOrDefault();
@@ -100,6 +99,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
                                 }
                                 else
                                 {
+                                    linkedinProfile.LastUpdate = DateTime.Now;
                                     monitoringEntities.LinkedinProfiles.Add(linkedinProfile);
                                 }
                                 monitoringEntities.SaveChanges();
@@ -149,7 +149,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
                 if (linkedinProfile.Website != null) user.Website = linkedinProfile.Website;
                 if (linkedinProfile.Education != null) user.Education = linkedinProfile.Education;
                 if (linkedinProfile.Phone != null) user.Phone = linkedinProfile.Phone;
-
+                user.LastUpdate = DateTime.Now;
             }
             catch (Exception e)
             {
