@@ -15,17 +15,17 @@ namespace Services.MonitoringIT.Data.Integration.Github
         /// </summary>
         static void Main()
         {
-#if DEBUG
-            GithubIntegrationService service = new GithubIntegrationService();
-            service.TestAndStart();
-#else
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
+            var service = new GithubIntegrationService();
+            if (Environment.UserInteractive)
             {
-                new Service1()
-            };
-            ServiceBase.Run(ServicesToRun); 
-#endif
+                service.TestAndStart();
+            }
+            else
+            {
+                ServiceBase[] ServicesToRun;
+                ServicesToRun = new ServiceBase[] { service };
+                ServiceBase.Run(ServicesToRun);
+            }
         }
     }
 }

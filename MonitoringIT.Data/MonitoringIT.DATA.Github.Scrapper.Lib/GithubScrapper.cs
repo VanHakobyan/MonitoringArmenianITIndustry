@@ -163,6 +163,7 @@ namespace Lib.MonitoringIT.DATA.Github.Scrapper
                         if (repositories != null)
                         {
                             profile.GithubRepositories = repositories;
+                            profile.LastUpdate=DateTime.Now;
                             db.SaveChanges();
                         }
                     }

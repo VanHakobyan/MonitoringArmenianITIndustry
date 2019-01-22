@@ -11,17 +11,21 @@ namespace Services.MonitoringIT.Data.Parser.Linkedin
     {
         static void Main()
         {
-#if DEBUG
+
             var service = new LinkedinService();
-            service.TestAndStart();
-#else
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
+
+            if (Environment.UserInteractive)
             {
-                new LinkedinService()
-            };
-            ServiceBase.Run(ServicesToRun);
-#endif
+                service.TestAndStart();
+            }
+
+            else
+            {
+                ServiceBase[] ServicesToRun;
+                ServicesToRun = new ServiceBase[] { service };
+                ServiceBase.Run(ServicesToRun);
+            }
+
         }
     }
 }

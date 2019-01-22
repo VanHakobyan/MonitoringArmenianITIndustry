@@ -34,7 +34,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             {
                 using (var entities = new MonitoringEntities())
                 {
-                    var links = entities.LinkedinProfiles.Select(x => x.Username).ToList().Select(x => $"https://www.linkedin.com/in/{x}").ToList();
+                    var links = entities.LinkedinProfiles.OrderByDescending(x=>x.LastUpdate).Select(x => x.Username).ToList().Select(x => $"https://www.linkedin.com/in/{x}").ToList();
                     _linkedinLinks = links;
                     _driver = new FirefoxDriver();
                 }

@@ -20,8 +20,11 @@ namespace Services.MonitoringIT.Data.Integration.Github
 
         protected override void OnStart(string[] args)
         {
-            GithubApiProcessor apiProcessor = new GithubApiProcessor();
-            apiProcessor.UpdateGithubProfilesInDb();
+            Task.Run(() =>
+            {
+                var apiProcessor = new GithubApiProcessor();
+                apiProcessor.UpdateGithubProfilesInDb();
+            });
         }
 
         protected override void OnStop()

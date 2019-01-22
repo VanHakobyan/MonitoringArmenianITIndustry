@@ -15,17 +15,17 @@ namespace Services.MonitoringIT.Data.Parser.Proxy
         /// </summary>
         static void Main()
         {
-#if DEBUG
-            ServiceProxy proxy = new ServiceProxy();
-            proxy.TestAndStart();
-#else
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
+            ServiceProxy service = new ServiceProxy();
+            if (Environment.UserInteractive)
             {
-                new Service1()
-            };
-            ServiceBase.Run(ServicesToRun);
-#endif
+                service.TestAndStart();
+            }
+            else
+            {
+                ServiceBase[] ServicesToRun;
+                ServicesToRun = new ServiceBase[] { service };
+                ServiceBase.Run(ServicesToRun);
+            }
         }
     }
 }
