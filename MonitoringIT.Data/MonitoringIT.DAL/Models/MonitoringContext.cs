@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Database.MonitoringIT.DB.EfCore.Models
 {
     public partial class MonitoringContext : DbContext
     {
         public string ConnectionString { get; private set; }
+
         public MonitoringContext()
         {
         }
@@ -36,6 +39,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Monitoring;Trusted_Connection=True;");
             }
         }
@@ -46,6 +50,10 @@ namespace Database.MonitoringIT.DB.EfCore.Models
 
             modelBuilder.Entity<Company>(entity =>
             {
+                entity.HasIndex(e => e.Name)
+                    .HasName("UQ__Company__737584F638273FA0")
+                    .IsUnique();
+
                 entity.Property(e => e.Address).HasMaxLength(350);
 
                 entity.Property(e => e.DateOfFoundation).HasColumnType("date");
@@ -97,14 +105,14 @@ namespace Database.MonitoringIT.DB.EfCore.Models
             modelBuilder.Entity<GithubProfile>(entity =>
             {
                 entity.HasIndex(e => e.UserName)
-                    .HasName("UQ__Profiles__C9F284564E99F426")
+                    .HasName("UQ__Username")
                     .IsUnique();
 
                 entity.Property(e => e.ImageUrl).IsUnicode(false);
+
                 entity.Property(e => e.LastUpdate).HasColumnType("datetime");
-                entity.Property(e => e.UserName)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
+
+                entity.Property(e => e.UserName).IsRequired();
             });
 
             modelBuilder.Entity<GithubRepository>(entity =>
@@ -166,12 +174,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
 
             modelBuilder.Entity<LinkedinEducation>(entity =>
             {
-                entity.Property(e => e.Name).IsUnicode(false);
-
-                entity.Property(e => e.Time).IsUnicode(false);
-
-                entity.Property(e => e.Title).IsUnicode(false);
-
                 entity.HasOne(d => d.LinkedinProfile)
                     .WithMany(p => p.LinkedinEducation)
                     .HasForeignKey(d => d.LinkedinProfileId)
@@ -181,14 +183,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
 
             modelBuilder.Entity<LinkedinExperience>(entity =>
             {
-                entity.Property(e => e.Company).IsUnicode(false);
-
-                entity.Property(e => e.Location).IsUnicode(false);
-
-                entity.Property(e => e.Time).IsUnicode(false);
-
-                entity.Property(e => e.Title).IsUnicode(false);
-
                 entity.HasOne(d => d.LinkedinProfile)
                     .WithMany(p => p.LinkedinExperience)
                     .HasForeignKey(d => d.LinkedinProfileId)
@@ -198,8 +192,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
 
             modelBuilder.Entity<LinkedinInterest>(entity =>
             {
-                entity.Property(e => e.Name).IsUnicode(false);
-
                 entity.HasOne(d => d.LinkedinProfile)
                     .WithMany(p => p.LinkedinInterest)
                     .HasForeignKey(d => d.LinkedinProfileId)
@@ -209,8 +201,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
 
             modelBuilder.Entity<LinkedinLanguage>(entity =>
             {
-                entity.Property(e => e.Name).IsUnicode(false);
-
                 entity.HasOne(d => d.LinkedinProfile)
                     .WithMany(p => p.LinkedinLanguage)
                     .HasForeignKey(d => d.LinkedinProfileId)
@@ -221,43 +211,20 @@ namespace Database.MonitoringIT.DB.EfCore.Models
             modelBuilder.Entity<LinkedinProfile>(entity =>
             {
                 entity.HasIndex(e => e.Username)
-                    .HasName("UQ__Linkedin__536C85E415D72EF5")
+                    .HasName("UQ__Username")
                     .IsUnique();
-
-                entity.Property(e => e.Birthday).IsUnicode(false);
-
-                entity.Property(e => e.Company).IsUnicode(false);
 
                 entity.Property(e => e.Connected).HasColumnType("datetime");
 
-                entity.Property(e => e.Education).IsUnicode(false);
+                entity.Property(e => e.FullName).IsRequired();
 
-                entity.Property(e => e.Email).IsUnicode(false);
-
-                entity.Property(e => e.FullName)
-                    .IsRequired()
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ImageUrl).IsUnicode(false);
                 entity.Property(e => e.LastUpdate).HasColumnType("datetime");
 
-                entity.Property(e => e.Location).IsUnicode(false);
-
-                entity.Property(e => e.Phone).IsUnicode(false);
-
-                entity.Property(e => e.Specialty).IsUnicode(false);
-
-                entity.Property(e => e.Username)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Website).IsUnicode(false);
+                entity.Property(e => e.Username).IsRequired();
             });
 
             modelBuilder.Entity<LinkedinSkill>(entity =>
             {
-                entity.Property(e => e.Name).IsUnicode(false);
-
                 entity.HasOne(d => d.LinkedinProfile)
                     .WithMany(p => p.LinkedinSkill)
                     .HasForeignKey(d => d.LinkedinProfileId)

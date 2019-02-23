@@ -10,6 +10,5 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public string Ip { get; set; }
         public string Port { get; set; }
         public string Type { get; set; }
-        public int? ErrorCount { get; set; }
     }
 }
