@@ -22,7 +22,7 @@ namespace Services.MonitoringIT.Data.Integration.Github
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new Service1()
+                new GithubIntegrationService()
             };
             ServiceBase.Run(ServicesToRun); 
 #endif

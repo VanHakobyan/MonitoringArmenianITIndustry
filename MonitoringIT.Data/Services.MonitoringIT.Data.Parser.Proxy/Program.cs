@@ -22,7 +22,7 @@ namespace Services.MonitoringIT.Data.Parser.Proxy
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new Service1()
+                new ServiceProxy(), 
             };
             ServiceBase.Run(ServicesToRun);
 #endif
