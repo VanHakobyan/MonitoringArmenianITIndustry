@@ -1,31 +1,24 @@
-export * from './alert';
-export * from './breadcrumbs';
-export * from './button';
-export * from './editable-text';
-export * from './editable-select';
-export * from './input';
-export * from './loading';
-export * from './messages-alert';
-export * from './messages-alert-container';
-export * from './modal';
-export * from './notification';
-export * from './notification-alert';
-export * from './notifications-alert';
-export * from './notifications';
-export * from './preloader';
-export * from './page';
-export * from './pagination';
-export * from './panel';
-export * from './progress-bar';
-export * from './select';
-export * from './switch';
-export * from './tab';
-export * from './table';
-export * from './table-body';
-export * from './table-head';
-export * from './table-row';
-export * from './tabs';
-export * from './textarea';
+import React from "react";
+import ReactDOM from "react-dom";
+import { createBrowserHistory } from "history";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 
-// helpers
-export * from './lib/event-bus';
+import AdminLayout from "layouts/Admin/Admin.jsx";
+import RTLLayout from "layouts/RTL/RTL.jsx";
+
+import "assets/scss/black-dashboard-react.scss";
+import "assets/demo/demo.css";
+import "assets/css/nucleo-icons.css";
+
+const hist = createBrowserHistory();
+
+ReactDOM.render(
+  <Router history={hist}>
+    <Switch>
+      <Route path="/admin" render={props => <AdminLayout {...props} />} />
+      <Route path="/rtl" render={props => <RTLLayout {...props} />} />
+      <Redirect from="/" to="/admin/dashboard" />
+    </Switch>
+  </Router>,
+  document.getElementById("root")
+);

@@ -1,67 +1,42 @@
 {
-  "name": "react-blur-admin",
-  "version": "0.11.1",
-  "description": "React Blur Admin - Styles And Components",
-  "main": "dist",
+  "name": "black-dashboard-react",
+  "version": "1.0.0",
+  "private": true,
+  "homepage": "https://creativetimofficial.github.io/black-dashboard-react/#/dashboard",
+  "dependencies": {
+    "@types/react": "16.4.16",
+    "bootstrap": "4.1.3",
+    "chart.js": "^2.7.2",
+    "classnames": "2.2.6",
+    "history": "4.7.2",
+    "node-sass": "4.9.3",
+    "npm": "^6.8.0",
+    "perfect-scrollbar": "1.4.0",
+    "prop-types": "^15.6.2",
+    "react": "16.5.2",
+    "react-chartjs-2": "^2.7.4",
+    "react-dom": "16.5.2",
+    "react-google-maps": "9.4.5",
+    "react-notification-alert": "0.0.8",
+    "react-router-dom": "4.3.1",
+    "react-scripts": "2.0.4",
+    "reactstrap": "6.5.0"
+  },
   "scripts": {
     "start": "react-scripts start",
-    "deploy": "npm run deployjs && npm run deploycss && npm run deployassets",
-    "deployassets": "xcopy src\\assets\\fonts dist\\assets && xcopy src\\assets\\img dist\\assets",
-    "deploycss": "node-sass -r src\\assets\\styles\\app.scss dist\\assets\\styles\\react-blur-admin.min.css && xcopy src\\assets\\styles\\bootstrap\\fonts\\* dist\\assets\\fonts",
-    "deployjs": "babel -d dist src",
-    "lint": "node_modules/.bin/eslint --ext js src/",
-    "prepublish": "npm run deploy",
-    "preversion": "npm run lint && npm run test",
-    "test": "NODE_ENV=test NODE_PATH=. ./node_modules/.bin/mocha test/.setup.js test --recursive"
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "compile-scss": "node-sass src/assets/scss/black-dashboard-react.scss src/assets/css/black-dashboard-react.css"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/knledg/react-blur-admin.git"
+  "eslintConfig": {
+    "extends": "react-app"
   },
-  "keywords": [
-    "react",
-    "blur admin"
-  ],
-  "author": "Consolidated Knowledge",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/knledg/react-blur-admin/issues"
-  },
-  "homepage": "https://github.com/knledg/react-blur-admin#readme",
-  "peerDependencies": {
-    "react": ">=0.14.0"
-  },
-  "dependencies": {
-    "babel-cli": "^6.9.0",
-    "classnames": "^2.2.5",
-    "lodash": "^4.7.0",
-    "react-flex-proto": "^1.0.0",
-    "react-scripts": "^2.1.3"
-  },
-  "devDependencies": {
-    "babel-core": "^6.9.0",
-    "babel-eslint": "^9.0.0",
-    "babel-loader": "^8.0.4",
-    "babel-plugin-transform-runtime": "^6.5.0",
-    "babel-preset-es2015": "^6.5.0",
-    "babel-preset-react": "^6.5.0",
-    "babel-preset-stage-1": "^6.5.0",
-    "babel-register": "^6.11.6",
-    "babelify": "^7.2.0",
-    "chai": "^3.5.0",
-    "enzyme": "^2.3.0",
-    "eslint": "^2.10.2",
-    "eslint-plugin-react": "^5.1.1",
-    "estraverse-fb": "^1.3.1",
-    "jsdom": "^9.4.1",
-    "mocha": "^5.2.0",
-    "mocha-sinon": "^1.1.5",
-    "node-sass": "^3.3.2",
-    "react": "^15.1.0",
-    "react-addons-test-utils": "^15.1.0",
-    "react-dom": "^15.1.0",
-    "sinon": "^1.17.4",
-    "uglifyjs": "^2.4.10",
-    "webpack": "^1.13.1"
-  }
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

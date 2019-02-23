@@ -20,8 +20,11 @@ namespace Services.MonitoringIT.Data.Parser.Github
 
         protected override void OnStart(string[] args)
         {
-            var githubScrapper = new GithubScrapper();
-            githubScrapper.Start();
+            Task.Run(() =>
+            {
+                var githubScrapper = new GithubScrapper();
+                githubScrapper.Start();
+            });
 
         }
 

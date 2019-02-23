@@ -1,5 +1,5 @@
-﻿using System.ServiceProcess;
-using Services.MonitoringIT.Data.Parser.Linkedin;
+﻿using System;
+using System.ServiceProcess;
 
 namespace Services.MonitoringIT.Data.Parser.Github
 {
@@ -7,17 +7,17 @@ namespace Services.MonitoringIT.Data.Parser.Github
     {
         static void Main()
         {
-#if DEBUG
             var service = new GithubService();
-            service.TestAndStart();
-#else
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
+            if (Environment.UserInteractive)
             {
-                new LinkedinService(),
-            };
-            ServiceBase.Run(ServicesToRun);
-#endif
+                service.TestAndStart();
+            }
+            else
+            {
+                ServiceBase[] ServicesToRun;
+                ServicesToRun = new ServiceBase[] { service };
+                ServiceBase.Run(ServicesToRun);
+            }
         }
     }
 }

@@ -22,7 +22,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public int StarsCount { get; set; }
         public string ImageUrl { get; set; }
         public DateTime? LastUpdate { get; set; }
-
         public virtual ICollection<GithubRepository> GithubRepository { get; set; }
     }
 }
