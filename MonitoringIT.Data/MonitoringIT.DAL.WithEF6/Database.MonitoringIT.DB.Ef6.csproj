@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Company.cs">
+      <DependentUpon>Monitoring.tt</DependentUpon>
+    </Compile>
     <Compile Include="GithubLanguage.cs">
       <DependentUpon>Monitoring.tt</DependentUpon>
     </Compile>
@@ -60,6 +63,9 @@
       <DependentUpon>Monitoring.tt</DependentUpon>
     </Compile>
     <Compile Include="GithubRepository.cs">
+      <DependentUpon>Monitoring.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Job.cs">
       <DependentUpon>Monitoring.tt</DependentUpon>
     </Compile>
     <Compile Include="LinkedinEducation.cs">

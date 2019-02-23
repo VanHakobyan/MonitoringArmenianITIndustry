@@ -5,6 +5,24 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="MonitoringModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="About" Type="nvarchar(max)" />
+          <Property Name="Industry" Type="nvarchar" MaxLength="150" />
+          <Property Name="NumberOfEmployees" Type="int" Nullable="false" />
+          <Property Name="DateOfFoundation" Type="date" />
+          <Property Name="Website" Type="varchar" MaxLength="350" />
+          <Property Name="Address" Type="nvarchar" MaxLength="350" />
+          <Property Name="Facebook" Type="varchar" MaxLength="350" />
+          <Property Name="Linkedin" Type="varchar" MaxLength="350" />
+          <Property Name="GooglePlus" Type="varchar" MaxLength="350" />
+          <Property Name="Twitter" Type="varchar" MaxLength="350" />
+          <Property Name="Phone" Type="varchar" MaxLength="150" />
+        </EntityType>
         <EntityType Name="GithubLanguage">
           <Key>
             <PropertyRef Name="Id" />
@@ -27,7 +45,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="varchar" MaxLength="200" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="450" Nullable="false" />
           <Property Name="Url" Type="nvarchar(max)" />
           <Property Name="Company" Type="nvarchar(max)" />
           <Property Name="Name" Type="nvarchar(max)" />
@@ -54,33 +72,53 @@
           <Property Name="ContributorsCount" Type="int" />
           <Property Name="ForksCount" Type="int" />
         </EntityType>
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="350" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="350" />
+          <Property Name="Deadline" Type="datetime" />
+          <Property Name="EmploymentTerm" Type="nvarchar" MaxLength="350" Nullable="false" />
+          <Property Name="TimeType" Type="nvarchar" MaxLength="350" />
+          <Property Name="Category" Type="nvarchar" MaxLength="350" Nullable="false" />
+          <Property Name="Location" Type="nvarchar" MaxLength="350" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="350" Nullable="false" />
+          <Property Name="Responsibilities" Type="nvarchar" MaxLength="350" Nullable="false" />
+          <Property Name="RequiredQualifications" Type="nvarchar" MaxLength="350" />
+          <Property Name="ProfessionalSkills" Type="nvarchar" MaxLength="350" />
+          <Property Name="AdditionalInformation" Type="nvarchar" MaxLength="350" />
+          <Property Name="SoftSkills" Type="nvarchar" MaxLength="350" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="LinkedinEducation">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar(max)" />
-          <Property Name="Time" Type="varchar(max)" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Time" Type="nvarchar(max)" />
           <Property Name="LinkedinProfileId" Type="int" Nullable="false" />
-          <Property Name="Title" Type="varchar(max)" />
+          <Property Name="Title" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="LinkedinExperience">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Company" Type="varchar(max)" />
-          <Property Name="Title" Type="varchar(max)" />
-          <Property Name="Time" Type="varchar(max)" />
+          <Property Name="Company" Type="nvarchar(max)" />
+          <Property Name="Title" Type="nvarchar(max)" />
+          <Property Name="Time" Type="nvarchar(max)" />
           <Property Name="LinkedinProfileId" Type="int" Nullable="false" />
-          <Property Name="Location" Type="varchar(max)" />
+          <Property Name="Location" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="LinkedinInterest">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar(max)" />
+          <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="FollowersCount" Type="int" />
           <Property Name="LinkedinProfileId" Type="int" Nullable="false" />
         </EntityType>
@@ -89,7 +127,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar(max)" />
+          <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="LinkedinProfileId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LinkedinProfile">
@@ -97,19 +135,19 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Username" Type="varchar" MaxLength="200" />
-          <Property Name="FullName" Type="varchar(max)" Nullable="false" />
-          <Property Name="Specialty" Type="varchar(max)" />
-          <Property Name="Location" Type="varchar(max)" />
-          <Property Name="Education" Type="varchar(max)" />
-          <Property Name="Company" Type="varchar(max)" />
+          <Property Name="Username" Type="nvarchar" MaxLength="450" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Specialty" Type="nvarchar(max)" />
+          <Property Name="Location" Type="nvarchar(max)" />
+          <Property Name="Education" Type="nvarchar(max)" />
+          <Property Name="Company" Type="nvarchar(max)" />
           <Property Name="ConnectionCount" Type="int" />
-          <Property Name="Website" Type="varchar(max)" />
-          <Property Name="Phone" Type="varchar(max)" />
-          <Property Name="Email" Type="varchar(max)" />
-          <Property Name="Birthday" Type="varchar(max)" />
+          <Property Name="Website" Type="nvarchar(max)" />
+          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Birthday" Type="nvarchar(max)" />
           <Property Name="Connected" Type="datetime" />
-          <Property Name="ImageUrl" Type="varchar(max)" />
+          <Property Name="ImageUrl" Type="nvarchar(max)" />
           <Property Name="LastUpdate" Type="datetime" />
         </EntityType>
         <EntityType Name="LinkedinSkill">
@@ -117,7 +155,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar(max)" />
+          <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="EndorsedCount" Type="int" />
           <Property Name="LinkedinProfileId" Type="int" Nullable="false" />
         </EntityType>
@@ -131,6 +169,20 @@
           <Property Name="Port" Type="nvarchar(max)" />
           <Property Name="Type" Type="nvarchar(max)" />
         </EntityType>
+        <Association Name="FK_dbo_Jobs_dbo_Companies_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Job" Type="Self.Job" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Job">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_Languages_dbo_Repositories_RepositoryId">
           <End Role="GithubRepository" Type="Self.GithubRepository" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -220,10 +272,12 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="MonitoringModelStoreContainer">
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GithubLanguage" EntityType="Self.GithubLanguage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GithubLinkedinCrossTable" EntityType="Self.GithubLinkedinCrossTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GithubProfile" EntityType="Self.GithubProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GithubRepository" EntityType="Self.GithubRepository" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Job" EntityType="Self.Job" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LinkedinEducation" EntityType="Self.LinkedinEducation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LinkedinExperience" EntityType="Self.LinkedinExperience" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LinkedinInterest" EntityType="Self.LinkedinInterest" Schema="dbo" store:Type="Tables" />
@@ -231,6 +285,10 @@
           <EntitySet Name="LinkedinProfile" EntityType="Self.LinkedinProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LinkedinSkill" EntityType="Self.LinkedinSkill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Proxy" EntityType="Self.Proxy" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Jobs_dbo_Companies_CompanyId" Association="Self.FK_dbo_Jobs_dbo_Companies_CompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Job" EntitySet="Job" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_Languages_dbo_Repositories_RepositoryId" Association="Self.FK_dbo_Languages_dbo_Repositories_RepositoryId">
             <End Role="GithubRepository" EntitySet="GithubRepository" />
             <End Role="GithubLanguage" EntitySet="GithubLanguage" />
@@ -277,10 +335,10 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Time" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Time" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LinkedinProfileId" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LinkedinProfile" Relationship="Self.FK_LinkedinEducation_LinkedinProfile" FromRole="LinkedinEducation" ToRole="LinkedinProfile" />
         </EntityType>
         <EntityType Name="LinkedinExperience">
@@ -288,11 +346,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Company" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Time" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Company" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Time" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LinkedinProfileId" Type="Int32" Nullable="false" />
-          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LinkedinProfile" Relationship="Self.FK_LinkedinProfile_LinkedinExperience" FromRole="LinkedinExperience" ToRole="LinkedinProfile" />
         </EntityType>
         <EntityType Name="LinkedinInterest">
@@ -300,7 +358,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="FollowersCount" Type="Int32" />
           <Property Name="LinkedinProfileId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="LinkedinProfile" Relationship="Self.FK_Interest_LinkedinProfile" FromRole="LinkedinInterest" ToRole="LinkedinProfile" />
@@ -310,7 +368,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LinkedinProfileId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="LinkedinProfile" Relationship="Self.FK_LinkedinLanguage_LinkedinProfile" FromRole="LinkedinLanguage" ToRole="LinkedinProfile" />
         </EntityType>
@@ -319,19 +377,19 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Username" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Specialty" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Education" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Company" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="450" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Specialty" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Education" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Company" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ConnectionCount" Type="Int32" />
-          <Property Name="Website" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Birthday" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Website" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Birthday" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Connected" Type="DateTime" Precision="3" />
-          <Property Name="ImageUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LinkedinEducations" Relationship="Self.FK_LinkedinEducation_LinkedinProfile" FromRole="LinkedinProfile" ToRole="LinkedinEducation" />
           <NavigationProperty Name="LinkedinExperiences" Relationship="Self.FK_LinkedinProfile_LinkedinExperience" FromRole="LinkedinProfile" ToRole="LinkedinExperience" />
           <NavigationProperty Name="LinkedinInterests" Relationship="Self.FK_Interest_LinkedinProfile" FromRole="LinkedinProfile" ToRole="LinkedinInterest" />
@@ -344,7 +402,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EndorsedCount" Type="Int32" />
           <Property Name="LinkedinProfileId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="LinkedinProfile" Relationship="Self.FK_LinkedinSkill_LinkedinProfile" FromRole="LinkedinSkill" ToRole="LinkedinProfile" />
@@ -449,6 +507,12 @@
             <End Role="GithubRepository" EntitySet="GithubRepositories" />
           </AssociationSet>
           <EntitySet Name="Proxies" EntityType="MonitoringModel.Proxy" />
+          <EntitySet Name="Companies" EntityType="MonitoringModel.Company" />
+          <EntitySet Name="Jobs" EntityType="MonitoringModel.Job" />
+          <AssociationSet Name="FK_dbo_Jobs_dbo_Companies_CompanyId" Association="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Job" EntitySet="Jobs" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="GithubLanguage">
           <Key>
@@ -465,7 +529,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="450" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Company" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -533,6 +597,60 @@
           <Property Name="Port" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Industry" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfEmployees" Type="Int32" Nullable="false" />
+          <Property Name="DateOfFoundation" Type="DateTime" Precision="0" />
+          <Property Name="Website" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Facebook" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="Linkedin" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="GooglePlus" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="Twitter" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Jobs" Relationship="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId" FromRole="Company" ToRole="Job" />
+        </EntityType>
+        <EntityType Name="Job">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Deadline" Type="DateTime" Precision="3" />
+          <Property Name="EmploymentTerm" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="TimeType" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Category" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Responsibilities" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredQualifications" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="ProfessionalSkills" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="AdditionalInformation" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="SoftSkills" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId" FromRole="Job" ToRole="Company" />
+        </EntityType>
+        <Association Name="FK_dbo_Jobs_dbo_Companies_CompanyId">
+          <End Type="MonitoringModel.Company" Role="Company" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MonitoringModel.Job" Role="Job" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Job">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -672,6 +790,46 @@
                 <ScalarProperty Name="Port" ColumnName="Port" />
                 <ScalarProperty Name="Ip" ColumnName="Ip" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="MonitoringModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Twitter" ColumnName="Twitter" />
+                <ScalarProperty Name="GooglePlus" ColumnName="GooglePlus" />
+                <ScalarProperty Name="Linkedin" ColumnName="Linkedin" />
+                <ScalarProperty Name="Facebook" ColumnName="Facebook" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="DateOfFoundation" ColumnName="DateOfFoundation" />
+                <ScalarProperty Name="NumberOfEmployees" ColumnName="NumberOfEmployees" />
+                <ScalarProperty Name="Industry" ColumnName="Industry" />
+                <ScalarProperty Name="About" ColumnName="About" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Jobs">
+            <EntityTypeMapping TypeName="MonitoringModel.Job">
+              <MappingFragment StoreEntitySet="Job">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="SoftSkills" ColumnName="SoftSkills" />
+                <ScalarProperty Name="AdditionalInformation" ColumnName="AdditionalInformation" />
+                <ScalarProperty Name="ProfessionalSkills" ColumnName="ProfessionalSkills" />
+                <ScalarProperty Name="RequiredQualifications" ColumnName="RequiredQualifications" />
+                <ScalarProperty Name="Responsibilities" ColumnName="Responsibilities" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="TimeType" ColumnName="TimeType" />
+                <ScalarProperty Name="EmploymentTerm" ColumnName="EmploymentTerm" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

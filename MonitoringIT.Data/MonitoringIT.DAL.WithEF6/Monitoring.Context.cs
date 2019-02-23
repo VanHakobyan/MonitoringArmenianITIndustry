@@ -36,5 +36,7 @@ namespace Database.MonitoringIT.DAL.WithEF6
         public virtual DbSet<GithubProfile> GithubProfiles { get; set; }
         public virtual DbSet<GithubRepository> GithubRepositories { get; set; }
         public virtual DbSet<Proxy> Proxies { get; set; }
+        public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<Job> Jobs { get; set; }
     }
 }
