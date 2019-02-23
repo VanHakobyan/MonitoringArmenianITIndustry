@@ -17,10 +17,12 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         {
         }
 
+        public virtual DbSet<Company> Company { get; set; }
         public virtual DbSet<GithubLanguage> GithubLanguage { get; set; }
         public virtual DbSet<GithubLinkedinCrossTable> GithubLinkedinCrossTable { get; set; }
         public virtual DbSet<GithubProfile> GithubProfile { get; set; }
         public virtual DbSet<GithubRepository> GithubRepository { get; set; }
+        public virtual DbSet<Job> Job { get; set; }
         public virtual DbSet<LinkedinEducation> LinkedinEducation { get; set; }
         public virtual DbSet<LinkedinExperience> LinkedinExperience { get; set; }
         public virtual DbSet<LinkedinInterest> LinkedinInterest { get; set; }
@@ -42,6 +44,43 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.1-servicing-10028");
 
+            modelBuilder.Entity<Company>(entity =>
+            {
+                entity.Property(e => e.Address).HasMaxLength(350);
+
+                entity.Property(e => e.DateOfFoundation).HasColumnType("date");
+
+                entity.Property(e => e.Facebook)
+                    .HasMaxLength(350)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.GooglePlus)
+                    .HasMaxLength(350)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Industry).HasMaxLength(150);
+
+                entity.Property(e => e.Linkedin)
+                    .HasMaxLength(350)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(150);
+
+                entity.Property(e => e.Phone)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Twitter)
+                    .HasMaxLength(350)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Website)
+                    .HasMaxLength(350)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<GithubLanguage>(entity =>
             {
                 entity.HasIndex(e => e.RepositoryId)
@@ -62,9 +101,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                     .IsUnique();
 
                 entity.Property(e => e.ImageUrl).IsUnicode(false);
-
                 entity.Property(e => e.LastUpdate).HasColumnType("datetime");
-
                 entity.Property(e => e.UserName)
                     .HasMaxLength(200)
                     .IsUnicode(false);
@@ -79,6 +116,52 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                     .WithMany(p => p.GithubRepository)
                     .HasForeignKey(d => d.ProfileId)
                     .HasConstraintName("FK_dbo.Repositories_dbo.Profiles_ProfileId");
+            });
+
+            modelBuilder.Entity<Job>(entity =>
+            {
+                entity.Property(e => e.AdditionalInformation).HasMaxLength(350);
+
+                entity.Property(e => e.Category)
+                    .IsRequired()
+                    .HasMaxLength(350);
+
+                entity.Property(e => e.Deadline).HasColumnType("datetime");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasMaxLength(350);
+
+                entity.Property(e => e.Email).HasMaxLength(350);
+
+                entity.Property(e => e.EmploymentTerm)
+                    .IsRequired()
+                    .HasMaxLength(350);
+
+                entity.Property(e => e.Location)
+                    .IsRequired()
+                    .HasMaxLength(350);
+
+                entity.Property(e => e.ProfessionalSkills).HasMaxLength(350);
+
+                entity.Property(e => e.RequiredQualifications).HasMaxLength(350);
+
+                entity.Property(e => e.Responsibilities)
+                    .IsRequired()
+                    .HasMaxLength(350);
+
+                entity.Property(e => e.SoftSkills).HasMaxLength(350);
+
+                entity.Property(e => e.TimeType).HasMaxLength(350);
+
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(350);
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.Job)
+                    .HasForeignKey(d => d.CompanyId)
+                    .HasConstraintName("FK_dbo.Jobs_dbo.Companies_CompanyId");
             });
 
             modelBuilder.Entity<LinkedinEducation>(entity =>
@@ -156,7 +239,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.ImageUrl).IsUnicode(false);
-
                 entity.Property(e => e.LastUpdate).HasColumnType("datetime");
 
                 entity.Property(e => e.Location).IsUnicode(false);

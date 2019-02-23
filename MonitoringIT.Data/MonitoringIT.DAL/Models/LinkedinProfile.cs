@@ -29,7 +29,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public DateTime? Connected { get; set; }
         public string ImageUrl { get; set; }
         public DateTime? LastUpdate { get; set; }
-
         public virtual ICollection<LinkedinEducation> LinkedinEducation { get; set; }
         public virtual ICollection<LinkedinExperience> LinkedinExperience { get; set; }
         public virtual ICollection<LinkedinInterest> LinkedinInterest { get; set; }
