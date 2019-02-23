@@ -10,4 +10,8 @@
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MonitoringIT.DAL\Database.MonitoringIT.DB.EfCore.csproj" />
+  </ItemGroup>
+
 </Project>
