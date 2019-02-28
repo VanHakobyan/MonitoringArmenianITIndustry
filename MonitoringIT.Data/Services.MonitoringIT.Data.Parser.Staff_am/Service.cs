@@ -21,7 +21,7 @@ namespace Services.MonitoringIT.Data.Parser.Staff_am
         protected override void OnStart(string[] args)
         {
             StaffScrapper scrapper = new StaffScrapper();
-            scrapper.GetContent();
+            scrapper.StartSScrapping();
             //scrapper.InitDriver();
             //scrapper.GetCompanyLinks();
         }

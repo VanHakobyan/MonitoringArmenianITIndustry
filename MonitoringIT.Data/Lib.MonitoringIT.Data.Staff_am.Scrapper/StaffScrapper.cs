@@ -41,7 +41,7 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
         //}
 
 
-        public void StartScrapping()
+        public void StartSScrapping()
         {
             GetCompanyLinks();
             GetCompanies();
@@ -59,10 +59,6 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
                     document.LoadHtml(pageContent);
                     var pageLinks = document.DocumentNode.SelectNodes(".//a[@class='load-more btn width100']").Select(x => $"{CompanyCustomLink}{x.GetAttributeValue("href", "")}").ToList();
                     links.AddRange(pageLinks);
-                    foreach (var pageLink in pageLinks)
-                    {
-                        Console.WriteLine(pageLink);
-                    }
                 }
                 catch (Exception e)
                 {
@@ -84,14 +80,22 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
                     HtmlDocument document = new HtmlDocument();
                     document.LoadHtml(companyHtmlContent);
 
+                    var headerInfoNode = document.DocumentNode.SelectSingleNode(".//div[@class='header-info accordion-style']");
+                    var containerNode = document.DocumentNode.SelectSingleNode(".//div[@class='container']");
+                    var jobsListNode = document.DocumentNode.SelectSingleNode(".//div[@class='accordion-style clearfix company-jobs-list']");
+                    var aboutCompanyNode = document.DocumentNode.SelectSingleNode(".//div[@class='accordion-style animation-element in-view']");
+                    var contactDetails = document.DocumentNode.SelectSingleNode(".//div[@id ='company-contact-details']");
 
-                    //
+                    GetHeaderInfo(company, headerInfoNode);
+                    GetContainer(company, containerNode);
+                    GetAbout(company, aboutCompanyNode);
+                    GetContent(company, contactDetails);
 
 
-                    company.Job = GetJobs(null);
+                    var jobList=jobsListNode.SelectNodes(".//a[@class='load-more btn hb_btn']").Select(x=>x.GetAttributeValue("href","")).ToList();
                     
-                    
-                    //
+
+                    company.Job = GetJobs(jobList);
 
                     using (MonitoringContext context = new MonitoringContext())
                     {
@@ -106,6 +110,41 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
             }
         }
 
+        private void GetHeaderInfo(Company company, HtmlNode headerInfoNode)
+        {
+            var name = headerInfoNode.SelectSingleNode(".//h1[@class='text-left']").InnerText;
+            var views = headerInfoNode.SelectSingleNode(".//span[@class='margin-r-2']").InnerText;
+            var image = headerInfoNode.SelectSingleNode(".//div[@class='image']").GetAttributeValue("style", "");
+
+            //company.Name = name;
+            //company.Views views;
+            //company.Image = image;
+        }
+        private void GetAbout(Company company, HtmlNode aboutCompanyNode)
+        {
+            var companyInfoDiv = aboutCompanyNode.SelectSingleNode(".//div[@class='company-info']");
+            var descriptions = companyInfoDiv.SelectNodes(".//p[@class='professional-skills-description']");
+            var industry = descriptions[0].InnerText.Trim();
+            var type = descriptions[1].InnerText.Trim();
+            var nOfEmpl = descriptions[2].InnerText.Trim();
+            var about = aboutCompanyNode.SelectSingleNode(".//div[@class='col-lg-8 col-md-8 about-text']").InnerText.Trim();
+
+
+        }
+      
+       
+
+        private void GetContainer(Company company, HtmlNode containerNode)
+        {
+            
+        }
+
+        private void GetContent(Company company, HtmlNode contactDetails)
+        {
+
+
+        }
+
 
         public List<Job> GetJobs(List<string> jobLinks)
         {
@@ -114,9 +153,20 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
             {
                 try
                 {
-                    var jobHtmlContent = SendGetRequest(jobLink).Result;
+                    var jobHtmlContent = SendGetRequest($"{CompanyCustomLink}{jobLink}").Result;
                     HtmlDocument document = new HtmlDocument();
                     document.LoadHtml(jobHtmlContent);
+
+                    var jobPostNode = document.DocumentNode.SelectSingleNode(".//div[@id ='job-post']");
+                    var rowNode = jobPostNode.SelectSingleNode(".//div[@class ='row']");
+                    var descriptionNode = jobPostNode.SelectSingleNode(".//div[@class ='job-list-content-desc hs_line_break']");
+                    var skillNode = jobPostNode.SelectSingleNode(".//div[@class ='job-list-content-skills']");
+
+
+
+
+
+
                     var job = new Job();
                     jobs.Add(job);
                 }
