@@ -49,9 +49,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.MonitoringIT.Data.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.MonitoringIT.Data.Parser.Proxy", "Services.MonitoringIT.Data.Parser.Proxy\Services.MonitoringIT.Data.Parser.Proxy.csproj", "{4287AC41-0F5C-424B-B3BF-F77D9BB46957}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.MonitoringIT.Data.Staff_am.Scrapper", "Lib.MonitoringIT.Data.Staff_am.Scrapper\Lib.MonitoringIT.Data.Staff_am.Scrapper.csproj", "{54438318-E25E-426D-9BC0-5486945FAC8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib.MonitoringIT.Data.Staff_am.Scrapper", "Lib.MonitoringIT.Data.Staff_am.Scrapper\Lib.MonitoringIT.Data.Staff_am.Scrapper.csproj", "{54438318-E25E-426D-9BC0-5486945FAC8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.MonitoringIT.Data.Parser.Staff_am", "Services.MonitoringIT.Data.Parser.Staff_am\Services.MonitoringIT.Data.Parser.Staff_am.csproj", "{3DBA733A-8FD7-4F3E-B7AE-85A5FD4E676A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeteCtion", "DeteCtion", "{B3BA6A97-F06A-47A8-8A74-80507BC307E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Detection.MonitoringIT.Data", "Detection.MonitoringIT.Data\Detection.MonitoringIT.Data.csproj", "{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -353,6 +357,22 @@ Global
 		{3DBA733A-8FD7-4F3E-B7AE-85A5FD4E676A}.Release|x64.Build.0 = Release|Any CPU
 		{3DBA733A-8FD7-4F3E-B7AE-85A5FD4E676A}.Release|x86.ActiveCfg = Release|Any CPU
 		{3DBA733A-8FD7-4F3E-B7AE-85A5FD4E676A}.Release|x86.Build.0 = Release|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Debug|ARM.Build.0 = Debug|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Debug|x64.Build.0 = Debug|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Debug|x86.Build.0 = Debug|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Release|ARM.ActiveCfg = Release|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Release|ARM.Build.0 = Release|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Release|x64.ActiveCfg = Release|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Release|x64.Build.0 = Release|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Release|x86.ActiveCfg = Release|Any CPU
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -375,6 +395,7 @@ Global
 		{4287AC41-0F5C-424B-B3BF-F77D9BB46957} = {B1D2C5B0-F845-4A85-971E-59D08D4A124B}
 		{54438318-E25E-426D-9BC0-5486945FAC8E} = {D85F3CFE-A73F-4F47-8305-EEEFEF3F3523}
 		{3DBA733A-8FD7-4F3E-B7AE-85A5FD4E676A} = {B1D2C5B0-F845-4A85-971E-59D08D4A124B}
+		{CA329A42-5E9A-4A03-8695-F72AF3A94BC8} = {B3BA6A97-F06A-47A8-8A74-80507BC307E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {27C7089F-1860-4C58-86E7-F079CE27FDDA}
