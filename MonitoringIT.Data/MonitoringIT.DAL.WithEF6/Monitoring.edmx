@@ -22,6 +22,8 @@
           <Property Name="GooglePlus" Type="varchar" MaxLength="350" />
           <Property Name="Twitter" Type="varchar" MaxLength="350" />
           <Property Name="Phone" Type="varchar" MaxLength="150" />
+          <Property Name="Views" Type="int" />
+          <Property Name="Type" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="GithubLanguage">
           <Key>
@@ -87,9 +89,7 @@
           <Property Name="Description" Type="nvarchar" MaxLength="350" Nullable="false" />
           <Property Name="Responsibilities" Type="nvarchar" MaxLength="350" Nullable="false" />
           <Property Name="RequiredQualifications" Type="nvarchar" MaxLength="350" />
-          <Property Name="ProfessionalSkills" Type="nvarchar" MaxLength="350" />
           <Property Name="AdditionalInformation" Type="nvarchar" MaxLength="350" />
-          <Property Name="SoftSkills" Type="nvarchar" MaxLength="350" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LinkedinEducation">
@@ -168,6 +168,15 @@
           <Property Name="Ip" Type="nvarchar(max)" />
           <Property Name="Port" Type="nvarchar(max)" />
           <Property Name="Type" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="StaffSkill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="10" />
+          <Property Name="JobId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_Jobs_dbo_Companies_CompanyId">
           <End Role="Company" Type="Self.Company" Multiplicity="1">
@@ -271,6 +280,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StaffSkill_Job">
+          <End Role="Job" Type="Self.Job" Multiplicity="1" />
+          <End Role="StaffSkill" Type="Self.StaffSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StaffSkill">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MonitoringModelStoreContainer">
           <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GithubLanguage" EntityType="Self.GithubLanguage" Schema="dbo" store:Type="Tables" />
@@ -285,6 +306,7 @@
           <EntitySet Name="LinkedinProfile" EntityType="Self.LinkedinProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LinkedinSkill" EntityType="Self.LinkedinSkill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Proxy" EntityType="Self.Proxy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StaffSkill" EntityType="Self.StaffSkill" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_Jobs_dbo_Companies_CompanyId" Association="Self.FK_dbo_Jobs_dbo_Companies_CompanyId">
             <End Role="Company" EntitySet="Company" />
             <End Role="Job" EntitySet="Job" />
@@ -316,6 +338,10 @@
           <AssociationSet Name="FK_LinkedinSkill_LinkedinProfile" Association="Self.FK_LinkedinSkill_LinkedinProfile">
             <End Role="LinkedinProfile" EntitySet="LinkedinProfile" />
             <End Role="LinkedinSkill" EntitySet="LinkedinSkill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StaffSkill_Job" Association="Self.FK_StaffSkill_Job">
+            <End Role="Job" EntitySet="Job" />
+            <End Role="StaffSkill" EntitySet="StaffSkill" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -513,6 +539,11 @@
             <End Role="Company" EntitySet="Companies" />
             <End Role="Job" EntitySet="Jobs" />
           </AssociationSet>
+          <EntitySet Name="StaffSkills" EntityType="MonitoringModel.StaffSkill" />
+          <AssociationSet Name="FK_StaffSkill_Job" Association="MonitoringModel.FK_StaffSkill_Job">
+            <End Role="Job" EntitySet="Jobs" />
+            <End Role="StaffSkill" EntitySet="StaffSkills" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="GithubLanguage">
           <Key>
@@ -615,6 +646,8 @@
           <Property Name="Twitter" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Jobs" Relationship="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId" FromRole="Company" ToRole="Job" />
+          <Property Name="Views" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Job">
           <Key>
@@ -636,6 +669,7 @@
           <Property Name="SoftSkills" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId" FromRole="Job" ToRole="Company" />
+          <NavigationProperty Name="StaffSkills" Relationship="MonitoringModel.FK_StaffSkill_Job" FromRole="Job" ToRole="StaffSkill" />
         </EntityType>
         <Association Name="FK_dbo_Jobs_dbo_Companies_CompanyId">
           <End Type="MonitoringModel.Company" Role="Company" Multiplicity="1">
@@ -648,6 +682,28 @@
             </Principal>
             <Dependent Role="Job">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="StaffSkill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="JobId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Job" Relationship="MonitoringModel.FK_StaffSkill_Job" FromRole="StaffSkill" ToRole="Job" />
+        </EntityType>
+        <Association Name="FK_StaffSkill_Job">
+          <End Type="MonitoringModel.Job" Role="Job" Multiplicity="1" />
+          <End Type="MonitoringModel.StaffSkill" Role="StaffSkill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Job">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StaffSkill">
+              <PropertyRef Name="JobId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -797,6 +853,8 @@
           <EntitySetMapping Name="Companies">
             <EntityTypeMapping TypeName="MonitoringModel.Company">
               <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Views" ColumnName="Views" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Twitter" ColumnName="Twitter" />
                 <ScalarProperty Name="GooglePlus" ColumnName="GooglePlus" />
@@ -817,9 +875,7 @@
             <EntityTypeMapping TypeName="MonitoringModel.Job">
               <MappingFragment StoreEntitySet="Job">
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="SoftSkills" ColumnName="SoftSkills" />
                 <ScalarProperty Name="AdditionalInformation" ColumnName="AdditionalInformation" />
-                <ScalarProperty Name="ProfessionalSkills" ColumnName="ProfessionalSkills" />
                 <ScalarProperty Name="RequiredQualifications" ColumnName="RequiredQualifications" />
                 <ScalarProperty Name="Responsibilities" ColumnName="Responsibilities" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -830,6 +886,16 @@
                 <ScalarProperty Name="Deadline" ColumnName="Deadline" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StaffSkills">
+            <EntityTypeMapping TypeName="MonitoringModel.StaffSkill">
+              <MappingFragment StoreEntitySet="StaffSkill">
+                <ScalarProperty Name="JobId" ColumnName="JobId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

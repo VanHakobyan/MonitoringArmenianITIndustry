@@ -33,6 +33,8 @@ namespace Database.MonitoringIT.DAL.WithEF6
         public string GooglePlus { get; set; }
         public string Twitter { get; set; }
         public string Phone { get; set; }
+        public Nullable<int> Views { get; set; }
+        public string Type { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Job> Jobs { get; set; }

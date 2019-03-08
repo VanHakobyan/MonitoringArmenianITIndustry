@@ -23,6 +23,8 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public string GooglePlus { get; set; }
         public string Twitter { get; set; }
         public string Phone { get; set; }
+        public int? Views { get; set; }
+        public string Type { get; set; }
 
         public virtual ICollection<Job> Job { get; set; }
     }

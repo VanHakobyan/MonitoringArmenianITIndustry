@@ -26,6 +26,8 @@
         <EntityTypeShape EntityType="MonitoringModel.Company" Width="1.5" PointX="8.375" PointY="1.25" />
         <EntityTypeShape EntityType="MonitoringModel.Job" Width="1.5" PointX="10.625" PointY="1" />
         <AssociationConnector Association="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId" />
+        <EntityTypeShape EntityType="MonitoringModel.StaffSkill" Width="1.5" PointX="12.875" PointY="2.125" />
+        <AssociationConnector Association="MonitoringModel.FK_StaffSkill_Job" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

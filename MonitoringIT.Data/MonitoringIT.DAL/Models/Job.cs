@@ -5,6 +5,11 @@ namespace Database.MonitoringIT.DB.EfCore.Models
 {
     public partial class Job
     {
+        public Job()
+        {
+            StaffSkill = new HashSet<StaffSkill>();
+        }
+
         public int Id { get; set; }
         public string Title { get; set; }
         public string Email { get; set; }
@@ -16,11 +21,10 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public string Description { get; set; }
         public string Responsibilities { get; set; }
         public string RequiredQualifications { get; set; }
-        public string ProfessionalSkills { get; set; }
         public string AdditionalInformation { get; set; }
-        public string SoftSkills { get; set; }
         public int CompanyId { get; set; }
 
         public virtual Company Company { get; set; }
+        public virtual ICollection<StaffSkill> StaffSkill { get; set; }
     }
 }

@@ -38,5 +38,6 @@ namespace Database.MonitoringIT.DAL.WithEF6
         public virtual DbSet<Proxy> Proxies { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
+        public virtual DbSet<StaffSkill> StaffSkills { get; set; }
     }
 }

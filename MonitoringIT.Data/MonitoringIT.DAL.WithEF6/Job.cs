@@ -14,6 +14,12 @@ namespace Database.MonitoringIT.DAL.WithEF6
     
     public partial class Job
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Job()
+        {
+            this.StaffSkills = new HashSet<StaffSkill>();
+        }
+    
         public int Id { get; set; }
         public string Title { get; set; }
         public string Email { get; set; }
@@ -31,5 +37,7 @@ namespace Database.MonitoringIT.DAL.WithEF6
         public int CompanyId { get; set; }
     
         public virtual Company Company { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StaffSkill> StaffSkills { get; set; }
     }
 }

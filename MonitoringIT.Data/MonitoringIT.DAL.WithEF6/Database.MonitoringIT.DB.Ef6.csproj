@@ -105,6 +105,9 @@
     <Compile Include="Proxy.cs">
       <DependentUpon>Monitoring.tt</DependentUpon>
     </Compile>
+    <Compile Include="StaffSkill.cs">
+      <DependentUpon>Monitoring.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
