@@ -31,9 +31,7 @@ namespace Database.MonitoringIT.DAL.WithEF6
         public string Description { get; set; }
         public string Responsibilities { get; set; }
         public string RequiredQualifications { get; set; }
-        public string ProfessionalSkills { get; set; }
         public string AdditionalInformation { get; set; }
-        public string SoftSkills { get; set; }
         public int CompanyId { get; set; }
     
         public virtual Company Company { get; set; }

@@ -23,12 +23,12 @@
         <AssociationConnector Association="MonitoringModel.FK_dbo_Languages_dbo_Repositories_RepositoryId1" />
         <AssociationConnector Association="MonitoringModel.FK_dbo_Repositories_dbo_Profiles_ProfileId1" />
         <EntityTypeShape EntityType="MonitoringModel.Proxy" Width="1.5" PointX="5.375" PointY="0.75" />
-        <EntityTypeShape EntityType="MonitoringModel.Company" Width="1.5" PointX="8.375" PointY="1.25" />
-        <EntityTypeShape EntityType="MonitoringModel.Job" Width="1.5" PointX="10.625" PointY="1" />
+        <EntityTypeShape EntityType="MonitoringModel.Company" Width="1.5" PointX="8.375" PointY="1" />
+        <EntityTypeShape EntityType="MonitoringModel.Job" Width="1.5" PointX="10.625" PointY="1.25" />
+        <EntityTypeShape EntityType="MonitoringModel.StaffSkill" Width="1.5" PointX="12.875" PointY="2.25" />
         <AssociationConnector Association="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId" />
-        <EntityTypeShape EntityType="MonitoringModel.StaffSkill" Width="1.5" PointX="12.875" PointY="2.125" />
         <AssociationConnector Association="MonitoringModel.FK_StaffSkill_Job" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

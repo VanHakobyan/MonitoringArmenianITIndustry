@@ -1,16 +1,18 @@
 ﻿using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Database.MonitoringIT.DB.EfCore.Models;
+using Database.MonitoringIT.DAL.WithEF6;
 using HtmlAgilityPack;
 
-namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
+namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
 {
     public class StaffScrapper
     {
@@ -59,6 +61,7 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
                     document.LoadHtml(pageContent);
                     var pageLinks = document.DocumentNode.SelectNodes(".//a[@class='load-more btn width100']").Select(x => $"{CompanyCustomLink}{x.GetAttributeValue("href", "")}").ToList();
                     links.AddRange(pageLinks);
+                    //break;
                 }
                 catch (Exception e)
                 {
@@ -83,7 +86,7 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
                     var headerInfoNode = document.DocumentNode.SelectSingleNode(".//div[@class='header-info accordion-style']");
                     var companyDetails = document.DocumentNode.SelectSingleNode(".//div[@id='company-details']");
                     var jobsListNode = document.DocumentNode.SelectSingleNode(".//div[@class='accordion-style clearfix company-jobs-list']");
-                    
+
 
                     var contactDetails = document.DocumentNode.SelectSingleNode(".//div[@id ='company-contact-details']");
 
@@ -92,14 +95,14 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
                     GetContact(company, contactDetails);
 
 
-                    var jobList=jobsListNode.SelectNodes(".//a[@class='load-more btn hb_btn']").Select(x=>x.GetAttributeValue("href","")).ToList();
-                    
+                    var jobList = jobsListNode.SelectNodes(".//a[@class='load-more btn hb_btn']").Select(x => x.GetAttributeValue("href", "")).ToList();
 
-                    company.Job = GetJobs(jobList);
 
-                    using (MonitoringContext context = new MonitoringContext())
+                    company.Jobs = GetJobs(jobList);
+
+                    using (MonitoringEntities context = new MonitoringEntities())
                     {
-                        context.Company.Add(company);
+                        context.Companies.Add(company);
                         context.SaveChanges();
                     }
                 }
@@ -114,11 +117,13 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
         {
             var name = headerInfoNode.SelectSingleNode(".//h1[@class='text-left']").InnerText;
             var views = headerInfoNode.SelectSingleNode(".//span[@class='margin-r-2']").InnerText;
-            var image = headerInfoNode.SelectSingleNode(".//div[@class='image']").GetAttributeValue("style", "").Split(new char[]{'(',')'})[1].TrimStart('/');
-
-            //company.Name = name;
-            //company.Views views;
-            //company.Image = image;
+            var image = headerInfoNode.SelectSingleNode(".//div[@class='image']").GetAttributeValue("style", "").Split(new char[] { '(', ')' })[1].TrimStart('/');
+            company.Name = name;
+            if (int.TryParse(views, out var view))
+            {
+                company.Views = view;
+            }
+            company.Image = image;
         }
         private void GetDetails(Company company, HtmlNode aboutCompanyNode)
         {
@@ -126,21 +131,38 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
             var descriptions = companyInfoDiv.SelectNodes(".//p[@class='professional-skills-description']");
             var industry = descriptions[0].InnerText.Split('\n').Last().Trim();
             var type = descriptions[1].InnerText.Split('\n').Last().Trim();
-            var nOfEmpl = descriptions[2].InnerText.Split('\n').Last().Trim();
-            var about = aboutCompanyNode.SelectSingleNode(".//div[@class='col-lg-8 col-md-8 about-text']").InnerText.Split(new []{"\n\n"},StringSplitOptions.None)[2].Trim();
+            var numberOfEmployees = descriptions[2].InnerText.Split('\n').Last().Trim();
+            var dateՕfFoundation = descriptions[3].InnerText.Split('\n').Last().Trim();
+
+            var about = aboutCompanyNode.SelectSingleNode(".//div[@class='col-lg-8 col-md-8 about-text']").InnerText.Split(new[] { "\n\n" }, StringSplitOptions.None)[2].Trim();
+
+            company.Industry = industry;
+            company.Type = type;
+            company.About = about;
+            company.DateOfFoundation = dateՕfFoundation;
+            company.NumberOfEmployees = numberOfEmployees;
+          
         }
-    
+
         private void GetContact(Company company, HtmlNode contactDetails)
         {
             var infoListNodes = contactDetails.SelectNodes(".//p[@class='professional-skills-description']");
-            var website = infoListNodes.FirstOrDefault(x=>x.InnerText.Contains("Website"))?.SelectSingleNode(".//a").GetAttributeValue("href","");
-            var address = infoListNodes.FirstOrDefault(x=>x.InnerText.Contains("Address"))?.InnerText.Split(':').LastOrDefault()?.Trim();
+            var website = infoListNodes.FirstOrDefault(x => x.InnerText.Contains("Website"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
+            var address = infoListNodes.FirstOrDefault(x => x.InnerText.Contains("Address"))?.InnerText.Split(':').LastOrDefault()?.Trim();
+
+            company.Website = website;
+            company.Address = address;
+
             var testimonial = contactDetails.SelectSingleNode(".//div[@id='testimonial']");
-            if(testimonial is null) return;
+            if (testimonial is null) return;
 
             var socialMedia = testimonial.SelectNodes(".//ul[@class='clearfix']");
-            var facebook = socialMedia.FirstOrDefault(x=>x.OuterHtml.Contains("facebook"))?.SelectSingleNode(".//a").GetAttributeValue("href","");
-            var linkedin = socialMedia.FirstOrDefault(x=>x.OuterHtml.Contains("linkedin"))?.SelectSingleNode(".//a").GetAttributeValue("href","");
+            var facebook = socialMedia.FirstOrDefault(x => x.OuterHtml.Contains("facebook"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
+            var linkedin = socialMedia.FirstOrDefault(x => x.OuterHtml.Contains("linkedin"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
+
+
+            company.Facebook = facebook;
+            company.Linkedin = linkedin;
         }
 
 
@@ -156,36 +178,85 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
                     document.LoadHtml(jobHtmlContent);
 
                     var jobPostNode = document.DocumentNode.SelectSingleNode(".//div[@id ='job-post']");
-                    var rowNode = jobPostNode.SelectSingleNode(".//div[@class ='row']");
-                    var descriptionNode = jobPostNode.SelectSingleNode(".//div[@class ='job-list-content-desc hs_line_break']");
-                    var skillNode = jobPostNode.SelectSingleNode(".//div[@class ='job-list-content-skills']");
+                    //var rowNode = jobPostNode.SelectSingleNode(".//div[@class ='row']");
+                    //var descriptionNode = jobPostNode.SelectSingleNode(".//div[@class ='job-list-content-desc hs_line_break']");
+                    //var skillNode = jobPostNode.SelectSingleNode(".//div[@class ='job-list-content-skills']");
+
 
                     var title = jobPostNode.SelectSingleNode(".//div[@class ='col-lg-8']").InnerText.Trim();
-                    var deadline = jobPostNode.SelectSingleNode(".//div[@class ='col-lg-4 apply-btn-top']").SelectSingleNode(".//p").InnerText?.Replace("\n"," ").Replace(" Deadline: ","");
-                    var jobInfo = jobPostNode.SelectNodes(".//div[@class ='col-lg-6 job-info']").SelectMany(x=>x.SelectNodes(".//p"));
+                    var deadline = jobPostNode.SelectSingleNode(".//div[@class ='col-lg-4 apply-btn-top']").SelectSingleNode(".//p").InnerText?.Replace("\n", " ").Replace(" Deadline: ", "");
+                    var jobInfo = jobPostNode.SelectNodes(".//div[@class ='col-lg-6 job-info']").SelectMany(x => x.SelectNodes(".//p"))?.ToList();
+                    if (jobInfo is null) continue;
                     var term = jobInfo.FirstOrDefault(x => x.InnerText.Contains("Employment term")).InnerText.Split(':').LastOrDefault()?.Trim();
                     var type = jobInfo.FirstOrDefault(x => x.InnerText.Contains("Job type")).InnerText.Split(':').LastOrDefault()?.Trim();
                     var category = jobInfo.FirstOrDefault(x => x.InnerText.Contains("Category")).InnerText.Split(':').LastOrDefault()?.Trim();
                     var location = jobInfo.FirstOrDefault(x => x.InnerText.Contains("Location")).InnerText.Split(':').LastOrDefault()?.Trim();
 
-                    var descriptions = jobPostNode.SelectSingleNode(".//div[@class='job-list-content-desc hs_line_break']").InnerText.Trim().Split(new[]{ "Job description:", "Job responsibilities", "Required qualifications", "Additional information" },StringSplitOptions.RemoveEmptyEntries);
+                    var descriptions = jobPostNode.SelectSingleNode(".//div[@class='job-list-content-desc hs_line_break']").InnerText.Trim().Split(new[] { "Job description:", "Job responsibilities", "Required qualifications", "Additional information" }, StringSplitOptions.RemoveEmptyEntries);
 
 
-                    var profSkills = jobPostNode.SelectNodes(".//div[@class='soft-skills-list clearfix']").FirstOrDefault(x=>x.InnerText.Contains("Professional skills"))?.SelectNodes(".//p")?.Select(x=>x.InnerText.Trim());
-                    var softSkills = jobPostNode.SelectNodes(".//div[@class='soft-skills-list clearfix']").FirstOrDefault(x=>x.InnerText.Contains("Soft skills"))?.SelectNodes(".//p")?.Select(x => x.InnerText.Trim());
+                    var profSkills = jobPostNode.SelectNodes(".//div[@class='soft-skills-list clearfix']")?.FirstOrDefault(x => x.InnerText.Contains("Professional skills"))?.SelectNodes(".//p")?.Select(x => x.InnerText.Trim());
+                    var softSkills = jobPostNode.SelectNodes(".//div[@class='soft-skills-list clearfix']")?.FirstOrDefault(x => x.InnerText.Contains("Soft skills"))?.SelectNodes(".//p")?.Select(x => x.InnerText.Trim());
 
-                    var job = new Job();
+                    var additionalInformation = document.DocumentNode.SelectSingleNode(".//div[@class='application-procedures additional-information information_application_block']")?.InnerText;
+
+
+                    var email = EmailRegex(jobHtmlContent);
+                    var job = new Job
+                    {
+                        Title = title,
+                        Deadline = DateTime.Parse(deadline),
+                        TimeType = type,
+                        Location = location,
+                        Category = category,
+                        Description = descriptions[0],
+                        Responsibilities = descriptions[1],
+                        RequiredQualifications = descriptions[2],
+                        AdditionalInformation = additionalInformation,
+                        EmploymentTerm = term,
+                        Email = email
+                    };
+                    SetSkills(job, profSkills, softSkills);
                     jobs.Add(job);
                 }
                 catch (Exception e)
                 {
-                    //
+                    continue;
                 }
             }
 
             return jobs;
 
         }
+
+        private void SetSkills(Job job, IEnumerable<string> profSkills, IEnumerable<string> softSkills)
+        {
+            if (profSkills != null)
+            {
+                foreach (var profSkill in profSkills)
+                {
+                    job.StaffSkills.Add(new StaffSkill
+                    {
+                        Name = profSkill,
+                        Type = "prof"
+                    });
+                }
+            }
+            if (softSkills != null)
+            {
+
+                foreach (var softSkill in softSkills)
+                {
+                    job.StaffSkills.Add(new StaffSkill
+                    {
+                        Name = softSkill,
+                        Type = "soft"
+                    });
+                }
+
+            }
+        }
+
         /// <summary>
         /// Scroll in page
         /// </summary>
@@ -239,6 +310,33 @@ namespace Lib.MonitoringIT.Data.Staff_am.Scrapper
 
 
             return response;
+        }
+
+        public static string EmailRegex(string text)
+        {
+            try
+            {
+                const string MatchEmailPattern =
+                    @"(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
+                    + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."
+                    + @"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
+                    + @"([a-zA-Z]+[\w-]+\.)+[a-zA-Z]{2,4})";
+                Regex rx = new Regex(MatchEmailPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                // Find matches.
+                MatchCollection matches = rx.Matches(text);
+                // Report the number of matches found.
+
+                // Report on each match.
+                foreach (Match match in matches)
+                {
+                    return match.Value;
+                }
+            }
+            catch (Exception e)
+            {
+            }
+
+            return "";
         }
     }
 }

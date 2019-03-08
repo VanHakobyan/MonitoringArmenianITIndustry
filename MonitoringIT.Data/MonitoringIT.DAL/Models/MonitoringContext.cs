@@ -7,7 +7,6 @@ namespace Database.MonitoringIT.DB.EfCore.Models
     public partial class MonitoringContext : DbContext
     {
         public string ConnectionString { get; private set; }
-
         public MonitoringContext()
         {
         }
@@ -34,7 +33,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public virtual DbSet<LinkedinSkill> LinkedinSkill { get; set; }
         public virtual DbSet<MigrationHistory> MigrationHistory { get; set; }
         public virtual DbSet<Proxy> Proxy { get; set; }
-
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -45,9 +44,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.1-servicing-10028");
-          
-
+            modelBuilder.HasAnnotation("ProductVersion", "2.2.2-servicing-10034");
             modelBuilder.Entity<GithubLanguage>(entity =>
             {
                 entity.HasIndex(e => e.RepositoryId)
@@ -85,7 +82,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                     .HasConstraintName("FK_dbo.Repositories_dbo.Profiles_ProfileId");
             });
 
-           
+
             modelBuilder.Entity<LinkedinEducation>(entity =>
             {
                 entity.HasOne(d => d.LinkedinProfile)
@@ -171,7 +168,9 @@ namespace Database.MonitoringIT.DB.EfCore.Models
 
                 entity.Property(e => e.Address).HasMaxLength(350);
 
-                entity.Property(e => e.DateOfFoundation).HasColumnType("date");
+                entity.Property(e => e.DateOfFoundation)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Facebook)
                     .HasMaxLength(350)
@@ -180,6 +179,8 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                 entity.Property(e => e.GooglePlus)
                     .HasMaxLength(350)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Image).HasMaxLength(350);
 
                 entity.Property(e => e.Industry).HasMaxLength(150);
 
@@ -190,6 +191,10 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(150);
+
+                entity.Property(e => e.NumberOfEmployees)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Phone)
                     .HasMaxLength(150)
@@ -230,11 +235,11 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                     .IsRequired()
                     .HasMaxLength(350);
 
-                entity.Property(e => e.RequiredQualifications).HasMaxLength(350);
+                entity.Property(e => e.RequiredQualifications).IsRequired(false);
 
                 entity.Property(e => e.Responsibilities)
-                    .IsRequired()
-                    .HasMaxLength(350);
+                    .IsRequired(false);
+                    
 
                 entity.Property(e => e.TimeType).HasMaxLength(350);
 

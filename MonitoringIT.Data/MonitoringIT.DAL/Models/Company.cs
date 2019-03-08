@@ -14,8 +14,8 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public string Name { get; set; }
         public string About { get; set; }
         public string Industry { get; set; }
-        public int NumberOfEmployees { get; set; }
-        public DateTime? DateOfFoundation { get; set; }
+        public string NumberOfEmployees { get; set; }
+        public string DateOfFoundation { get; set; }
         public string Website { get; set; }
         public string Address { get; set; }
         public string Facebook { get; set; }
@@ -25,6 +25,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
         public string Phone { get; set; }
         public int? Views { get; set; }
         public string Type { get; set; }
+        public string Image { get; set; }
 
         public virtual ICollection<Job> Job { get; set; }
     }

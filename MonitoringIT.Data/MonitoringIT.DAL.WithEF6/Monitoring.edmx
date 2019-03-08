@@ -13,8 +13,8 @@
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="About" Type="nvarchar(max)" />
           <Property Name="Industry" Type="nvarchar" MaxLength="150" />
-          <Property Name="NumberOfEmployees" Type="int" Nullable="false" />
-          <Property Name="DateOfFoundation" Type="date" />
+          <Property Name="NumberOfEmployees" Type="varchar" MaxLength="50" />
+          <Property Name="DateOfFoundation" Type="varchar" MaxLength="50" />
           <Property Name="Website" Type="varchar" MaxLength="350" />
           <Property Name="Address" Type="nvarchar" MaxLength="350" />
           <Property Name="Facebook" Type="varchar" MaxLength="350" />
@@ -24,6 +24,7 @@
           <Property Name="Phone" Type="varchar" MaxLength="150" />
           <Property Name="Views" Type="int" />
           <Property Name="Type" Type="nvarchar" MaxLength="150" />
+          <Property Name="Image" Type="nvarchar" MaxLength="350" />
         </EntityType>
         <EntityType Name="GithubLanguage">
           <Key>
@@ -87,8 +88,8 @@
           <Property Name="Category" Type="nvarchar" MaxLength="350" Nullable="false" />
           <Property Name="Location" Type="nvarchar" MaxLength="350" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="350" Nullable="false" />
-          <Property Name="Responsibilities" Type="nvarchar" MaxLength="350" Nullable="false" />
-          <Property Name="RequiredQualifications" Type="nvarchar" MaxLength="350" />
+          <Property Name="Responsibilities" Type="nvarchar(max)" />
+          <Property Name="RequiredQualifications" Type="nvarchar(max)" />
           <Property Name="AdditionalInformation" Type="nvarchar" MaxLength="350" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
         </EntityType>
@@ -535,11 +536,11 @@
           <EntitySet Name="Proxies" EntityType="MonitoringModel.Proxy" />
           <EntitySet Name="Companies" EntityType="MonitoringModel.Company" />
           <EntitySet Name="Jobs" EntityType="MonitoringModel.Job" />
+          <EntitySet Name="StaffSkills" EntityType="MonitoringModel.StaffSkill" />
           <AssociationSet Name="FK_dbo_Jobs_dbo_Companies_CompanyId" Association="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId">
             <End Role="Company" EntitySet="Companies" />
             <End Role="Job" EntitySet="Jobs" />
           </AssociationSet>
-          <EntitySet Name="StaffSkills" EntityType="MonitoringModel.StaffSkill" />
           <AssociationSet Name="FK_StaffSkill_Job" Association="MonitoringModel.FK_StaffSkill_Job">
             <End Role="Job" EntitySet="Jobs" />
             <End Role="StaffSkill" EntitySet="StaffSkills" />
@@ -636,8 +637,8 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Industry" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="NumberOfEmployees" Type="Int32" Nullable="false" />
-          <Property Name="DateOfFoundation" Type="DateTime" Precision="0" />
+          <Property Name="NumberOfEmployees" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfFoundation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Website" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
           <Property Name="Address" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="Facebook" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
@@ -645,9 +646,10 @@
           <Property Name="GooglePlus" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
           <Property Name="Twitter" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Jobs" Relationship="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId" FromRole="Company" ToRole="Job" />
           <Property Name="Views" Type="Int32" />
           <Property Name="Type" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Jobs" Relationship="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId" FromRole="Company" ToRole="Job" />
         </EntityType>
         <EntityType Name="Job">
           <Key>
@@ -662,14 +664,22 @@
           <Property Name="Category" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="Location" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
-          <Property Name="Responsibilities" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
-          <Property Name="RequiredQualifications" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
-          <Property Name="ProfessionalSkills" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Responsibilities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredQualifications" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AdditionalInformation" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
-          <Property Name="SoftSkills" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId" FromRole="Job" ToRole="Company" />
           <NavigationProperty Name="StaffSkills" Relationship="MonitoringModel.FK_StaffSkill_Job" FromRole="Job" ToRole="StaffSkill" />
+        </EntityType>
+        <EntityType Name="StaffSkill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="JobId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Job" Relationship="MonitoringModel.FK_StaffSkill_Job" FromRole="StaffSkill" ToRole="Job" />
         </EntityType>
         <Association Name="FK_dbo_Jobs_dbo_Companies_CompanyId">
           <End Type="MonitoringModel.Company" Role="Company" Multiplicity="1">
@@ -685,16 +695,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="StaffSkill">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="JobId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Job" Relationship="MonitoringModel.FK_StaffSkill_Job" FromRole="StaffSkill" ToRole="Job" />
-        </EntityType>
         <Association Name="FK_StaffSkill_Job">
           <End Type="MonitoringModel.Job" Role="Job" Multiplicity="1" />
           <End Type="MonitoringModel.StaffSkill" Role="StaffSkill" Multiplicity="*" />
@@ -853,6 +853,7 @@
           <EntitySetMapping Name="Companies">
             <EntityTypeMapping TypeName="MonitoringModel.Company">
               <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Views" ColumnName="Views" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />

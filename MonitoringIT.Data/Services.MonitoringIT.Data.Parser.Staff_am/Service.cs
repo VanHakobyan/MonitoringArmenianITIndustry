@@ -7,7 +7,8 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
-using Lib.MonitoringIT.Data.Staff_am.Scrapper;
+using Lib.MonitoringIT.Data.Staff.am.Scrapper;
+
 
 namespace Services.MonitoringIT.Data.Parser.Staff_am
 {

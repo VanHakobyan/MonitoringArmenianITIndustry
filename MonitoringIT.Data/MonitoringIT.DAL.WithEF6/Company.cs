@@ -24,8 +24,8 @@ namespace Database.MonitoringIT.DAL.WithEF6
         public string Name { get; set; }
         public string About { get; set; }
         public string Industry { get; set; }
-        public int NumberOfEmployees { get; set; }
-        public Nullable<System.DateTime> DateOfFoundation { get; set; }
+        public string NumberOfEmployees { get; set; }
+        public string DateOfFoundation { get; set; }
         public string Website { get; set; }
         public string Address { get; set; }
         public string Facebook { get; set; }
@@ -35,6 +35,7 @@ namespace Database.MonitoringIT.DAL.WithEF6
         public string Phone { get; set; }
         public Nullable<int> Views { get; set; }
         public string Type { get; set; }
+        public string Image { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Job> Jobs { get; set; }
