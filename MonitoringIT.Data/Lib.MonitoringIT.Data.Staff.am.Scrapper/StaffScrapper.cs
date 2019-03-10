@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using Database.MonitoringIT.DAL.WithEF6;
 using HtmlAgilityPack;
 
@@ -61,7 +63,7 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
                     document.LoadHtml(pageContent);
                     var pageLinks = document.DocumentNode.SelectNodes(".//a[@class='load-more btn width100']").Select(x => $"{CompanyCustomLink}{x.GetAttributeValue("href", "")}").ToList();
                     links.AddRange(pageLinks);
-                    //break;
+                    break;
                 }
                 catch (Exception e)
                 {
@@ -78,31 +80,40 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
             {
                 try
                 {
-                    var company = new Company();
-                    var companyHtmlContent = SendGetRequest(link).Result;
-                    HtmlDocument document = new HtmlDocument();
-                    document.LoadHtml(companyHtmlContent);
-
-                    var headerInfoNode = document.DocumentNode.SelectSingleNode(".//div[@class='header-info accordion-style']");
-                    var companyDetails = document.DocumentNode.SelectSingleNode(".//div[@id='company-details']");
-                    var jobsListNode = document.DocumentNode.SelectSingleNode(".//div[@class='accordion-style clearfix company-jobs-list']");
-
-
-                    var contactDetails = document.DocumentNode.SelectSingleNode(".//div[@id ='company-contact-details']");
-
-                    GetHeaderInfo(company, headerInfoNode);
-                    GetDetails(company, companyDetails);
-                    GetContact(company, contactDetails);
-
-
-                    var jobList = jobsListNode.SelectNodes(".//a[@class='load-more btn hb_btn']").Select(x => x.GetAttributeValue("href", "")).ToList();
-
-
-                    company.Jobs = GetJobs(jobList);
-
                     using (MonitoringEntities context = new MonitoringEntities())
                     {
-                        context.Companies.Add(company);
+                        var cName = link.Split('/').LastOrDefault();
+                        var company = context.Companies.FirstOrDefault(c => c.Name.ToLower() == cName);
+                        if (company is null) company = new Company();
+                        var companyHtmlContent = SendGetRequest(link).Result;
+                        HtmlDocument document = new HtmlDocument();
+                        document.LoadHtml(companyHtmlContent);
+
+                        var headerInfoNode = document.DocumentNode.SelectSingleNode(".//div[@class='header-info accordion-style']");
+                        var companyDetails = document.DocumentNode.SelectSingleNode(".//div[@id='company-details']");
+                        var jobsListNode = document.DocumentNode.SelectSingleNode(".//div[@class='accordion-style clearfix company-jobs-list']");
+
+
+                        var contactDetails = document.DocumentNode.SelectSingleNode(".//div[@id ='company-contact-details']");
+
+                        GetHeaderInfo(company, headerInfoNode);
+                        GetDetails(company, companyDetails);
+                        GetContact(company, contactDetails);
+
+
+                        var jobList = jobsListNode.SelectNodes(".//a[@class='load-more btn hb_btn']").Select(x => x.GetAttributeValue("href", "")).ToList();
+
+
+                        if (company.Jobs.Count > 0)
+                        {
+                            context.Jobs.RemoveRange(company.Jobs);
+                            context.SaveChanges();
+                        }
+
+                        var jobs = GetJobs(jobList);
+                        company.Jobs = jobs;
+
+                        context.Companies.AddOrUpdate(company);
                         context.SaveChanges();
                     }
                 }
@@ -118,12 +129,12 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
             var name = headerInfoNode.SelectSingleNode(".//h1[@class='text-left']").InnerText;
             var views = headerInfoNode.SelectSingleNode(".//span[@class='margin-r-2']").InnerText;
             var image = headerInfoNode.SelectSingleNode(".//div[@class='image']").GetAttributeValue("style", "").Split(new char[] { '(', ')' })[1].TrimStart('/');
-            company.Name = name;
-            if (int.TryParse(views, out var view))
+            company.Name = name?.HtmlDecode();
+            if (int.TryParse(views?.HtmlDecode(), out var view))
             {
                 company.Views = view;
             }
-            company.Image = image;
+            company.Image = image.HtmlDecode();
         }
         private void GetDetails(Company company, HtmlNode aboutCompanyNode)
         {
@@ -132,16 +143,19 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
             var industry = descriptions[0].InnerText.Split('\n').Last().Trim();
             var type = descriptions[1].InnerText.Split('\n').Last().Trim();
             var numberOfEmployees = descriptions[2].InnerText.Split('\n').Last().Trim();
-            var dateՕfFoundation = descriptions[3].InnerText.Split('\n').Last().Trim();
+            string dateՕfFoundation = null;
+            if (descriptions.Count > 3)
+            {
+                dateՕfFoundation = descriptions[3].InnerText.Split('\n').Last().Trim();
+            }
 
             var about = aboutCompanyNode.SelectSingleNode(".//div[@class='col-lg-8 col-md-8 about-text']").InnerText.Split(new[] { "\n\n" }, StringSplitOptions.None)[2].Trim();
 
-            company.Industry = industry;
-            company.Type = type;
-            company.About = about;
-            company.DateOfFoundation = dateՕfFoundation;
-            company.NumberOfEmployees = numberOfEmployees;
-          
+            company.Industry = industry.HtmlDecode();
+            company.Type = type.HtmlDecode();
+            company.About = about.HtmlDecode();
+            company.DateOfFoundation = dateՕfFoundation?.HtmlDecode();
+            company.NumberOfEmployees = numberOfEmployees.HtmlDecode();
         }
 
         private void GetContact(Company company, HtmlNode contactDetails)
@@ -150,19 +164,21 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
             var website = infoListNodes.FirstOrDefault(x => x.InnerText.Contains("Website"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
             var address = infoListNodes.FirstOrDefault(x => x.InnerText.Contains("Address"))?.InnerText.Split(':').LastOrDefault()?.Trim();
 
-            company.Website = website;
-            company.Address = address;
+            company.Website = website?.HtmlDecode();
+            company.Address = address?.HtmlDecode();
 
             var testimonial = contactDetails.SelectSingleNode(".//div[@id='testimonial']");
             if (testimonial is null) return;
 
-            var socialMedia = testimonial.SelectNodes(".//ul[@class='clearfix']");
-            var facebook = socialMedia.FirstOrDefault(x => x.OuterHtml.Contains("facebook"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
-            var linkedin = socialMedia.FirstOrDefault(x => x.OuterHtml.Contains("linkedin"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
-
-
-            company.Facebook = facebook;
-            company.Linkedin = linkedin;
+            var socialMedia = testimonial.SelectSingleNode(".//ul[@class='clearfix']");
+            var facebook = socialMedia.ChildNodes.FirstOrDefault(x => x.OuterHtml.Contains("facebook"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
+            var linkedin = socialMedia.ChildNodes.FirstOrDefault(x => x.OuterHtml.Contains("linkedin"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
+            var gPlus = socialMedia.ChildNodes.FirstOrDefault(x => x.OuterHtml.Contains("google-plus"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
+            
+            
+            company.Facebook = facebook?.HtmlDecode();
+            company.Linkedin = linkedin?.HtmlDecode();
+            company.GooglePlus = gPlus?.HtmlDecode();
         }
 
 
@@ -204,17 +220,17 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
                     var email = EmailRegex(jobHtmlContent);
                     var job = new Job
                     {
-                        Title = title,
+                        Title = title.HtmlDecode(),
                         Deadline = DateTime.Parse(deadline),
-                        TimeType = type,
-                        Location = location,
-                        Category = category,
-                        Description = descriptions[0],
-                        Responsibilities = descriptions[1],
-                        RequiredQualifications = descriptions[2],
-                        AdditionalInformation = additionalInformation,
-                        EmploymentTerm = term,
-                        Email = email
+                        TimeType = type.HtmlDecode(),
+                        Location = location.HtmlDecode(),
+                        Category = category.HtmlDecode(),
+                        Description = descriptions.Length > 0 ? descriptions[0]?.HtmlDecode() : null,
+                        Responsibilities = descriptions.Length > 1 ? descriptions[1]?.HtmlDecode() : null,
+                        RequiredQualifications = descriptions.Length > 2 ? descriptions[2]?.HtmlDecode() : null,
+                        AdditionalInformation = additionalInformation?.HtmlDecode(),
+                        EmploymentTerm = term?.HtmlDecode(),
+                        Email = email?.HtmlDecode()
                     };
                     SetSkills(job, profSkills, softSkills);
                     jobs.Add(job);
@@ -338,5 +354,7 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
 
             return "";
         }
+
+
     }
 }

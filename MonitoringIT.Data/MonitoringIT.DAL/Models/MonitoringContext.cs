@@ -264,7 +264,7 @@ namespace Database.MonitoringIT.DB.EfCore.Models
                 entity.HasOne(d => d.Job)
                     .WithMany(p => p.StaffSkill)
                     .HasForeignKey(d => d.JobId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_StaffSkill_Job");
             });
         }

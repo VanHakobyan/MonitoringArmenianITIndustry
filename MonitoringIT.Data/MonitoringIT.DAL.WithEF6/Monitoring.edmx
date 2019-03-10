@@ -87,7 +87,7 @@
           <Property Name="TimeType" Type="nvarchar" MaxLength="350" />
           <Property Name="Category" Type="nvarchar" MaxLength="350" Nullable="false" />
           <Property Name="Location" Type="nvarchar" MaxLength="350" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="350" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Responsibilities" Type="nvarchar(max)" />
           <Property Name="RequiredQualifications" Type="nvarchar(max)" />
           <Property Name="AdditionalInformation" Type="nvarchar" MaxLength="350" />
@@ -282,7 +282,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_StaffSkill_Job">
-          <End Role="Job" Type="Self.Job" Multiplicity="1" />
+          <End Role="Job" Type="Self.Job" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="StaffSkill" Type="Self.StaffSkill" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Job">
@@ -663,7 +665,7 @@
           <Property Name="TimeType" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="Category" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="Location" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Responsibilities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RequiredQualifications" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AdditionalInformation" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
