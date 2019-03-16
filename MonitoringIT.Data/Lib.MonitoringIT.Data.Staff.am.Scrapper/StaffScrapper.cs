@@ -79,11 +79,14 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
             {
                 try
                 {
+                    CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+                    TextInfo textInfo = cultureInfo.TextInfo;
                     using (MonitoringEntities context = new MonitoringEntities())
                     {
-                        var cName = link.Split('/').LastOrDefault();
+                        var cName = link.Split('/').LastOrDefault()?.Replace('-', ' ');
+
                         var company = context.Companies.FirstOrDefault(c => c.Name.ToLower() == cName);
-                        if (company is null) company = new Company();
+                        if (company is null) company = new Company { Name = textInfo.ToTitleCase(cName) };
                         var companyHtmlContent = SendGetRequest(link).Result;
                         HtmlDocument document = new HtmlDocument();
                         document.LoadHtml(companyHtmlContent);
@@ -95,12 +98,12 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
 
                         var contactDetails = document.DocumentNode.SelectSingleNode(".//div[@id ='company-contact-details']");
 
-                        GetHeaderInfo(company, headerInfoNode);
-                        GetDetails(company, companyDetails);
-                        GetContact(company, contactDetails);
+                        if (headerInfoNode != null) GetHeaderInfo(company, headerInfoNode);
+                        if (companyDetails != null) GetDetails(company, companyDetails);
+                        if (contactDetails != null) GetContact(company, contactDetails);
 
 
-                        var jobList = jobsListNode.SelectNodes(".//a[@class='load-more btn hb_btn']").Select(x => x.GetAttributeValue("href", "")).ToList();
+                        var jobList = jobsListNode?.SelectNodes(".//a[@class='load-more btn hb_btn']")?.Select(x => x.GetAttributeValue("href", ""))?.ToList();
 
 
                         if (company.Jobs.Count > 0)
@@ -109,8 +112,11 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
                             context.SaveChanges();
                         }
 
-                        var jobs = GetJobs(jobList);
-                        company.Jobs = jobs;
+                        if (jobList != null)
+                        {
+                            var jobs = GetJobs(jobList);
+                            company.Jobs = jobs;
+                        }
 
                         context.Companies.AddOrUpdate(company);
                         context.SaveChanges();
@@ -125,9 +131,9 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
 
         private void GetHeaderInfo(Company company, HtmlNode headerInfoNode)
         {
-            var name = headerInfoNode.SelectSingleNode(".//h1[@class='text-left']").InnerText;
-            var views = headerInfoNode.SelectSingleNode(".//span[@class='margin-r-2']").InnerText;
-            var image = headerInfoNode.SelectSingleNode(".//div[@class='image']").GetAttributeValue("style", "").Split(new char[] { '(', ')' })[1].TrimStart('/');
+            var name = headerInfoNode.SelectSingleNode(".//h1[@class='text-left']")?.InnerText;
+            var views = headerInfoNode.SelectSingleNode(".//span[@class='margin-r-2']")?.InnerText;
+            var image = headerInfoNode.SelectSingleNode(".//div[@class='image']")?.GetAttributeValue("style", "")?.Split('(', ')')?[1]?.TrimStart('/');
             company.Name = name?.HtmlDecode();
             if (int.TryParse(views?.HtmlDecode(), out var view))
             {
@@ -138,23 +144,31 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
         private void GetDetails(Company company, HtmlNode aboutCompanyNode)
         {
             var companyInfoDiv = aboutCompanyNode.SelectSingleNode(".//div[@class='company-info']");
-            var descriptions = companyInfoDiv.SelectNodes(".//p[@class='professional-skills-description']");
-            var industry = descriptions[0].InnerText.Split('\n').Last().Trim();
-            var type = descriptions[1].InnerText.Split('\n').Last().Trim();
-            var numberOfEmployees = descriptions[2].InnerText.Split('\n').Last().Trim();
+            var descriptions = companyInfoDiv?.SelectNodes(".//p[@class='professional-skills-description']");
+            var industry = descriptions?[0].InnerText.Split('\n').Last().Trim();
+            string type = null;
+            if (descriptions != null && descriptions?.Count > 1)
+            {
+                type = descriptions?[1].InnerText.Split('\n').Last().Trim(); 
+            }
+            string numberOfEmployees = null;
+            if (descriptions != null && descriptions?.Count > 2)
+            {
+                numberOfEmployees = descriptions[2].InnerText.Split('\n').Last().Trim();
+            }
             string dateՕfFoundation = null;
-            if (descriptions.Count > 3)
+            if (descriptions != null && descriptions?.Count > 3)
             {
                 dateՕfFoundation = descriptions[3].InnerText.Split('\n').Last().Trim();
             }
 
-            var about = aboutCompanyNode.SelectSingleNode(".//div[@class='col-lg-8 col-md-8 about-text']").InnerText.Split(new[] { "\n\n" }, StringSplitOptions.None)[2].Trim();
+            var about = aboutCompanyNode.SelectSingleNode(".//div[@class='col-lg-8 col-md-8 about-text']")?.InnerText?.Split(new[] { "\n\n" }, StringSplitOptions.None)[2]?.Trim();
 
-            company.Industry = industry.HtmlDecode();
-            company.Type = type.HtmlDecode();
-            company.About = about.HtmlDecode();
+            company.Industry = industry?.HtmlDecode();
+            company.Type = type?.HtmlDecode();
+            company.About = about?.HtmlDecode();
             company.DateOfFoundation = dateՕfFoundation?.HtmlDecode();
-            company.NumberOfEmployees = numberOfEmployees.HtmlDecode();
+            company.NumberOfEmployees = numberOfEmployees?.HtmlDecode();
         }
 
         private void GetContact(Company company, HtmlNode contactDetails)
@@ -173,8 +187,8 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
             var facebook = socialMedia.ChildNodes.FirstOrDefault(x => x.OuterHtml.Contains("facebook"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
             var linkedin = socialMedia.ChildNodes.FirstOrDefault(x => x.OuterHtml.Contains("linkedin"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
             var gPlus = socialMedia.ChildNodes.FirstOrDefault(x => x.OuterHtml.Contains("google-plus"))?.SelectSingleNode(".//a").GetAttributeValue("href", "");
-            
-            
+
+
             company.Facebook = facebook?.HtmlDecode();
             company.Linkedin = linkedin?.HtmlDecode();
             company.GooglePlus = gPlus?.HtmlDecode();
