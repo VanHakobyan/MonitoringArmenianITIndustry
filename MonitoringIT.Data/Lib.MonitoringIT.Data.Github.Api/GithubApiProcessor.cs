@@ -55,8 +55,10 @@ namespace Lib.MonitoringIT.Data.Github.Api
             {
                 try
                 {
-                    WebClient client = new WebClient();
-                    client.Proxy = new WebProxy($"{_proxies[_proxyIndex].Ip}:{_proxies[_proxyIndex].Port}");
+                    var client = new WebClient
+                    {
+                        Proxy = new WebProxy($"{_proxies[_proxyIndex].Ip}:{_proxies[_proxyIndex].Port}")
+                    };
                     client.Headers.Add(HttpRequestHeader.UserAgent, "Anything");
                     client.Headers.Add(HttpRequestHeader.ContentType, "applicaton/json");
                     allGithubContentJson = client.DownloadString(url);
@@ -120,7 +122,7 @@ namespace Lib.MonitoringIT.Data.Github.Api
                         db.SaveChanges();
                         //Thread.Sleep(1500);
                     }
-                    catch (Exception e)
+                    catch 
                     {
                         Console.WriteLine(i);
                     }

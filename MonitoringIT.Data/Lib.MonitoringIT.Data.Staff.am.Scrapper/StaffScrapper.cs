@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Database.MonitoringIT.DAL.WithEF6;
 using HtmlAgilityPack;
+using NLog;
 
 namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
 {
@@ -21,7 +23,7 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
         private static ChromeDriver driver;
         private const string Link = "https://staff.am/en/companies";
         private const string CompanyCustomLink = "https://staff.am";
-
+        private Logger _logger = LogManager.CreateNullLogger();
         private static readonly List<string> Links = new List<string>();
 
         public void InitDriver()
@@ -66,7 +68,7 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
                 }
                 catch (Exception e)
                 {
-                    //
+                    _logger.Error(e, MethodBase.GetCurrentMethod().Name);
                 }
             }
             Links.AddRange(links.Distinct());
@@ -91,19 +93,24 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
                         HtmlDocument document = new HtmlDocument();
                         document.LoadHtml(companyHtmlContent);
 
-                        var headerInfoNode = document.DocumentNode.SelectSingleNode(".//div[@class='header-info accordion-style']");
+                        var headerInfoNode =
+                            document.DocumentNode.SelectSingleNode(".//div[@class='header-info accordion-style']");
                         var companyDetails = document.DocumentNode.SelectSingleNode(".//div[@id='company-details']");
-                        var jobsListNode = document.DocumentNode.SelectSingleNode(".//div[@class='accordion-style clearfix company-jobs-list']");
+                        var jobsListNode =
+                            document.DocumentNode.SelectSingleNode(
+                                ".//div[@class='accordion-style clearfix company-jobs-list']");
 
 
-                        var contactDetails = document.DocumentNode.SelectSingleNode(".//div[@id ='company-contact-details']");
+                        var contactDetails =
+                            document.DocumentNode.SelectSingleNode(".//div[@id ='company-contact-details']");
 
                         if (headerInfoNode != null) GetHeaderInfo(company, headerInfoNode);
                         if (companyDetails != null) GetDetails(company, companyDetails);
                         if (contactDetails != null) GetContact(company, contactDetails);
 
 
-                        var jobList = jobsListNode?.SelectNodes(".//a[@class='load-more btn hb_btn']")?.Select(x => x.GetAttributeValue("href", ""))?.ToList();
+                        var jobList = jobsListNode?.SelectNodes(".//a[@class='load-more btn hb_btn']")
+                            ?.Select(x => x.GetAttributeValue("href", ""))?.ToList();
 
 
                         if (company.Jobs.Count > 0)
@@ -124,7 +131,7 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
                 }
                 catch (Exception e)
                 {
-                    //
+                    _logger.Error(e, MethodBase.GetCurrentMethod().Name);
                 }
             }
         }
@@ -149,7 +156,7 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
             string type = null;
             if (descriptions != null && descriptions?.Count > 1)
             {
-                type = descriptions?[1].InnerText.Split('\n').Last().Trim(); 
+                type = descriptions?[1].InnerText.Split('\n').Last().Trim();
             }
             string numberOfEmployees = null;
             if (descriptions != null && descriptions?.Count > 2)
@@ -250,6 +257,7 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
                 }
                 catch (Exception e)
                 {
+                    _logger.Error(e, MethodBase.GetCurrentMethod().Name);
                     continue;
                 }
             }
@@ -341,21 +349,18 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
             return response;
         }
 
-        public static string EmailRegex(string text)
+        public string EmailRegex(string text)
         {
             try
             {
-                const string MatchEmailPattern =
+                const string matchEmailPattern =
                     @"(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
                     + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."
                     + @"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
                     + @"([a-zA-Z]+[\w-]+\.)+[a-zA-Z]{2,4})";
-                Regex rx = new Regex(MatchEmailPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                // Find matches.
-                MatchCollection matches = rx.Matches(text);
-                // Report the number of matches found.
-
-                // Report on each match.
+                var rx = new Regex(matchEmailPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            
+                var matches = rx.Matches(text);
                 foreach (Match match in matches)
                 {
                     return match.Value;
@@ -363,6 +368,7 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
             }
             catch (Exception e)
             {
+                _logger.Error(e, MethodBase.GetCurrentMethod().Name);
             }
 
             return "";
