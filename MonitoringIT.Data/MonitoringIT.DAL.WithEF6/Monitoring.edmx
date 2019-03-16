@@ -90,7 +90,7 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Responsibilities" Type="nvarchar(max)" />
           <Property Name="RequiredQualifications" Type="nvarchar(max)" />
-          <Property Name="AdditionalInformation" Type="nvarchar" MaxLength="350" />
+          <Property Name="AdditionalInformation" Type="nvarchar(max)" />
           <Property Name="CompanyId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LinkedinEducation">
@@ -668,7 +668,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Responsibilities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RequiredQualifications" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AdditionalInformation" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="AdditionalInformation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CompanyId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Company" Relationship="MonitoringModel.FK_dbo_Jobs_dbo_Companies_CompanyId" FromRole="Job" ToRole="Company" />
           <NavigationProperty Name="StaffSkills" Relationship="MonitoringModel.FK_StaffSkill_Job" FromRole="Job" ToRole="StaffSkill" />
