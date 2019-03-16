@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using DAL.MonitoringIT;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NLog;
@@ -11,17 +12,11 @@ namespace Web.Backend.MonitoringIT.Controllers
 {
     //[Route("api/[controller]")]
     [ApiController]
+    [EnableCors("FrontPolicy")]
     public class CrossMapController : ControllerBase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-
-        [HttpGet("api/crossmap/Test")]
-        public IActionResult Test()
-        {
-            return Ok("Test");
-        }
-
+        
         /// <summary>
         /// Get All Cross Profiles
         /// </summary>

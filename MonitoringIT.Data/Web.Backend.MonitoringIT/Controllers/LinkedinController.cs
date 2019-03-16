@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using DAL.MonitoringIT;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NLog;
@@ -10,6 +11,7 @@ namespace Web.Backend.MonitoringIT.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("FrontPolicy")]
     public class LinkedinController : ControllerBase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -18,7 +20,7 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// Get all linkedin profiles
         /// </summary>
         /// <returns>ActionResult of IEnumerable of string></returns>
-        [HttpGet]
+        [HttpGet, Route("GetAll")]
         public IActionResult Get()
         {
             try
