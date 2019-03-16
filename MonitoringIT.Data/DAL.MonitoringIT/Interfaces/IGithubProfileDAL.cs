@@ -5,7 +5,7 @@ using Database.MonitoringIT.DB.EfCore.Models;
 
 namespace DAL.MonitoringIT.Interfaces
 {
-    public interface IGithubProfileDAL:IBaseDAL
+    public interface IGithubProfileDAL:IBaseDAL<GithubProfile>
     {
         List<GithubProfile> GetAll();
         List<GithubProfile> GetAllWithReadme();

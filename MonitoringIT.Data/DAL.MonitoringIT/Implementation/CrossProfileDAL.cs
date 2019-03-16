@@ -7,7 +7,7 @@ using DAL.MonitoringIT.Interfaces;
 
 namespace DAL.MonitoringIT.Implementation
 {
-    public class CrossProfileDAL : BaseDAL, ICrossProfileDAL
+    public class CrossProfileDAL : BaseDAL<GithubLinkedinCrossTable>, ICrossProfileDAL
     {
         public CrossProfileDAL(MonitoringContext dbContext) : base(dbContext)
         {
@@ -15,22 +15,27 @@ namespace DAL.MonitoringIT.Implementation
 
         public List<GithubLinkedinCrossTable> GetAllCrossProfiles()
         {
-            return _dbContext.GithubLinkedinCrossTable.ToList();
+            return GetAllQuery().ToList();
         }
 
         public GithubLinkedinCrossTable GetCrossProfileById(int id)
         {
-            return _dbContext.GithubLinkedinCrossTable.FirstOrDefault(x => x.Id == id);
+            return GetAllQuery().FirstOrDefault(x => x.Id == id);
         }
 
         public GithubLinkedinCrossTable GetCrossProfileByGithubProfileId(int id)
         {
-            return _dbContext.GithubLinkedinCrossTable.FirstOrDefault(x => x.GithubUserId == id);
+            return GetAllQuery().FirstOrDefault(x => x.GithubUserId == id);
         }
 
         public GithubLinkedinCrossTable GetCrossProfileByLinkedinProfileId(int id)
         {
-            return _dbContext.GithubLinkedinCrossTable.FirstOrDefault(x => x.LinkedinUserId == id);
+            return GetAllQuery().FirstOrDefault(x => x.LinkedinUserId == id);
+        }
+
+        public new IQueryable<GithubLinkedinCrossTable> GetAllQuery()
+        {
+            return _dbContext.GithubLinkedinCrossTable;
         }
     }
 }

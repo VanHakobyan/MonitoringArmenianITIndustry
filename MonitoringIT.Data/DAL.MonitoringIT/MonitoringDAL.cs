@@ -32,7 +32,13 @@ namespace DAL.MonitoringIT
         public ILinkedinProfileDAL LinkedinProfileDal => _linkedinProfileDal ?? (_linkedinProfileDal = new LinkedinProfileDAL(MonitoringContext));
 
         private ICrossProfileDAL _crossProfileDal;
-        public ICrossProfileDAL CrossProfileDal=>_crossProfileDal??(_crossProfileDal=new CrossProfileDAL(MonitoringContext));
+        public ICrossProfileDAL CrossProfileDal => _crossProfileDal ?? (_crossProfileDal = new CrossProfileDAL(MonitoringContext));
+
+        private ICompanyDAL _companyDal;
+        public ICompanyDAL CompanyDal => _companyDal ?? (_companyDal = new CompanyDAL(MonitoringContext));
+
+        private IJobDAL _jobDal;
+        public IJobDAL JobDal => _jobDal ?? (_jobDal = new JobDAL(MonitoringContext));
 
         private bool disposed;
         protected virtual void Dispose(bool disposing)

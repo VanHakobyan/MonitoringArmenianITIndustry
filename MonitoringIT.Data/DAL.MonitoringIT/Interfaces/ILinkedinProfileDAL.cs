@@ -6,7 +6,7 @@ using Database.MonitoringIT.DB.EfCore.Models;
 namespace DAL.MonitoringIT.Interfaces
 {
     /// <inheritdoc />
-    public interface ILinkedinProfileDAL : IBaseDAL
+    public interface ILinkedinProfileDAL : IBaseDAL<LinkedinProfile> 
     {
         List<LinkedinProfile> GetAll();
         LinkedinProfile GetById(int id);
