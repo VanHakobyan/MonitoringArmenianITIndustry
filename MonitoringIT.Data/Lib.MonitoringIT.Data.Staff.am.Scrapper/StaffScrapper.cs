@@ -63,7 +63,6 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
                     document.LoadHtml(pageContent);
                     var pageLinks = document.DocumentNode.SelectNodes(".//a[@class='load-more btn width100']").Select(x => $"{CompanyCustomLink}{x.GetAttributeValue("href", "")}").ToList();
                     links.AddRange(pageLinks);
-                    break;
                 }
                 catch (Exception e)
                 {
