@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Database.MonitoringIT.DB.EfCore.Models;
 using DAL.MonitoringIT.Implementation;
 using DAL.MonitoringIT.Interfaces;
@@ -58,6 +59,15 @@ namespace DAL.MonitoringIT
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void SaveChanges()
+        {
+            _monitoringContext.SaveChanges();
+        }
+        public async Task SaveChangesAsync()
+        {
+            await _monitoringContext.SaveChangesAsync();
         }
     }
 }
