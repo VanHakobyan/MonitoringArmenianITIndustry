@@ -11,5 +11,6 @@ namespace DAL.MonitoringIT.Interfaces
         List<Company> GetAllCompany();
         List<Company> GetCompaniesByIndustry(string industry);
         List<Company> GetAllCompanyWithJob();
+        List<Company> GetCompanyByPage(int count, int page);
     }
 }

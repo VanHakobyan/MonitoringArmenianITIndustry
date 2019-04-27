@@ -3,6 +3,7 @@ using System.Linq;
 using Database.MonitoringIT.DB.EfCore.Models;
 using DAL.MonitoringIT.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Remotion.Linq.Parsing.Structure.IntermediateModel;
 
 namespace DAL.MonitoringIT.Implementation
 {
@@ -16,10 +17,19 @@ namespace DAL.MonitoringIT.Implementation
         {
             return _dbContext.Company;
         }
+        public new IQueryable<Company> GetAllQueryByPage(int count, int page)
+        {
+            return GetAllQuery().Skip((page - 1) * count).Take(count);
+        }
 
         public List<Company> GetAllCompany()
         {
             return GetAllQuery().ToList();
+        }
+
+        public List<Company> GetCompanyByPage(int count, int page)
+        {
+            return GetAllQueryByPage(count, page).ToList();
         }
 
         public List<Company> GetCompaniesByIndustry(string industry)

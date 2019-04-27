@@ -36,7 +36,35 @@ namespace Web.Backend.MonitoringIT.Controllers
                         Logger.Info("GetAllCompany is null");
                         return NotFound();
                     }
-                    Logger.Info($"Messege: {JsonConvert.SerializeObject(jobs, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(jobs, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    return Ok(JsonConvert.SerializeObject(jobs, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Get all jobs
+        /// </summary>
+        /// <returns>IActionResult</returns>
+        [HttpGet, Route("GetJobsByPage/{count}/{page}")]
+        public IActionResult GetJobsByPage(int count, int page)
+        {
+            try
+            {
+                using (var dal = new MonitoringDAL(""))
+                {
+                    var jobs = dal.JobDal.GetJobsByPage(count, page);
+                    if (jobs is null)
+                    {
+                        Logger.Info("GetCompaniesByPage is null");
+                        return NotFound();
+                    }
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(jobs, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(jobs, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
             }
@@ -64,7 +92,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                         Logger.Info("GetAllCompany is null");
                         return NotFound();
                     }
-                    Logger.Info($"Messege: {JsonConvert.SerializeObject(jobs, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(jobs, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(jobs, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
             }

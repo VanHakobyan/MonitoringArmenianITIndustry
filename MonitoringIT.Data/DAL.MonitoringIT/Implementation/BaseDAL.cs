@@ -20,5 +20,10 @@ namespace DAL.MonitoringIT.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public IQueryable<T> GetAllQueryByPage(int count, int page)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

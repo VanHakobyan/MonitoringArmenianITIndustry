@@ -23,7 +23,7 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// Get all companies
         /// </summary>
         /// <returns>IActionResult</returns>
-        [HttpGet,Route("GetAll")]
+        [HttpGet, Route("GetAll")]
         public IActionResult GetAllCompany()
         {
             try
@@ -36,7 +36,35 @@ namespace Web.Backend.MonitoringIT.Controllers
                         Logger.Info("GetAllCompany is null");
                         return NotFound();
                     }
-                    Logger.Info($"Messege: {JsonConvert.SerializeObject(companies, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(companies, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    return Ok(JsonConvert.SerializeObject(companies, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Get all companies
+        /// </summary>
+        /// <returns>IActionResult</returns>
+        [HttpGet, Route("GetCompaniesByPage/{count}/{page}")]
+        public IActionResult GetCompaniesByPage(int count, int page)
+        {
+            try
+            {
+                using (var dal = new MonitoringDAL(""))
+                {
+                    var companies = dal.CompanyDal.GetCompanyByPage(count, page);
+                    if (companies is null)
+                    {
+                        Logger.Info("GetCompaniesByPage is null");
+                        return NotFound();
+                    }
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(companies, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(companies, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
             }
@@ -64,7 +92,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                         Logger.Info("GetAllCompany is null");
                         return NotFound();
                     }
-                    Logger.Info($"Messege: {JsonConvert.SerializeObject(companies, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(companies, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(companies, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
             }
@@ -92,7 +120,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                         Logger.Info("GetCompaniesByIndustry is null");
                         return NotFound();
                     }
-                    Logger.Info($"Messege: {JsonConvert.SerializeObject(companies, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(companies, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(companies, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
             }

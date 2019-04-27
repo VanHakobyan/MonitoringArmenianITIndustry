@@ -33,7 +33,35 @@ namespace Web.Backend.MonitoringIT.Controllers
                         Logger.Info("LinkedinProfiles is null");
                         return NotFound();
                     }
-                    Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfiles, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfiles, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    return Ok(JsonConvert.SerializeObject(linkedinProfiles, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Get all linkedin profiles
+        /// </summary>
+        /// <returns>ActionResult of IEnumerable of string></returns>
+        [HttpGet, Route("GetLinkedinsByPage/{count}/{page}")]
+        public IActionResult GetLinkedinsByPage(int count, int page)
+        {
+            try
+            {
+                using (var dal = new MonitoringDAL(""))
+                {
+                    var linkedinProfiles = dal.LinkedinProfileDal.GetLinkedinsByPage(count,page);
+                    if (linkedinProfiles is null)
+                    {
+                        Logger.Info("LinkedinProfiles is null");
+                        return NotFound();
+                    }
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfiles, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(linkedinProfiles, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
             }
@@ -62,7 +90,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                         Logger.Info("LinkedinProfile is null");
                         return NotFound();
                     }
-                    Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfile, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfile, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(linkedinProfile, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
             }
@@ -92,7 +120,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                         Logger.Info("LinkedinProfile is null");
                         return NotFound();
                     }
-                    Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfile, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfile, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     return Ok(JsonConvert.SerializeObject(linkedinProfile, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 }
             }

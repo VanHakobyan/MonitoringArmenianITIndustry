@@ -17,6 +17,11 @@ namespace DAL.MonitoringIT.Implementation
             return GetAllQuery().ToList();
         }
 
+        public List<LinkedinProfile> GetLinkedinsByPage(int count, int page)
+        {
+            return GetAllQueryByPage(count, page).ToList();
+        }
+
         public LinkedinProfile GetById(int id)
         {
             return GetAllQuery().Include(x=>x.LinkedinEducation).Include(x=>x.LinkedinExperience).Include(x=>x.LinkedinInterest).Include(x=>x.LinkedinLanguage).Include(x=>x.LinkedinSkill).FirstOrDefault(x => x.Id == id);
@@ -29,6 +34,11 @@ namespace DAL.MonitoringIT.Implementation
         public new IQueryable<LinkedinProfile> GetAllQuery()
         {
             return _dbContext.LinkedinProfile;
+        }
+
+        public new IQueryable<LinkedinProfile> GetAllQueryByPage(int count, int page)
+        {
+           return GetAllQuery().Skip((page - 1) * count).Take(count);
         }
     }
 }

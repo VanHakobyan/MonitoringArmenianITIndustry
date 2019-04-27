@@ -12,6 +12,19 @@ namespace DAL.MonitoringIT.Implementation
         {
         }
 
+        public List<GithubProfile> GetByPage(int count, int page)
+        {
+            var profiles = GetAllQueryByPage(count,page).ToList();
+            foreach (var profile in profiles)
+            {
+                foreach (var profileRepository in profile.GithubRepository)
+                {
+                    profileRepository.Readme = null;
+                }
+            }
+
+            return profiles;
+        }
         public List<GithubProfile> GetAll()
         {
             var profiles = GetAllQuery().ToList();
@@ -25,7 +38,6 @@ namespace DAL.MonitoringIT.Implementation
 
             return profiles;
         }
-
 
         public GithubProfile GetById(int id)
         {
@@ -57,6 +69,10 @@ namespace DAL.MonitoringIT.Implementation
         public new IQueryable<GithubProfile> GetAllQuery()
         {
             return _dbContext.GithubProfile;
+        }
+        public new IQueryable<GithubProfile> GetAllQueryByPage(int count, int page)
+        {
+            return GetAllQuery().Skip((page - 1) * count).Take(count);
         }
     }
 }
