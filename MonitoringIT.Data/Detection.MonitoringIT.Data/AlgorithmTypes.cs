@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Detection.MonitoringIT.Data
+﻿namespace Detection.MonitoringIT.Data
 {
     public static class AlgorithmTypes
     {
