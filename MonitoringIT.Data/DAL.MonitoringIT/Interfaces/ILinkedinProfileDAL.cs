@@ -10,6 +10,7 @@ namespace DAL.MonitoringIT.Interfaces
     {
         List<LinkedinProfile> GetAll();
         List<LinkedinProfile> GetLinkedinsByPage(int count,int page);
+        List<LinkedinProfile> GetFavorites(int count);
         LinkedinProfile GetById(int id);
         LinkedinProfile GetByUserName(string username);
     }

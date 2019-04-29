@@ -48,7 +48,7 @@ namespace Web.Backend.MonitoringIT.Controllers
         }
 
         /// <summary>
-        /// Get all jobs
+        /// Get Jobs By Page
         /// </summary>
         /// <returns>IActionResult</returns>
         [HttpGet, Route("GetJobsByPage/{count}/{page}")]
@@ -62,6 +62,33 @@ namespace Web.Backend.MonitoringIT.Controllers
                     if (jobs is null)
                     {
                         Logger.Info("GetCompaniesByPage is null");
+                        return NotFound();
+                    }
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(jobs, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    return Ok(JsonConvert.SerializeObject(jobs, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
+            }
+        }
+        /// <summary>
+        /// Get Favorite Jobs
+        /// </summary>
+        /// <returns>IActionResult</returns>
+        [HttpGet, Route("GetFavorites/{count}")]
+        public IActionResult GetFavorites(int count)
+        {
+            try
+            {
+                using (var dal = new MonitoringDAL(""))
+                {
+                    var jobs = dal.JobDal.GetFavorites(count);
+                    if (jobs is null)
+                    {
+                        Logger.Info("GetFavoritesJob is null");
                         return NotFound();
                     }
                     //Logger.Info($"Messege: {JsonConvert.SerializeObject(jobs, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");

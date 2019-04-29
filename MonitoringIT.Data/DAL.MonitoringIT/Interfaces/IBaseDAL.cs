@@ -9,5 +9,6 @@ namespace DAL.MonitoringIT.Interfaces
     {
         IQueryable<T> GetAllQuery();
         IQueryable<T> GetAllQueryByPage(int count,int page);
+        IQueryable<T> GetFavoritesQuery(int count);
     }
 }

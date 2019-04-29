@@ -9,5 +9,6 @@ namespace DAL.MonitoringIT.Interfaces
         List<Job> GetAllJob();
         List<Job> GetJobsByCategory(string category);
         List<Job> GetJobsByPage(int count,int page);
+        List<Job> GetFavorites(int count);
     }
 }

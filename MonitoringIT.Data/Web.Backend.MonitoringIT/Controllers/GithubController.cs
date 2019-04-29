@@ -44,7 +44,7 @@ namespace Web.Backend.MonitoringIT.Controllers
             }
         }
         /// <summary>
-        /// Get all github profiles 
+        /// Get Github ByPage 
         /// </summary>
         /// <returns>IActionResult</returns>
         [HttpGet, Route("GetGithubsByPage/{count}/{page}")]
@@ -58,6 +58,34 @@ namespace Web.Backend.MonitoringIT.Controllers
                     if (githubProfiles is null)
                     {
                         Logger.Info("GithubProfilesByPage is null");
+                        return NotFound();
+                    }
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(githubProfiles, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    return Ok(JsonConvert.SerializeObject(githubProfiles, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Get Favorite Githubs 
+        /// </summary>
+        /// <returns>IActionResult</returns>
+        [HttpGet, Route("GetFavorites/{count}")]
+        public IActionResult GetFavorites(int count)
+        {
+            try
+            {
+                using (var dal = new MonitoringDAL(""))
+                {
+                    var githubProfiles = dal.GithubProfileDal.GetFavorites(count);
+                    if (githubProfiles is null)
+                    {
+                        Logger.Info("GetFavoriteGithubs is null");
                         return NotFound();
                     }
                     //Logger.Info($"Messege: {JsonConvert.SerializeObject(githubProfiles, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");

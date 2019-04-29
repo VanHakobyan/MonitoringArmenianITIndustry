@@ -25,5 +25,10 @@ namespace DAL.MonitoringIT.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public IQueryable<T> GetFavoritesQuery(int count)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

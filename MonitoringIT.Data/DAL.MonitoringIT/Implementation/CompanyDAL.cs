@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Database.MonitoringIT.DB.EfCore.Models;
 using DAL.MonitoringIT.Interfaces;
@@ -22,6 +23,12 @@ namespace DAL.MonitoringIT.Implementation
             return GetAllQuery().Skip((page - 1) * count).Take(count);
         }
 
+        public new IQueryable<Company> GetFavoritesQuery(int count)
+        {
+            var random = new Random();
+            var num = random.Next(1, 20);
+            return GetAllQuery().Where(x => !string.IsNullOrEmpty(x.Image) && x.Views > 50000).Skip(num).Take(count);
+        }
         public List<Company> GetAllCompany()
         {
             return GetAllQuery().ToList();
@@ -30,6 +37,11 @@ namespace DAL.MonitoringIT.Implementation
         public List<Company> GetCompanyByPage(int count, int page)
         {
             return GetAllQueryByPage(count, page).ToList();
+        }
+
+        public List<Company> GetFavoriteCompanies(int count)
+        {
+            return GetFavoritesQuery(count).ToList();
         }
 
         public List<Company> GetCompaniesByIndustry(string industry)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Database.MonitoringIT.DB.EfCore.Models;
 using DAL.MonitoringIT.Interfaces;
@@ -25,6 +26,19 @@ namespace DAL.MonitoringIT.Implementation
 
             return profiles;
         }
+
+        public new IQueryable<GithubProfile> GetFavoritesQuery(int count)
+        {
+            var random = new Random();
+            var num = random.Next(1, 50);
+            return GetAllQuery().Where(x=>!string.IsNullOrEmpty(x.ImageUrl) && !string.IsNullOrEmpty(x.Bio) &&!string.IsNullOrEmpty(x.Company) && !string.IsNullOrEmpty(x.Bio)).Skip(num).Take(count);
+        }
+
+        public List<GithubProfile> GetFavorites(int count)
+        {
+            return GetFavoritesQuery(count).ToList();
+        }
+
         public List<GithubProfile> GetAll()
         {
             var profiles = GetAllQuery().ToList();

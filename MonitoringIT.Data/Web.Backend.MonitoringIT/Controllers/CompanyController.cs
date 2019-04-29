@@ -74,7 +74,33 @@ namespace Web.Backend.MonitoringIT.Controllers
                 return BadRequest();
             }
         }
-
+        /// <summary>
+        /// Get Favorite Companies
+        /// </summary>
+        /// <returns>IActionResult</returns>
+        [HttpGet, Route("GetFavorites/{count}")]
+        public IActionResult GetFavorites(int count)
+        {
+            try
+            {
+                using (var dal = new MonitoringDAL(""))
+                {
+                    var companies = dal.CompanyDal.GetFavoriteCompanies(count);
+                    if (companies is null)
+                    {
+                        Logger.Info("GetFavoriteCompanies is null");
+                        return NotFound();
+                    }
+                    //Logger.Info($"Messege: {JsonConvert.SerializeObject(companies, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
+                    return Ok(JsonConvert.SerializeObject(companies, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, MethodBase.GetCurrentMethod().Name);
+                return BadRequest();
+            }
+        }
         /// <summary>
         /// Get all companies
         /// </summary>

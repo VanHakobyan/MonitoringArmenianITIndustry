@@ -9,6 +9,7 @@ namespace DAL.MonitoringIT.Interfaces
     {
         List<GithubProfile> GetAll();
         List<GithubProfile> GetByPage(int count, int page);
+        List<GithubProfile> GetFavorites(int count);
         List<GithubProfile> GetAllWithReadme();
         GithubProfile GetById(int id);
         GithubProfile GetByIdWithReadme(int id);
