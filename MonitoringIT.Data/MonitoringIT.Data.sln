@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonitoringIT.Data.Common", "MonitoringIT.Data.Common\MonitoringIT.Data.Common.csproj", "{7EC68600-E4B0-4CD5-802F-35CDDD87C829}"
 EndProject
@@ -55,11 +55,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeteCtion", "DeteCtion", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Detection.MonitoringIT.Data", "Detection.MonitoringIT.Data\Detection.MonitoringIT.Data.csproj", "{CA329A42-5E9A-4A03-8695-F72AF3A94BC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Core.Console", "Test.Core.Console\Test.Core.Console.csproj", "{5C616166-21B5-41BF-887D-629D2DBB7371}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Core.Console", "Test.Core.Console\Test.Core.Console.csproj", "{5C616166-21B5-41BF-887D-629D2DBB7371}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Framework.Console", "Test.Framework.Console\Test.Framework.Console.csproj", "{D9179511-E613-4BA2-8C3E-7CF542C2D4BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.MonitoringIT.Data.Staff.am.Scrapper", "Lib.MonitoringIT.Data.Staff.am.Scrapper\Lib.MonitoringIT.Data.Staff.am.Scrapper.csproj", "{70DA7FC6-EF92-4179-8A24-9AB74D2AA05C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Detection.MonitoringIT.Data.Runner", "Detection.MonitoringIT.Data.Runner\Detection.MonitoringIT.Data.Runner.csproj", "{F731CC72-3171-4EC8-8CA7-9487D9BBC142}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -409,6 +411,22 @@ Global
 		{70DA7FC6-EF92-4179-8A24-9AB74D2AA05C}.Release|x64.Build.0 = Release|Any CPU
 		{70DA7FC6-EF92-4179-8A24-9AB74D2AA05C}.Release|x86.ActiveCfg = Release|Any CPU
 		{70DA7FC6-EF92-4179-8A24-9AB74D2AA05C}.Release|x86.Build.0 = Release|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Debug|ARM.Build.0 = Debug|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Debug|x64.Build.0 = Debug|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Debug|x86.Build.0 = Debug|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Release|ARM.ActiveCfg = Release|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Release|ARM.Build.0 = Release|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Release|x64.ActiveCfg = Release|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Release|x64.Build.0 = Release|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Release|x86.ActiveCfg = Release|Any CPU
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -434,6 +452,7 @@ Global
 		{5C616166-21B5-41BF-887D-629D2DBB7371} = {1F01D9C8-79F2-4451-B7A6-710C43433B8F}
 		{D9179511-E613-4BA2-8C3E-7CF542C2D4BF} = {1F01D9C8-79F2-4451-B7A6-710C43433B8F}
 		{70DA7FC6-EF92-4179-8A24-9AB74D2AA05C} = {D85F3CFE-A73F-4F47-8305-EEEFEF3F3523}
+		{F731CC72-3171-4EC8-8CA7-9487D9BBC142} = {B3BA6A97-F06A-47A8-8A74-80507BC307E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {27C7089F-1860-4C58-86E7-F079CE27FDDA}
