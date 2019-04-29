@@ -89,6 +89,23 @@ function HeaderLinks({ ...props }) {
           </Button>
         </Tooltip>
       </ListItem>
+        <ListItem className={classes.listItem}>
+            <Tooltip
+                id="instagram-facebook"
+                title="Follow me on Medium"
+                placement={window.innerWidth > 959 ? "top" : "left"}
+                classes={{ tooltip: classes.tooltip }}
+            >
+                <Button
+                    color="transparent"
+                    href="https://medium.com/@vanikhakobyan/"
+                    target="_blank"
+                    className={classes.navLink}
+                >
+                    <i className={classes.socialIcons + " fab fa-medium"} />
+                </Button>
+            </Tooltip>
+        </ListItem>
     </List>
   );
 }
