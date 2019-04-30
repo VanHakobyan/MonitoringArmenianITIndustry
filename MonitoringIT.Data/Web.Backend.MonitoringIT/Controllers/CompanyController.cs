@@ -51,8 +51,8 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// Get all companies
         /// </summary>
         /// <returns>IActionResult</returns>
-        [HttpGet, Route("GetCompaniesByPage/{count}/{page}")]
-        public IActionResult GetCompaniesByPage(int count, int page)
+        [HttpGet, Route("GetByPage/{count}/{page}")]
+        public IActionResult GetByPage(int count, int page)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// </summary>
         /// <returns>IActionResult</returns>
         [HttpGet, Route("GetAllWithJob")]
-        public IActionResult GetAllCompanyWithJob()
+        public IActionResult GetAllWithJob()
         {
             try
             {
@@ -115,7 +115,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                     var companies = dal.CompanyDal.GetAllCompanyWithJob();
                     if (companies is null)
                     {
-                        Logger.Info("GetAllCompany is null");
+                        Logger.Info("GetAllWithJob is null");
                         return NotFound();
                     }
                     //Logger.Info($"Messege: {JsonConvert.SerializeObject(companies, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
@@ -134,7 +134,7 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// </summary>
         /// <returns>IActionResult</returns>
         [HttpGet, Route("GetByIndustry/{industry}")]
-        public IActionResult GetCompaniesByIndustry(string industry)
+        public IActionResult GetByIndustry(string industry)
         {
             try
             {
@@ -156,7 +156,5 @@ namespace Web.Backend.MonitoringIT.Controllers
                 return BadRequest();
             }
         }
-
-
     }
 }

@@ -21,7 +21,7 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// </summary>
         /// <returns>IActionResult</returns>
         [HttpGet, Route("GetAll")]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
             try
             {
@@ -47,8 +47,8 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// Get Github ByPage 
         /// </summary>
         /// <returns>IActionResult</returns>
-        [HttpGet, Route("GetGithubsByPage/{count}/{page}")]
-        public IActionResult GetGithubsByPage(int count, int page)
+        [HttpGet, Route("GetByPage/{count}/{page}")]
+        public IActionResult GetByPage(int count, int page)
         {
             try
             {

@@ -21,7 +21,7 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// </summary>
         /// <returns>ActionResult of IEnumerable of string></returns>
         [HttpGet, Route("GetAll")]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
             try
             {
@@ -30,7 +30,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                     var linkedinProfiles = dal.LinkedinProfileDal.GetAll();
                     if (linkedinProfiles is null)
                     {
-                        Logger.Info("LinkedinProfiles is null");
+                        Logger.Info("GetAll is null");
                         return NotFound();
                     }
                     //Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfiles, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
@@ -48,8 +48,8 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// Get Linkedins ByPage
         /// </summary>
         /// <returns>ActionResult of IEnumerable of string></returns>
-        [HttpGet, Route("GetLinkedinsByPage/{count}/{page}")]
-        public IActionResult GetLinkedinsByPage(int count, int page)
+        [HttpGet, Route("GetByPage/{count}/{page}")]
+        public IActionResult GetByPage(int count, int page)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                     var linkedinProfiles = dal.LinkedinProfileDal.GetLinkedinsByPage(count,page);
                     if (linkedinProfiles is null)
                     {
-                        Logger.Info("GetLinkedinsByPage is null");
+                        Logger.Info("GetByPage is null");
                         return NotFound();
                     }
                     //Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfiles, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
@@ -116,7 +116,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                     var linkedinProfile = dal.LinkedinProfileDal.GetById(id);
                     if (linkedinProfile is null)
                     {
-                        Logger.Info("LinkedinProfile is null");
+                        Logger.Info("GetById is null");
                         return NotFound();
                     }
                     //Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfile, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
@@ -146,7 +146,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                     var linkedinProfile = dal.LinkedinProfileDal.GetByUserName(username);
                     if (linkedinProfile is null)
                     {
-                        Logger.Info("LinkedinProfile is null");
+                        Logger.Info("GetByUsername is null");
                         return NotFound();
                     }
                     //Logger.Info($"Messege: {JsonConvert.SerializeObject(linkedinProfile, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");

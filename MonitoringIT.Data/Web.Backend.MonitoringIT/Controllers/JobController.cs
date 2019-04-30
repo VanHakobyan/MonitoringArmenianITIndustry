@@ -24,7 +24,7 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// </summary>
         /// <returns>IActionResult</returns>
         [HttpGet, Route("GetAll")]
-        public IActionResult GetAllJob()
+        public IActionResult GetAll()
         {
             try
             {
@@ -33,7 +33,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                     var jobs = dal.JobDal.GetAllJob();
                     if (jobs is null)
                     {
-                        Logger.Info("GetAllCompany is null");
+                        Logger.Info("GetAll is null");
                         return NotFound();
                     }
                     //Logger.Info($"Messege: {JsonConvert.SerializeObject(jobs, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
@@ -51,8 +51,8 @@ namespace Web.Backend.MonitoringIT.Controllers
         /// Get Jobs By Page
         /// </summary>
         /// <returns>IActionResult</returns>
-        [HttpGet, Route("GetJobsByPage/{count}/{page}")]
-        public IActionResult GetJobsByPage(int count, int page)
+        [HttpGet, Route("GetByPage/{count}/{page}")]
+        public IActionResult GetByPage(int count, int page)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace Web.Backend.MonitoringIT.Controllers
                     var jobs = dal.JobDal.GetJobsByPage(count, page);
                     if (jobs is null)
                     {
-                        Logger.Info("GetCompaniesByPage is null");
+                        Logger.Info("GetByPage is null");
                         return NotFound();
                     }
                     //Logger.Info($"Messege: {JsonConvert.SerializeObject(jobs, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
