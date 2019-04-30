@@ -58,14 +58,14 @@ class TeamSection extends React.Component {
                     color="transparent"
                     className={classes.margin5}
                   >
-                    <i className={classes.socials + " fab fa-twitter"} />
+                    <i className={classes.socials + " fab fa-github"} />
                   </Button>
                   <Button
                     justIcon
                     color="transparent"
                     className={classes.margin5}
                   >
-                    <i className={classes.socials + " fab fa-instagram"} />
+                    <i className={classes.socials + " fab fa-linkedin"} />
                   </Button>
                   <Button
                     justIcon
@@ -101,12 +101,19 @@ class TeamSection extends React.Component {
                     color="transparent"
                     className={classes.margin5}
                   >
-                    <i className={classes.socials + " fab fa-twitter"} />
+                    <i className={classes.socials + " fab fa-github"} />
                   </Button>
                   <Button
                     justIcon
                     color="transparent"
                     className={classes.margin5}
+                  >
+                    <i className={classes.socials + " fab fa-linkedin"} />
+                  </Button>
+                  <Button
+                      justIcon
+                      color="transparent"
+                      className={classes.margin5}
                   >
                     <i className={classes.socials + " fab fa-linkedin"} />
                   </Button>
@@ -137,14 +144,14 @@ class TeamSection extends React.Component {
                     color="transparent"
                     className={classes.margin5}
                   >
-                    <i className={classes.socials + " fab fa-twitter"} />
+                    <i className={classes.socials + " fab fa-github"} />
                   </Button>
                   <Button
                     justIcon
                     color="transparent"
                     className={classes.margin5}
                   >
-                    <i className={classes.socials + " fab fa-instagram"} />
+                    <i className={classes.socials + " fab fa-linkedin"} />
                   </Button>
                   <Button
                     justIcon
@@ -188,14 +195,14 @@ class TeamSection extends React.Component {
                         color="transparent"
                         className={classes.margin5}
                     >
-                      <i className={classes.socials + " fab fa-twitter"} />
+                      <i className={classes.socials + " fab fa-github"} />
                     </Button>
                     <Button
                         justIcon
                         color="transparent"
                         className={classes.margin5}
                     >
-                      <i className={classes.socials + " fab fa-instagram"} />
+                      <i className={classes.socials + " fab fa-linkedin"} />
                     </Button>
                     <Button
                         justIcon
@@ -231,7 +238,14 @@ class TeamSection extends React.Component {
                         color="transparent"
                         className={classes.margin5}
                     >
-                      <i className={classes.socials + " fab fa-twitter"} />
+                      <i className={classes.socials + " fab fa-github"} />
+                    </Button>
+                    <Button
+                        justIcon
+                        color="transparent"
+                        className={classes.margin5}
+                    >
+                      <i className={classes.socials + " fab fa-linkedin"} />
                     </Button>
                     <Button
                         justIcon
@@ -267,14 +281,14 @@ class TeamSection extends React.Component {
                         color="transparent"
                         className={classes.margin5}
                     >
-                      <i className={classes.socials + " fab fa-twitter"} />
+                      <i className={classes.socials + " fab fa-github"} />
                     </Button>
                     <Button
                         justIcon
                         color="transparent"
                         className={classes.margin5}
                     >
-                      <i className={classes.socials + " fab fa-instagram"} />
+                      <i className={classes.socials + " fab fa-linkedin"} />
                     </Button>
                     <Button
                         justIcon
@@ -318,14 +332,14 @@ class TeamSection extends React.Component {
                         color="transparent"
                         className={classes.margin5}
                     >
-                      <i className={classes.socials + " fab fa-twitter"} />
+                      <i className={classes.socials + " fab fa-github"} />
                     </Button>
                     <Button
                         justIcon
                         color="transparent"
                         className={classes.margin5}
                     >
-                      <i className={classes.socials + " fab fa-instagram"} />
+                      <i className={classes.socials + " fab fa-linkedin"} />
                     </Button>
                     <Button
                         justIcon
@@ -361,7 +375,7 @@ class TeamSection extends React.Component {
                         color="transparent"
                         className={classes.margin5}
                     >
-                      <i className={classes.socials + " fab fa-twitter"} />
+                      <i className={classes.socials + " fab fa-github"} />
                     </Button>
                     <Button
                         justIcon
@@ -369,6 +383,15 @@ class TeamSection extends React.Component {
                         className={classes.margin5}
                     >
                       <i className={classes.socials + " fab fa-linkedin"} />
+
+                    </Button>
+                    <Button
+                        justIcon
+                        color="transparent"
+                        className={classes.margin5}
+                    >
+                      <i className={classes.socials + " fab fa-linkedin"} />
+
                     </Button>
                   </CardFooter>
                 </Card>
@@ -404,7 +427,7 @@ class TeamSection extends React.Component {
                         color="transparent"
                         className={classes.margin5}
                     >
-                      <i className={classes.socials + " fab fa-instagram"} />
+                      <i className={classes.socials + " fab fa-linkedin"} />
                     </Button>
                     <Button
                         justIcon

@@ -31,7 +31,7 @@ namespace DAL.MonitoringIT.Implementation
         {
             var random = new Random();
             var num = random.Next(1, 50);
-            return GetAllQuery().Where(x=>!string.IsNullOrEmpty(x.ImageUrl) && !string.IsNullOrEmpty(x.Bio) &&!string.IsNullOrEmpty(x.Company) && !string.IsNullOrEmpty(x.Bio)).Skip(num).Take(count);
+            return GetAllQuery().Where(x=>!string.IsNullOrEmpty(x.ImageUrl) && !string.IsNullOrEmpty(x.Bio) &&!string.IsNullOrEmpty(x.Company)).Skip(num).Take(count);
         }
 
         public List<GithubProfile> GetFavorites(int count)
