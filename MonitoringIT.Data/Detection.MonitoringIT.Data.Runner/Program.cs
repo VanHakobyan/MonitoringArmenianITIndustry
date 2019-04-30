@@ -1,7 +1,5 @@
 using Database.MonitoringIT.DAL.WithEF6;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Detection.MonitoringIT.Data.Runner
 {
@@ -38,8 +36,6 @@ namespace Detection.MonitoringIT.Data.Runner
                         }
                     }
                 }
-
-
             }
         }
     }
