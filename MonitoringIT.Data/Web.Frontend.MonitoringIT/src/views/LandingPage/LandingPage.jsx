@@ -14,29 +14,57 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
+import NavigationBar from "components/Header/NavigationBar.jsx";
 import Parallax from "components/Parallax/Parallax.jsx";
 
 import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
 
 // Sections for this page
 import ProductSection from "./Sections/ProductSection.jsx";
-import TeamSection from "./Sections/TeamSection.jsx";
-import WorkSection from "./Sections/WorkSection.jsx";
+import FavoriteProfiles from "./Sections/FavoriteProfiles.jsx";
 
 import * as githubProfiles from "store/actions/githubProfiles"
 import {
-	allProfilesLoadingSelector,
-	allProfilesSuccessSelector,
-	allProfilesFailedSelector,
+	favoriteProfilesLoadingSelector,
+	favoriteProfilesSuccessSelector,
+	favoriteProfilesFailedSelector,
 } from "store/selectors/githubProfiles";
 
 const dashboardRoutes = [];
+let count = 5;
 
 class LandingPage extends React.Component {
 	async componentDidMount() {
-		await this.props.requestAllGithubProfiles();
+		await this.props.requestFavoriteGithubProfiles(6);
 	}
+	renderGithubProfiles = () => {
+		let {favoriteProfilesSuccess} = this.props;
+		if(favoriteProfilesSuccess) {
+			return (
+				<FavoriteProfiles
+					name="github"
+					title="People In Github"
+					profiles={favoriteProfilesSuccess}
+					count={count}
+				/>
+			)
+		}
+	};
+	renderLinkedinProfiles = () => {
+		let {favoriteProfilesSuccess} = this.props;
+		if(favoriteProfilesSuccess) {
+			return (
+				<FavoriteProfiles
+					name="github"
+					title="People In Github"
+					profiles={favoriteProfilesSuccess}
+					count={count}
+				/>
+			)
+		}
+	};
   render() {
+		let {favoriteProfilesSuccess} = this.props;
     const { classes, ...rest } = this.props;
     return (
       <div>
@@ -45,6 +73,7 @@ class LandingPage extends React.Component {
           routes={dashboardRoutes}
           brand="Monitoring IT"
           rightLinks={<HeaderLinks />}
+					leftLinks={<NavigationBar/>}
           fixed
           changeColorOnScroll={{
             height: 400,
@@ -78,8 +107,8 @@ class LandingPage extends React.Component {
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.container}>
             <ProductSection />
-						<TeamSection />
-            <WorkSection />
+						{this.renderGithubProfiles()}
+						{this.renderLinkedinProfiles()}
           </div>
         </div>
         <Footer />
@@ -91,16 +120,16 @@ class LandingPage extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		allProfilesLoading: allProfilesLoadingSelector(state),
-		allProfilesSuccess: allProfilesSuccessSelector(state),
-		allProfilesFailed: allProfilesFailedSelector(state),
+		favoriteProfilesLoading: favoriteProfilesLoadingSelector(state),
+		favoriteProfilesSuccess: favoriteProfilesSuccessSelector(state),
+		favoriteProfilesFailed: favoriteProfilesFailedSelector(state),
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		requestAllGithubProfiles: () => {
-			dispatch(githubProfiles.requestAllGithubProfiles())
+		requestFavoriteGithubProfiles: count => {
+			dispatch(githubProfiles.requestFavoriteGithubProfiles(count))
 		},
 	};
 }

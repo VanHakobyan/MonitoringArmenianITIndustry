@@ -14,3 +14,15 @@ export function* getAllProfiles() {
 		yield put(githubProfiles.failedAllGithubProfiles(e.message));
 	}
 }
+export function* getFavoriteProfiles(api) {
+	try {
+		let result = 	yield call(get, `github/getFavorites/${api.count}`);
+		if(result.status < 400){
+			yield put(githubProfiles.succeededFavoriteGithubProfiles(result.data));
+		} else {
+			yield put(githubProfiles.failedFavoriteGithubProfiles(result.status))
+		}
+	} catch(e) {
+		yield put(githubProfiles.failedFavoriteGithubProfiles(e.message));
+	}
+}
