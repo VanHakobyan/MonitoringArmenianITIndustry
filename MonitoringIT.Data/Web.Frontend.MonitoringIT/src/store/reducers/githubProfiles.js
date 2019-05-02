@@ -26,24 +26,24 @@ export default function reduce(state = {}, action) {
 		case types.REQUESTED_FAVORITE_GITHUB_PROFILES:
 			return {
 				...state,
-				favoriteProfilesLoading: true,
-				favoriteProfilesSuccess: undefined,
-				favoriteProfilesFailed: undefined
+				favoriteGithubProfilesLoading: true,
+				favoriteGithubProfilesSuccess: undefined,
+				favoriteGithubProfilesFailed: undefined
 			};
 		case types.SUCCEEDED_FAVORITE_GITHUB_PROFILES:
 			console.log("action", action)
 			return {
 				...state,
-				favoriteProfilesLoading: true,
-				favoriteProfilesSuccess: action.profiles,
-				favoriteProfilesFailed: undefined
+				favoriteGithubProfilesLoading: true,
+				favoriteGithubProfilesSuccess: action.profiles,
+				favoriteGithubProfilesFailed: undefined
 			};
 		case types.FAILED_FAVORITE_GITHUB_PROFILES:
 			return {
 				...state,
-				favoriteProfilesLoading: true,
-				favoriteProfilesSuccess: undefined,
-				favoriteProfilesFailed: action.error
+				favoriteGithubProfilesLoading: true,
+				favoriteGithubProfilesSuccess: undefined,
+				favoriteGithubProfilesFailed: action.error
 			};
 		default:
 			return state;

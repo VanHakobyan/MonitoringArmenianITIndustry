@@ -28,6 +28,7 @@ class TeamSection extends React.Component {
       classes.imgRoundedCircle,
       classes.imgFluid
     );
+
     return (
       <div>
         <div className={classes.section}>

@@ -2,6 +2,6 @@ export const allProfilesLoadingSelector = state => state.githubProfiles.allProfi
 export const allProfilesSuccessSelector = state => state.githubProfiles.allProfilesSuccess;
 export const allProfilesFailedSelector = state => state.githubProfiles.allProfilesFailed;
 //
-export const favoriteProfilesLoadingSelector = state => state.githubProfiles.favoriteProfilesLoading;
-export const favoriteProfilesSuccessSelector = state => state.githubProfiles.favoriteProfilesSuccess;
-export const favoriteProfilesFailedSelector = state => state.githubProfiles.favoriteProfilesFailed;
+export const favoriteGithubProfilesLoadingSelector = state => state.githubProfiles.favoriteGithubProfilesLoading;
+export const favoriteGithubProfilesSuccessSelector = state => state.githubProfiles.favoriteGithubProfilesSuccess;
+export const favoriteGithubProfilesFailedSelector = state => state.githubProfiles.favoriteGithubProfilesFailed;
