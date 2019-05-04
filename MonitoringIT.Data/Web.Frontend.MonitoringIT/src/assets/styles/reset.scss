@@ -1,0 +1,16 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0;padding: 0;border: 0;outline: 0;	font-size: 100%;box-sizing: border-box;vertical-align: baseline;background: transparent;}body {line-height: 1;}ol, ul {list-style: none;}blockquote, q {quotes: none;}blockquote:before, blockquote:after, q:before, q:after {content: '';content: none;color: #FFF;font: 14px Arial, Helvetica, sans-serif;}:focus {outline: 0;}ins {text-decoration: none;}del {text-decoration: line-through;}table {border-collapse: collapse;border-spacing: 0;}
+html{height: 100%;}
+input::-ms-clear {display: none;}
+::-moz-focus-inner {padding:0;}
+::-moz-focus-inner {padding:0; border:0;}
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track-piece {
+  background-color: rgba(194, 210, 228, 0.4);
+}
+::-webkit-scrollbar-thumb {
+  height: 20px;
+  background-color: rgba(99, 86, 102, 0.15);
+}

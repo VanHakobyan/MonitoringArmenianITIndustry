@@ -10,7 +10,6 @@ export default function reduce(state = {}, action) {
                 favoriteCompaniesFailed: undefined
             };
         case types.SUCCEEDED_FAVORITE_COMPANIES:
-            console.log("action", action)
             return {
                 ...state,
                 favoriteCompaniesLoading: true,

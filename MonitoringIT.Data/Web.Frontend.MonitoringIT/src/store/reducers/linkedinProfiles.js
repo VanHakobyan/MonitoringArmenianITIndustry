@@ -10,7 +10,6 @@ export default function reduce(state = {}, action) {
                 favoriteLinkedinProfilesFailed: undefined
             };
         case types.SUCCEEDED_FAVORITE_LINKEDIN_PROFILES:
-            console.log("action", action)
             return {
                 ...state,
                 favoriteLinkedinProfilesLoading: true,

@@ -12,8 +12,9 @@ import Button from "components/CustomButtons/Button.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-import GithubCard from "views/LandingPage/Sections/GithubCard"
-import LinkedinCard from "views/LandingPage/Sections/LinkedinCard"
+import GithubCard from "views/LandingPage/Sections/GithubCard";
+import LinkedinCard from "views/LandingPage/Sections/LinkedinCard";
+import CompanyCard from "views/LandingPage/Sections/CompanyCard";
 
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
 
@@ -52,6 +53,21 @@ class FavoriteProfiles extends React.Component {
 									if(name === "linkedin"){
 										return (
 											<LinkedinCard
+												key={key}
+												uniqueKey={key}
+												item={item}
+											/>
+										)
+									}
+								})
+							}
+						</GridContainer>
+						<GridContainer>
+							{
+								profiles.map((item, key) => {
+									if(name === "company"){
+										return (
+											<CompanyCard
 												key={key}
 												uniqueKey={key}
 												item={item}

@@ -4,6 +4,7 @@ import configureStore from "store/index";
 import ReactDOM from "react-dom";
 import {createBrowserHistory} from "history";
 import {Router, Route, Switch, Redirect} from "react-router-dom";
+import "./assets/styles/index.scss";
 import "assets/scss/index.scss";
 import "assets/scss/material-kit-react.scss?v=1.4.0";
 

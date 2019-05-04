@@ -13,8 +13,14 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
+let social = [
+	"Facebook",
+	"Linkedin",
+	"Twitter",
+	"Weekend"
+];
 
-class GithubCard extends React.Component {
+class CompanyCard extends React.Component {
 	render() {
 		let {item, uniqueKey} = this.props;
 		const { classes } = this.props;
@@ -27,7 +33,7 @@ class GithubCard extends React.Component {
 			<GridItem key={uniqueKey} xs={12} sm={12} md={4}>
 				<Card plain>
 					<GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-						<img src={item.ImageUrl} alt="..." className={imageClasses} />
+						<img src={`http://${item.Image}`} alt="..." className={imageClasses} />
 					</GridItem>
 					<h4 className={classes.cardTitle}>
 						{item.Name}
@@ -35,20 +41,27 @@ class GithubCard extends React.Component {
 						<small className={classes.smallTitle}>{item.Company}</small>
 					</h4>
 					<CardBody>
-						<p className={classes.description + " lines-l"}>
-							{item.Bio}
+						<p className={classes.description + " l-paragraph"}>
+							{item.About}
 						</p>
 					</CardBody>
 					<CardFooter className={classes.justifyCenter}>
-						<Button
-							justIcon
-							color="transparent"
-							className={classes.margin5}
-							href={item.Url}
-							target="_blank"
-						>
-							<i className={classes.socials + " fab fa-github"} />
-						</Button>
+						{
+							social.map((el, key) => {
+								if(item[el])
+									return (
+										<Button
+											justIcon
+											color="transparent"
+											className={classes.margin5}
+											href={item[el]}
+											target="_blank"
+										>
+											<i className={`${classes.socialsfab} fab fa-${el.toLowerCase()}`} />
+										</Button>
+									)
+							})
+						}
 					</CardFooter>
 				</Card>
 			</GridItem>
@@ -56,4 +69,4 @@ class GithubCard extends React.Component {
 	}
 }
 
-export default withStyles(teamStyle)(GithubCard);
+export default withStyles(teamStyle)(CompanyCard);

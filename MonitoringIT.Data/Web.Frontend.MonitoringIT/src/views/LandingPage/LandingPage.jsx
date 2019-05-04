@@ -23,133 +23,159 @@ import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.js
 import ProductSection from "./Sections/ProductSection.jsx";
 import FavoriteProfiles from "./Sections/FavoriteProfiles.jsx";
 
-import * as githubProfiles from "store/actions/githubProfiles"
-import {
-    favoriteGithubProfilesLoadingSelector,
-    favoriteGithubProfilesSuccessSelector,
-    favoriteGithubProfilesFailedSelector,
-} from "store/selectors/githubProfiles";
-
-
+import * as githubProfiles from "store/actions/githubProfiles";
 import * as linkedinProfiles from "store/actions/linkedinProfiles"
+import * as companies from "store/actions/companies";
 import {
-    favoriteLinkedinProfilesLoadingSelector,
-    favoriteLinkedinProfilesSuccessSelector,
-    favoriteLinkedinProfilesFailedSelector,
+	favoriteGithubProfilesLoadingSelector,
+	favoriteGithubProfilesSuccessSelector,
+	favoriteGithubProfilesFailedSelector,
+} from "store/selectors/githubProfiles";
+import {
+	favoriteLinkedinProfilesLoadingSelector,
+	favoriteLinkedinProfilesSuccessSelector,
+	favoriteLinkedinProfilesFailedSelector,
 } from "store/selectors/linkedinProfiles";
+import {
+	favoriteCompaniesLoadingSelector,
+	favoriteCompaniesSuccessSelector,
+	favoriteCompaniesFailedSelector,
+} from "store/selectors/companies";
 
 
 const dashboardRoutes = [];
 let count = 5;
 
 class LandingPage extends React.Component {
-    async componentDidMount() {
-        await this.props.requestFavoriteGithubProfiles(6);
-        await this.props.requestFavoriteLinkedinProfiles(6);
-    }
+	async componentDidMount() {
+		await this.props.requestFavoriteGithubProfiles(6);
+		await this.props.requestFavoriteLinkedinProfiles(6);
+		await this.props.requestFavoriteCompanies(6);
+	}
 
-    renderGithubProfiles = () => {
-        let {favoriteGithubProfilesSuccess} = this.props;
-        if (favoriteGithubProfilesSuccess) {
-            return (
-                <FavoriteProfiles
-                    name="github"
-                    title="People In Github"
-                    profiles={favoriteGithubProfilesSuccess}
-                    count={count}
-                />
-            )
-        }
-    };
-    renderLinkedinProfiles = () => {
-        let {favoriteLinkedinProfilesSuccess} = this.props;
-        if (favoriteLinkedinProfilesSuccess) {
-            return (
-                <FavoriteProfiles
-                    name="Linkedin"
-                    title="People In Linkedin"
-                    profiles={favoriteLinkedinProfilesSuccess}
-                    count={count}
-                />
-            )
-        }
-    };
+	renderGithubProfiles = () => {
+		let {favoriteGithubProfilesSuccess} = this.props;
+		if (favoriteGithubProfilesSuccess) {
+			return (
+				<FavoriteProfiles
+					name="github"
+					title="People In Github"
+					profiles={favoriteGithubProfilesSuccess}
+					count={count}
+				/>
+			)
+		}
+	};
+	renderLinkedinProfiles = () => {
+		let {favoriteLinkedinProfilesSuccess} = this.props;
+		if (favoriteLinkedinProfilesSuccess) {
+			return (
+				<FavoriteProfiles
+					name="linkedin"
+					title="People In Linkedin"
+					profiles={favoriteLinkedinProfilesSuccess}
+					count={count}
+				/>
+			)
+		}
+	};
+	renderCompanies = () => {
+		let {favoriteCompaniesSuccess} = this.props;
+		if (favoriteCompaniesSuccess) {
+			return (
+				<FavoriteProfiles
+					name="company"
+					title="Companies"
+					profiles={favoriteCompaniesSuccess}
+					count={count}
+				/>
+			)
+		}
+	};
 
-    render() {
-        const {classes, ...rest} = this.props;
-        return (
-            <div>
-                <Header
-                    color="transparent"
-                    routes={dashboardRoutes}
-                    brand="Monitoring IT"
-                    rightLinks={<HeaderLinks/>}
-                    leftLinks={<NavigationBar/>}
-                    fixed
-                    changeColorOnScroll={{
-                        height: 400,
-                        color: "white"
-                    }}
-                    {...rest}
-                />
-                <Parallax filter image={require("assets/img/it.jpg")}>
-                    <div className={classes.container}>
-                        <GridContainer>
-                            <GridItem xs={12} sm={12} md={6}>
-                                <h1 className={classes.title}>Your Story Starts With Us.</h1>
-                                <h4>
-                                    Monitoring Armenian IT industry and platform for automatic job hiring
-                                </h4>
-                                <br/>
-                                <Button
-                                    color="danger"
-                                    size="lg"
-                                    href="https://youtu.be/pzwAvR3MxGE"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <i className="fas fa-play"/>
-                                    Watch video
-                                </Button>
-                            </GridItem>
-                        </GridContainer>
-                    </div>
-                </Parallax>
-                <div className={classNames(classes.main, classes.mainRaised)}>
-                    <div className={classes.container}>
-                        <ProductSection/>
-                        {this.renderGithubProfiles()}
-                        {this.renderLinkedinProfiles()}
-                    </div>
-                </div>
-                <Footer/>
-            </div>
-        );
-    }
+	render() {
+		const {classes, ...rest} = this.props;
+		return (
+			<div>
+				<Header
+					color="transparent"
+					routes={dashboardRoutes}
+					brand="Monitoring IT"
+					rightLinks={<HeaderLinks/>}
+					leftLinks={<NavigationBar/>}
+					fixed
+					changeColorOnScroll={{
+						height: 400,
+						color: "white"
+					}}
+					{...rest}
+				/>
+				<Parallax filter image={require("assets/img/it.jpg")}>
+					<div className={classes.container}>
+						<GridContainer>
+							<GridItem xs={12} sm={12} md={6}>
+								<h1 className={classes.title}>Your Story Starts With Us.</h1>
+								<h4>
+									Monitoring Armenian IT industry and platform for automatic job hiring
+								</h4>
+								<br/>
+								<Button
+									color="danger"
+									size="lg"
+									href="https://youtu.be/pzwAvR3MxGE"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<i className="fas fa-play"/>
+									Watch video
+								</Button>
+							</GridItem>
+						</GridContainer>
+					</div>
+				</Parallax>
+				<div className={classNames(classes.main, classes.mainRaised)}>
+					<div className={classes.container}>
+						<ProductSection/>
+						{this.renderGithubProfiles()}
+						{this.renderLinkedinProfiles()}
+						{this.renderCompanies()}
+					</div>
+				</div>
+				<Footer/>
+			</div>
+		);
+	}
 }
 
 
 function mapStateToProps(state) {
-    return {
-        favoriteGithubProfilesLoading: favoriteGithubProfilesLoadingSelector(state),
-        favoriteGithubProfilesSuccess: favoriteGithubProfilesSuccessSelector(state),
-        favoriteGithubProfilesFailed: favoriteGithubProfilesFailedSelector(state),
+	return {
+		favoriteGithubProfilesLoading: favoriteGithubProfilesLoadingSelector(state),
+		favoriteGithubProfilesSuccess: favoriteGithubProfilesSuccessSelector(state),
+		favoriteGithubProfilesFailed: favoriteGithubProfilesFailedSelector(state),
 
-        favoriteLinkedinProfilesLoading: favoriteLinkedinProfilesLoadingSelector(state),
-        favoriteLinkedinProfilesSuccess: favoriteLinkedinProfilesSuccessSelector(state),
-        favoriteLinkedinProfilesFailed: favoriteLinkedinProfilesFailedSelector(state),
-    };
+		favoriteLinkedinProfilesLoading: favoriteLinkedinProfilesLoadingSelector(state),
+		favoriteLinkedinProfilesSuccess: favoriteLinkedinProfilesSuccessSelector(state),
+		favoriteLinkedinProfilesFailed: favoriteLinkedinProfilesFailedSelector(state),
+
+		favoriteCompaniesLoading: favoriteCompaniesLoadingSelector(state),
+		favoriteCompaniesSuccess: favoriteCompaniesSuccessSelector(state),
+		favoriteCompaniesFailed: favoriteCompaniesFailedSelector(state),
+	};
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        requestFavoriteGithubProfiles: count => {
-            dispatch(githubProfiles.requestFavoriteGithubProfiles(count))
-        },
-        requestFavoriteLinkedinProfiles: count => {
-            dispatch(linkedinProfiles.requestFavoriteLinkedinProfiles(count))
-        },
-    };
+	return {
+		requestFavoriteGithubProfiles: count => {
+			dispatch(githubProfiles.requestFavoriteGithubProfiles(count))
+		},
+		requestFavoriteLinkedinProfiles: count => {
+			dispatch(linkedinProfiles.requestFavoriteLinkedinProfiles(count))
+		},
+		requestFavoriteCompanies: count => {
+			dispatch(companies.requestFavoriteCompanies(count))
+		},
+	};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(landingPageStyle)(LandingPage));

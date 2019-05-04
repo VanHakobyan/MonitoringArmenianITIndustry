@@ -2,7 +2,7 @@ import { call, put } from "redux-saga/effects";
 import * as githubProfiles from "store/actions/githubProfiles";
 import { get } from "services/api";
 
-export function* getAllProfiles() {
+export function* getAllGithubProfiles() {
 	try {
 		let result = 	yield call(get, "github/getAll");
 		if(result.status < 400){
@@ -14,7 +14,7 @@ export function* getAllProfiles() {
 		yield put(githubProfiles.failedAllGithubProfiles(e.message));
 	}
 }
-export function* getFavoriteProfiles(api) {
+export function* getFavoriteGithubProfiles(api) {
 	try {
 		let result = 	yield call(get, `github/getFavorites/${api.count}`);
 		if(result.status < 400){

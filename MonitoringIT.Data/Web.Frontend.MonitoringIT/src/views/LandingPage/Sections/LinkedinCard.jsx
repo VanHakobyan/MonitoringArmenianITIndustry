@@ -30,12 +30,12 @@ class LinkedinCard extends React.Component {
                         <img src={item.ImageUrl} alt="..." className={imageClasses} />
                     </GridItem>
                     <h4 className={classes.cardTitle}>
-                        {item.Name}
+                        {item.FullName}
                         <br />
                         <small className={classes.smallTitle}>{item.Company}</small>
                     </h4>
                     <CardBody>
-                        <p className={classes.description}>
+                        <p className={classes.description + " lines-l"}>
                             {item.Specialty}
                         </p>
                     </CardBody>
@@ -44,7 +44,7 @@ class LinkedinCard extends React.Component {
                             justIcon
                             color="transparent"
                             className={classes.margin5}
-                            href={`https://www.linkedin.com/{item.Url}`}
+                            href={`https://www.linkedin.com/in/${item.Username}`}
                             target="_blank"
                         >
                             <i className={classes.socials + " fab fa-linkedin"} />

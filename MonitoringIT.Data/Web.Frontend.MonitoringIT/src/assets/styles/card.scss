@@ -1,0 +1,11 @@
+.lines-l{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.l-paragraph{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 24px;
+  max-height: 96px;
+}
