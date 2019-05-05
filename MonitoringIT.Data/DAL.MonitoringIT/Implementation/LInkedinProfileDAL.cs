@@ -51,7 +51,7 @@ namespace DAL.MonitoringIT.Implementation
         {
             var random = new Random();
             var num = random.Next(1, 50);
-            return GetAllQuery().Where(x=>!string.IsNullOrEmpty(x.Company)&&!string.IsNullOrEmpty(x.ImageUrl) && !string.IsNullOrEmpty(x.Specialty) && !string.IsNullOrEmpty(x.Education)).Skip(num).Take(count);
+            return GetAllQuery().Where(x=>!string.IsNullOrEmpty(x.Company)&&!string.IsNullOrEmpty(x.ImageUrl) && !string.IsNullOrEmpty(x.Specialty) && !string.IsNullOrEmpty(x.Education)&& x.LastUpdate>DateTime.Now.AddDays(-30)).Skip(num).Take(count);
         }
     }
 }

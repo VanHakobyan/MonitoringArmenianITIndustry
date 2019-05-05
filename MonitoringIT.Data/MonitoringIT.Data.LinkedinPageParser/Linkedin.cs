@@ -34,7 +34,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
             {
                 using (var entities = new MonitoringEntities())
                 {
-                    var links = entities.LinkedinProfiles.OrderByDescending(x=>x.LastUpdate).Select(x => x.Username).ToList().Select(x => $"https://www.linkedin.com/in/{x}").ToList();
+                    var links = entities.LinkedinProfiles.OrderBy(x=>x.LastUpdate).Select(x => x.Username).ToList().Select(x => $"https://www.linkedin.com/in/{x}").ToList();
                     _linkedinLinks = links;
                     _driver = new FirefoxDriver();
                 }
@@ -95,7 +95,7 @@ namespace Lib.MonitoringIT.Data.Linkedin.Scrapper
                                 {
                                     UpdateLinkedinProfile(linkedinProfile, user);
                                     //monitoringEntities.Entry(user).State = EntityState.Modified;
-                                    monitoringEntities.LinkedinProfiles.AddOrUpdate(user);
+                                    //monitoringEntities.LinkedinProfiles.AddOrUpdate(user);
                                 }
                                 else
                                 {
