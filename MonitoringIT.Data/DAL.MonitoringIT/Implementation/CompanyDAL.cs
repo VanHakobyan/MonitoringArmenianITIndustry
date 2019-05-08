@@ -27,7 +27,7 @@ namespace DAL.MonitoringIT.Implementation
         {
             var random = new Random();
             var num = random.Next(1, 20);
-            return GetAllQuery().Where(x => !string.IsNullOrEmpty(x.Image) && x.Views > 50000 && x.Industry== "Information technologies").Skip(num).Take(count);
+            return GetAllQuery().Where(x => !string.IsNullOrEmpty(x.Image) && x.Industry== "Information technologies").Skip(num).Take(count);
         }
         public List<Company> GetAllCompany()
         {

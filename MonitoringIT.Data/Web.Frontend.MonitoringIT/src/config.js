@@ -1,3 +1,4 @@
 export default {
-	API_ENDPOINT: "https://localhost:5001/api/"
+	API_ENDPOINT: "http://localhost:8061/api/"
+	//API_ENDPOINT: "https://localhost:8061/api/"
 }
