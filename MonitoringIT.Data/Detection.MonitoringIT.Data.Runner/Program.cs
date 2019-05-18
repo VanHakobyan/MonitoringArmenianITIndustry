@@ -25,7 +25,7 @@ namespace Detection.MonitoringIT.Data.Runner
 
                         var similarityByName = textDetection.GetSimilarity(githubProfile.Name, linkedinProfile.FullName, AlgorithmTypes.OverlapCoefficient);
                         var similarityByUserName = textDetection.GetSimilarity(githubProfile.UserName, linkedinProfile.Username, AlgorithmTypes.OverlapCoefficient);
-                        if (similarityByName > 0.85 && similarityByUserName > 0.85)
+                        if (similarityByName > 0.9 && similarityByUserName > 0.9)
                         {
                             if (db.GithubLinkedinCrossTables.FirstOrDefault(x => x.GithubUserId == githubProfile.Id) == null)
                             {
