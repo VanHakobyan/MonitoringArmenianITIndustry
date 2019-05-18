@@ -20,7 +20,7 @@ namespace DAL.MonitoringIT.Implementation
         }
         public new IQueryable<Company> GetAllQueryByPage(int count, int page)
         {
-            return GetAllQuery().Skip((page - 1) * count).Take(count);
+            return GetAllQuery().Where(x => x.Industry == "Information technologies").Skip((page - 1) * count).Take(count);
         }
 
         public new IQueryable<Company> GetFavoritesQuery(int count)
