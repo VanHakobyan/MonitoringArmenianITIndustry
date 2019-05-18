@@ -2,9 +2,9 @@ import { call, put } from "redux-saga/effects";
 import * as githubProfiles from "store/actions/githubProfiles";
 import { get } from "services/api";
 
-export function* getAllGithubProfiles() {
+export function* getAllGithubProfiles(api) {
 	try {
-		let result = 	yield call(get, "github/getAll");
+		let result = 	yield call(get, `github/getByPage/${api.count}/${api.currentPage}`);
 		if(result.status < 400){
 			yield put(githubProfiles.succeededAllGithubProfiles(result.data));
 		} else {

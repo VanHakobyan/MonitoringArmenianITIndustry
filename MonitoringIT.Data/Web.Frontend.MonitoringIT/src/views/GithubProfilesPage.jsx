@@ -10,40 +10,42 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import Button from "components/CustomButtons/Button.jsx";
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
 import NavigationBar from "components/Header/NavigationBar.jsx";
 import Parallax from "components/Parallax/Parallax.jsx";
+
+import FavoriteProfiles from "views/LandingPage/Sections/FavoriteProfiles.jsx";
 
 import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
 
 // Sections for this page
 import * as githubProfiles from "store/actions/githubProfiles";
-import * as linkedinProfiles from "store/actions/linkedinProfiles"
-import * as companies from "store/actions/companies";
 import {
-	favoriteGithubProfilesLoadingSelector,
-	favoriteGithubProfilesSuccessSelector,
-	favoriteGithubProfilesFailedSelector,
+	allProfilesSuccessSelector,
+	allProfilesLoadingSelector,
+	allProfilesFailedSelector,
 } from "store/selectors/githubProfiles";
-import {
-	favoriteLinkedinProfilesLoadingSelector,
-	favoriteLinkedinProfilesSuccessSelector,
-	favoriteLinkedinProfilesFailedSelector,
-} from "store/selectors/linkedinProfiles";
-import {
-	favoriteCompaniesLoadingSelector,
-	favoriteCompaniesSuccessSelector,
-	favoriteCompaniesFailedSelector,
-} from "store/selectors/companies";
-
 
 const dashboardRoutes = [];
 let count = 5;
 
 class GithubProfilesPage extends React.Component {
+	async componentDidMount() {
+		await this.props.requestAllGithubProfiles(1, 12);
+	}
+	renderGithubProfiles = () => {
+		let {allProfilesSuccess} = this.props;
+		if (allProfilesSuccess) {
+			return (
+				<FavoriteProfiles
+					name="github"
+					title="People In Github"
+					profiles={allProfilesSuccess}
+					count={count}
+				/>
+			)
+		}
+	};
 	render() {
 		const {classes, ...rest} = this.props;
 		return (
@@ -61,29 +63,12 @@ class GithubProfilesPage extends React.Component {
 					}}
 					{...rest}
 				/>
-				<Parallax filter image={require("assets/img/it.jpg")}>
+				<Parallax small filter image={require("assets/img/Custom/github-b.jpg")}/>
+				<div className={classNames(classes.main, classes.mainRaised)}>
 					<div className={classes.container}>
-						<GridContainer>
-							<GridItem xs={12} sm={12} md={6}>
-								<h1 className={classes.title}>Your Story Starts With Us.</h1>
-								<h4>
-									Monitoring Armenian IT industry and platform for automatic job hiring
-								</h4>
-								<br/>
-								<Button
-									color="danger"
-									size="lg"
-									href="https://youtu.be/pzwAvR3MxGE"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<i className="fas fa-play"/>
-									Watch video
-								</Button>
-							</GridItem>
-						</GridContainer>
+						{this.renderGithubProfiles()}
 					</div>
-				</Parallax>
+				</div>
 				<Footer/>
 			</div>
 		);
@@ -93,30 +78,16 @@ class GithubProfilesPage extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		favoriteGithubProfilesLoading: favoriteGithubProfilesLoadingSelector(state),
-		favoriteGithubProfilesSuccess: favoriteGithubProfilesSuccessSelector(state),
-		favoriteGithubProfilesFailed: favoriteGithubProfilesFailedSelector(state),
-
-		favoriteLinkedinProfilesLoading: favoriteLinkedinProfilesLoadingSelector(state),
-		favoriteLinkedinProfilesSuccess: favoriteLinkedinProfilesSuccessSelector(state),
-		favoriteLinkedinProfilesFailed: favoriteLinkedinProfilesFailedSelector(state),
-
-		favoriteCompaniesLoading: favoriteCompaniesLoadingSelector(state),
-		favoriteCompaniesSuccess: favoriteCompaniesSuccessSelector(state),
-		favoriteCompaniesFailed: favoriteCompaniesFailedSelector(state),
+		allProfilesSuccess: allProfilesSuccessSelector(state),
+		allProfilesLoading: allProfilesLoadingSelector(state),
+		allProfilesFailed: allProfilesFailedSelector(state),
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		requestFavoriteGithubProfiles: count => {
-			dispatch(githubProfiles.requestFavoriteGithubProfiles(count))
-		},
-		requestFavoriteLinkedinProfiles: count => {
-			dispatch(linkedinProfiles.requestFavoriteLinkedinProfiles(count))
-		},
-		requestFavoriteCompanies: count => {
-			dispatch(companies.requestFavoriteCompanies(count))
+		requestAllGithubProfiles: (currentPage, count)=> {
+			dispatch(githubProfiles.requestAllGithubProfiles(currentPage, count))
 		},
 	};
 }

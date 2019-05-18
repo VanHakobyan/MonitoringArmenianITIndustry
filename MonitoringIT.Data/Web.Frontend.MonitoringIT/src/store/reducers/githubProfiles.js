@@ -31,7 +31,6 @@ export default function reduce(state = {}, action) {
 				favoriteGithubProfilesFailed: undefined
 			};
 		case types.SUCCEEDED_FAVORITE_GITHUB_PROFILES:
-			console.log("action", action)
 			return {
 				...state,
 				favoriteGithubProfilesLoading: true,

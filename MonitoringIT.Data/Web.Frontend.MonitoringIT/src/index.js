@@ -11,6 +11,9 @@ import "assets/scss/material-kit-react.scss?v=1.4.0";
 // pages for this product
 import LandingPage from "views/LandingPage/LandingPage.jsx";
 import GithubProfilesPage from "views/GithubProfilesPage.jsx";
+import LinkedinProfilesPage from "views/LinkedinProfilesPage.jsx";
+import CompaniesPage from "views/CompaniesPage.jsx";
+import JobsList from "views/JobsList.jsx";
 
 let history = createBrowserHistory();
 const store = configureStore();
@@ -20,9 +23,9 @@ ReactDOM.render(
 		<Router history={history}>
 			<Switch>
 				<Route path="/github" component={GithubProfilesPage}/>
-				<Route path="/linkedin" component={LandingPage}/>
-				<Route path="/companies" component={LandingPage}/>
-				<Route path="/jobs" component={LandingPage}/>
+				<Route path="/linkedin" component={LinkedinProfilesPage}/>
+				<Route path="/companies" component={CompaniesPage}/>
+				<Route path="/jobs" component={JobsList}/>
 				<Route path="/" component={LandingPage}/>
 				<Redirect to={{pathname: '/'}}/>
 			</Switch>

@@ -56,7 +56,6 @@ class ProfilePage extends React.Component {
         />
         <Parallax small filter image={require("assets/img/profile-bg.jpg")} />
         <div className={classNames(classes.main, classes.mainRaised)}>
-          <div>
             <div className={classes.container}>
               <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={6}>
@@ -204,7 +203,6 @@ class ProfilePage extends React.Component {
                   />
                 </GridItem>
               </GridContainer>
-            </div>
           </div>
         </div>
         <Footer />
