@@ -3,6 +3,8 @@ import React from "react";
 import classNames from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
+import history from "services/history";
 import { List, ListItem } from "@material-ui/core";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -74,7 +76,7 @@ class Header extends React.Component {
       [classes.absolute]: absolute,
       [classes.fixed]: fixed
     });
-    const brandComponent = <Button className={classes.title}>{brand}</Button>;
+    const brandComponent = <Link to="/" className={classes.title}>{brand}</Link>;
     return (
       <AppBar className={appBarClasses}>
         <Toolbar className={classes.container}>

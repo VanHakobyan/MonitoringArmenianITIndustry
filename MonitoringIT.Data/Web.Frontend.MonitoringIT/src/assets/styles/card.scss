@@ -9,3 +9,12 @@
   line-height: 24px;
   max-height: 96px;
 }
+.navigation-w{
+  margin-left: 150px;
+  display: inline-block;
+  vertical-align: top;
+  cursor: pointer;
+}
+.active{
+  box-shadow: 0 -3px 0 #89229b inset;
+}
