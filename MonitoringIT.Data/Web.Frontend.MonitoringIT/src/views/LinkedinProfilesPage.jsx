@@ -4,15 +4,12 @@ import classNames from "classnames";
 import {connect} from "react-redux";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-
+import FavoriteProfiles from "views/LandingPage/Sections/FavoriteProfiles.jsx";
 // @material-ui/icons
 
 // core components
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import Button from "components/CustomButtons/Button.jsx";
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
 import NavigationBar from "components/Header/NavigationBar.jsx";
 import Parallax from "components/Parallax/Parallax.jsx";
@@ -20,30 +17,36 @@ import Parallax from "components/Parallax/Parallax.jsx";
 import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
 
 // Sections for this page
-import * as githubProfiles from "store/actions/githubProfiles";
 import * as linkedinProfiles from "store/actions/linkedinProfiles"
-import * as companies from "store/actions/companies";
+
 import {
-	favoriteGithubProfilesLoadingSelector,
-	favoriteGithubProfilesSuccessSelector,
-	favoriteGithubProfilesFailedSelector,
-} from "store/selectors/githubProfiles";
-import {
-	favoriteLinkedinProfilesLoadingSelector,
-	favoriteLinkedinProfilesSuccessSelector,
-	favoriteLinkedinProfilesFailedSelector,
+	byPageLinkedinProfilesLoadingSelector,
+	byPageLinkedinProfilesSuccessSelector,
+	byPageLinkedinProfilesFailedSelector,
 } from "store/selectors/linkedinProfiles";
-import {
-	favoriteCompaniesLoadingSelector,
-	favoriteCompaniesSuccessSelector,
-	favoriteCompaniesFailedSelector,
-} from "store/selectors/companies";
 
 
 const dashboardRoutes = [];
 let count = 5;
 
 class LinkedinProfilesPage extends React.Component {
+	async componentDidMount() {
+		await this.props.requestLinkedinProfilesByPage(1, 12);
+	}
+
+	renderLinkedinProfiles = () => {
+		let {byPageLinkedinProfilesSuccess} = this.props;
+		if (byPageLinkedinProfilesSuccess) {
+			return (
+				<FavoriteProfiles
+					name="linkedin"
+					title="People In Linkedin"
+					profiles={byPageLinkedinProfilesSuccess}
+					count={count}
+				/>
+			)
+		}
+	};
 	render() {
 		const {classes, ...rest} = this.props;
 		return (
@@ -62,6 +65,11 @@ class LinkedinProfilesPage extends React.Component {
 					{...rest}
 				/>
 				<Parallax small filter image={require("assets/img/Custom/linkedin-b.jpg")}/>
+				<div className={classNames(classes.main, classes.mainRaised)}>
+					<div className={classes.container}>
+						{this.renderLinkedinProfiles()}
+					</div>
+				</div>
 				<Footer/>
 			</div>
 		);
@@ -71,31 +79,17 @@ class LinkedinProfilesPage extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		favoriteGithubProfilesLoading: favoriteGithubProfilesLoadingSelector(state),
-		favoriteGithubProfilesSuccess: favoriteGithubProfilesSuccessSelector(state),
-		favoriteGithubProfilesFailed: favoriteGithubProfilesFailedSelector(state),
-
-		favoriteLinkedinProfilesLoading: favoriteLinkedinProfilesLoadingSelector(state),
-		favoriteLinkedinProfilesSuccess: favoriteLinkedinProfilesSuccessSelector(state),
-		favoriteLinkedinProfilesFailed: favoriteLinkedinProfilesFailedSelector(state),
-
-		favoriteCompaniesLoading: favoriteCompaniesLoadingSelector(state),
-		favoriteCompaniesSuccess: favoriteCompaniesSuccessSelector(state),
-		favoriteCompaniesFailed: favoriteCompaniesFailedSelector(state),
+		byPageLinkedinProfilesLoading: byPageLinkedinProfilesLoadingSelector(state),
+		byPageLinkedinProfilesSuccess: byPageLinkedinProfilesSuccessSelector(state),
+		byPageLinkedinProfilesFailed: byPageLinkedinProfilesFailedSelector(state),
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		requestFavoriteGithubProfiles: count => {
-			dispatch(githubProfiles.requestFavoriteGithubProfiles(count))
-		},
-		requestFavoriteLinkedinProfiles: count => {
-			dispatch(linkedinProfiles.requestFavoriteLinkedinProfiles(count))
-		},
-		requestFavoriteCompanies: count => {
-			dispatch(companies.requestFavoriteCompanies(count))
-		},
+		requestLinkedinProfilesByPage: (currentPage,count) => {
+		dispatch(linkedinProfiles.requestLinkedinProfilesByPage(currentPage,count))
+		}
 	};
 }
 

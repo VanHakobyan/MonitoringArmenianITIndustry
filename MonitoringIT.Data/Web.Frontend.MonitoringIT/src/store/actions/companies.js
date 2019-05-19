@@ -6,7 +6,8 @@ export const failedFavoriteCompanies = error => ({ type: types.FAILED_FAVORITE_C
 
 
 // by page
-export const requestCompaniesByPage = count => ({ type: types.REQUESTED_COMPANIES_BY_PAGE, count });
+export const requestCompaniesByPage = (currentPage, count) =>
+    ({ type: types.REQUESTED_COMPANIES_BY_PAGE, currentPage, count });
 export const succeededCompaniesByPage = profiles => ({ type: types.SUCCEEDED_COMPANIES_BY_PAGE, profiles });
 export const failedCompaniesByPage = error => ({ type: types.FAILED_COMPANIES_BY_PAGE, error });
 

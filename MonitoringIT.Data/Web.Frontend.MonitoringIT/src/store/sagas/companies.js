@@ -14,3 +14,17 @@ export function* getFavoriteCompanies(api) {
         yield put(companies.failedFavoriteCompanies(e.message));
     }
 }
+
+
+export function* getCompaniesByPage(api) {
+    try {
+        let result = 	yield call(get, `company/getByPage/${api.count}/${api.currentPage}`);
+        if(result.status < 400){
+            yield put(companies.succeededCompaniesByPage(result.data));
+        } else {
+            yield put(companies.failedCompaniesByPage(result.status))
+        }
+    } catch(e) {
+        yield put(companies.failedCompaniesByPage(e.message));
+    }
+}

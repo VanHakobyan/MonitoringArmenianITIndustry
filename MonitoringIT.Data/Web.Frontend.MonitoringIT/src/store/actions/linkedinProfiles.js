@@ -9,6 +9,7 @@ export const requestFavoriteLinkedinProfiles = count => ({ type: types.REQUESTED
 export const succeededFavoriteLinkedinProfiles = profiles => ({ type: types.SUCCEEDED_FAVORITE_LINKEDIN_PROFILES, profiles });
 export const failedFavoriteLinkedinProfiles = error => ({ type: types.FAILED_FAVORITE_LINKEDIN_PROFILES, error });
 //by page
-export const requestLinkedinProfilesByPage = () => ({ type: types.REQUESTED_LINKEDIN_PROFILES_BY_PAGE });
+export const requestLinkedinProfilesByPage =  (currentPage, count) =>
+    ({ type: types.REQUESTED_LINKEDIN_PROFILES_BY_PAGE, currentPage, count });
 export const succeededLinkedinProfilesByPage = profiles => ({ type: types.SUCCEEDED_LINKEDIN_PROFILES_BY_PAGE, profiles });
 export const failedLinkedinProfilesByPage = error => ({ type: types.FAILED_LINKEDIN_PROFILES_BY_PAGE, error });

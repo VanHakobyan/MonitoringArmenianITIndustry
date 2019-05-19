@@ -12,6 +12,7 @@ import Button from "components/CustomButtons/Button.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
+import JobCard from "views/LandingPage/Sections/JobCard";
 import GithubCard from "views/LandingPage/Sections/GithubCard";
 import LinkedinCard from "views/LandingPage/Sections/LinkedinCard";
 import CompanyCard from "views/LandingPage/Sections/CompanyCard";
@@ -32,6 +33,21 @@ class FavoriteProfiles extends React.Component {
 				<div className={classes.section}>
 					<h2 className={classes.title}>{title}</h2>
 					<div>
+						<GridContainer>
+							{
+								profiles.map((item, key) => {
+									if(name === "job"){
+										return (
+											<JobCard
+												key={key}
+												uniqueKey={key}
+												item={item}
+											/>
+										)
+									}
+								})
+							}
+						</GridContainer>
 						<GridContainer>
 							{
 								profiles.map((item, key) => {
