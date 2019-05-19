@@ -22,11 +22,7 @@ class ProductSection extends React.Component {
           <GridItem xs={12} sm={12} md={8}>
             <h2 className={classes.title}>Let's talk product</h2>
             <h5 className={classes.description}>
-              This is the paragraph where you can write more details about your
-              product. Keep you user engaged by providing meaningful
-              information. Remember that by this time, the user is curious,
-              otherwise he wouldn't scroll to get here. Add a button if you want
-              the user to see more.
+              Today, along with the advancement of information technology in the Republic of Armenia, many problems arise in finding high-quality personnel in different companies as well as high-quality personnel in finding a job. The problem is that today there are many vacancies in the sphere of information technologies in Armenia. Relevant companies do their best to find the best professionals and offer them a job.
             </h5>
           </GridItem>
         </GridContainer>
