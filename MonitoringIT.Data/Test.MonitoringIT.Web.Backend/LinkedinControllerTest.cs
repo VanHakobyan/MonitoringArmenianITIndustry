@@ -20,7 +20,7 @@ namespace Test.MonitoringIT.Web.Backend
         [Fact]
         public void GetActionTest()
         {
-            var result = _linkedinController.Get();
+            var result = _linkedinController.GetAll();
             Assert.IsType<OkObjectResult>(result);
         }
 

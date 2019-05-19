@@ -30,7 +30,7 @@ namespace DAL.MonitoringIT.Implementation
 
         public LinkedinProfile GetById(int id)
         {
-            return GetAllQuery().Include(x=>x.LinkedinEducation).Include(x=>x.LinkedinExperience).Include(x=>x.LinkedinInterest).Include(x=>x.LinkedinLanguage).Include(x=>x.LinkedinSkill).FirstOrDefault(x => x.Id == id);
+            return GetAllQuery().Include(x => x.LinkedinEducation).Include(x => x.LinkedinExperience).Include(x => x.LinkedinInterest).Include(x => x.LinkedinLanguage).Include(x => x.LinkedinSkill).FirstOrDefault(x => x.Id == id);
         }
 
         public LinkedinProfile GetByUserName(string username)
@@ -44,14 +44,14 @@ namespace DAL.MonitoringIT.Implementation
 
         public new IQueryable<LinkedinProfile> GetAllQueryByPage(int count, int page)
         {
-           return GetAllQuery().Skip((page - 1) * count).Take(count);
+            return GetAllQuery().Where(x => x.LastUpdate != null && !string.IsNullOrEmpty(x.Company) && !string.IsNullOrEmpty(x.ImageUrl) && !string.IsNullOrEmpty(x.Specialty) && !string.IsNullOrEmpty(x.Education) && x.LastUpdate > DateTime.Now.AddDays(-30)).OrderByDescending(x => x.LastUpdate).Skip((page - 1) * count).Take(count);
         }
 
         public new IQueryable<LinkedinProfile> GetFavoritesQuery(int count)
         {
             var random = new Random();
             var num = random.Next(1, 50);
-            return GetAllQuery().Where(x=>!string.IsNullOrEmpty(x.Company)&&!string.IsNullOrEmpty(x.ImageUrl) && !string.IsNullOrEmpty(x.Specialty) && !string.IsNullOrEmpty(x.Education)&& x.LastUpdate>DateTime.Now.AddDays(-30)).Skip(num).Take(count);
+            return GetAllQuery().Where(x => !string.IsNullOrEmpty(x.Company) && !string.IsNullOrEmpty(x.ImageUrl) && !string.IsNullOrEmpty(x.Specialty) && !string.IsNullOrEmpty(x.Education) && x.LastUpdate > DateTime.Now.AddDays(-30)).OrderByDescending(x => x.LastUpdate).Skip(num).Take(count);
         }
     }
 }

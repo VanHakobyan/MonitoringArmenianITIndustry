@@ -8,6 +8,10 @@ namespace Detection.MonitoringIT.Data.Runner
         static void Main(string[] args)
         {
             var textDetection = new TextDetection();
+            string vanik1 = "vanik hakobyan";
+            string vanik2 = "van hakobyan";
+            var similarity = textDetection.GetSimilarity(vanik1, vanik2, AlgorithmTypes.SmithWatermanGotohWindowedAffine);
+            
             using (var db = new MonitoringEntities())
             {
                 var githubLinkedinCrossTables = db.GithubLinkedinCrossTables.ToList();
