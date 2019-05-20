@@ -63,7 +63,8 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
                     HtmlDocument document = new HtmlDocument();
                     var pageContent = SendGetRequest($"https://staff.am/en/companies?page={i}").Result;
                     document.LoadHtml(pageContent);
-                    var pageLinks = document.DocumentNode.SelectNodes(".//a[@class='load-more btn width100']").Select(x => $"{CompanyCustomLink}{x.GetAttributeValue("href", "")}").ToList();
+                    var pageContentDocument = document.DocumentNode.SelectNodes(".//a[@class='load-more btn width100 radius_changes']");
+                    var pageLinks = pageContentDocument.Select(x => $"{CompanyCustomLink}{x.GetAttributeValue("href", "")}").ToList();
                     links.AddRange(pageLinks);
                 }
                 catch (Exception e)
@@ -88,28 +89,24 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
                         var cName = link.Split('/').LastOrDefault()?.Replace('-', ' ');
 
                         var company = context.Companies.FirstOrDefault(c => c.Name.ToLower() == cName);
-                        if (company is null) company = new Company { Name = textInfo.ToTitleCase(cName) };
+                        if (company is null) {continue; company = new Company { Name = textInfo.ToTitleCase(cName) };}
                         var companyHtmlContent = SendGetRequest(link).Result;
                         HtmlDocument document = new HtmlDocument();
                         document.LoadHtml(companyHtmlContent);
 
-                        var headerInfoNode =
-                            document.DocumentNode.SelectSingleNode(".//div[@class='header-info accordion-style']");
-                        var companyDetails = document.DocumentNode.SelectSingleNode(".//div[@id='company-details']");
-                        var jobsListNode =
-                            document.DocumentNode.SelectSingleNode(
-                                ".//div[@class='accordion-style clearfix company-jobs-list']");
+                        //var headerInfoNode = document.DocumentNode.SelectSingleNode(".//div[@class='header-info accordion-style']");
+                        //var companyDetails = document.DocumentNode.SelectSingleNode(".//div[@id='company-details']");
+                        //var jobsListNode =document.DocumentNode.SelectSingleNode(".//div[@class='accordion-style clearfix company-jobs-list']");
 
 
-                        var contactDetails =
-                            document.DocumentNode.SelectSingleNode(".//div[@id ='company-contact-details']");
+                        //var contactDetails = document.DocumentNode.SelectSingleNode(".//div[@id ='company-contact-details']");
 
-                        if (headerInfoNode != null) GetHeaderInfo(company, headerInfoNode);
-                        if (companyDetails != null) GetDetails(company, companyDetails);
-                        if (contactDetails != null) GetContact(company, contactDetails);
+                        //if (headerInfoNode != null) GetHeaderInfo(company, headerInfoNode);
+                        //if (companyDetails != null) GetDetails(company, companyDetails);
+                        //if (contactDetails != null) GetContact(company, contactDetails);
 
 
-                        var jobList = jobsListNode?.SelectNodes(".//a[@class='load-more btn hb_btn']")
+                        var jobList = document.DocumentNode.SelectNodes(".//a[@class='hs_company_more_media_btn']")
                             ?.Select(x => x.GetAttributeValue("href", ""))?.ToList();
 
 
@@ -125,7 +122,7 @@ namespace Lib.MonitoringIT.Data.Staff.am.Scrapper
                             company.Jobs = jobs;
                         }
 
-                        context.Companies.AddOrUpdate(company);
+                        //context.Companies.AddOrUpdate(company);
                         context.SaveChanges();
                     }
                 }

@@ -18,7 +18,7 @@ export function* getFavoriteCompanies(api) {
 
 export function* getCompaniesByPage(api) {
     try {
-        let result = 	yield call(get, `company/getByPage/${api.count}/${api.currentPage}`);
+        let result = yield call(get, `company/getByPage/${api.count}/${api.currentPage}`);
         if(result.status < 400){
             yield put(companies.succeededCompaniesByPage(result.data));
         } else {
