@@ -1,3 +1,5 @@
-export const byPageJobsLoadingSelector = state => state.jobs.byPageJobsLoading;
-export const byPageJobsSuccessSelector = state => state.jobs.byPageJobsSuccess;
-export const byPageJobsFailedSelector = state => state.jobs.byPageJobsFailed;
+export const jobsLoadingSelector = state => state.jobs.jobsLoading;
+export const jobsSuccessSelector = state => state.jobs.jobsSuccess;
+export const jobsFailedSelector = state => state.jobs.jobsFailed;
+
+export const currentJobsPageSelector = state => state.jobs.currentJobsPage;

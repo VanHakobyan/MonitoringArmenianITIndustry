@@ -4,7 +4,7 @@ import classNames from "classnames";
 import {connect} from "react-redux";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import FavoriteProfiles from "views/LandingPage/Sections/FavoriteProfiles.jsx";
+import FavoriteProfiles from "views/LandingPage/Sections/ProfilesList.jsx";
 // @material-ui/icons
 
 // core components
@@ -20,29 +20,28 @@ import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.js
 import * as linkedinProfiles from "store/actions/linkedinProfiles"
 
 import {
-	byPageLinkedinProfilesLoadingSelector,
-	byPageLinkedinProfilesSuccessSelector,
-	byPageLinkedinProfilesFailedSelector,
+	linkedinProfilesLoadingSelector,
+	linkedinProfilesSuccessSelector,
+	linkedinProfilesFailedSelector,
 } from "store/selectors/linkedinProfiles";
 
 
 const dashboardRoutes = [];
-let count = 5;
 
 class LinkedinProfilesPage extends React.Component {
 	async componentDidMount() {
-		await this.props.requestLinkedinProfilesByPage(1, 12);
+		await this.props.requestAllLinkedinProfiles(12);
 	}
 
 	renderLinkedinProfiles = () => {
-		let {byPageLinkedinProfilesSuccess} = this.props;
-		if (byPageLinkedinProfilesSuccess) {
+		let {linkedinProfilesSuccess} = this.props;
+		if (linkedinProfilesSuccess) {
 			return (
 				<FavoriteProfiles
 					name="linkedin"
 					title="People In Linkedin"
-					profiles={byPageLinkedinProfilesSuccess}
-					count={count}
+					requestAllLinkedinProfiles={this.props.requestAllLinkedinProfiles}
+					profiles={linkedinProfilesSuccess}
 				/>
 			)
 		}
@@ -79,16 +78,16 @@ class LinkedinProfilesPage extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		byPageLinkedinProfilesLoading: byPageLinkedinProfilesLoadingSelector(state),
-		byPageLinkedinProfilesSuccess: byPageLinkedinProfilesSuccessSelector(state),
-		byPageLinkedinProfilesFailed: byPageLinkedinProfilesFailedSelector(state),
+		linkedinProfilesLoading: linkedinProfilesLoadingSelector(state),
+		linkedinProfilesSuccess: linkedinProfilesSuccessSelector(state),
+		linkedinProfilesFailed: linkedinProfilesFailedSelector(state),
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		requestLinkedinProfilesByPage: (currentPage,count) => {
-		dispatch(linkedinProfiles.requestLinkedinProfilesByPage(currentPage,count))
+		requestAllLinkedinProfiles: (currentPage,count) => {
+			dispatch(linkedinProfiles.requestAllLinkedinProfiles(currentPage,count))
 		}
 	};
 }

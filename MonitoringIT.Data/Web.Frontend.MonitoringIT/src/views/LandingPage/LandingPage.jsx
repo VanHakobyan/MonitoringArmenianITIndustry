@@ -44,7 +44,6 @@ import {
 
 
 const dashboardRoutes = [];
-let count = 5;
 
 class LandingPage extends React.Component {
 	async componentDidMount() {
@@ -61,7 +60,6 @@ class LandingPage extends React.Component {
 					name="github"
 					title="People In Github"
 					profiles={favoriteGithubProfilesSuccess}
-					count={count}
 				/>
 			)
 		}
@@ -74,7 +72,6 @@ class LandingPage extends React.Component {
 					name="linkedin"
 					title="People In Linkedin"
 					profiles={favoriteLinkedinProfilesSuccess}
-					count={count}
 				/>
 			)
 		}
@@ -87,7 +84,6 @@ class LandingPage extends React.Component {
 					name="company"
 					title="Companies"
 					profiles={favoriteCompaniesSuccess}
-					count={count}
 				/>
 			)
 		}

@@ -14,7 +14,7 @@ import HeaderLinks from "components/Header/HeaderLinks.jsx";
 import NavigationBar from "components/Header/NavigationBar.jsx";
 import Parallax from "components/Parallax/Parallax.jsx";
 
-import FavoriteProfiles from "views/LandingPage/Sections/FavoriteProfiles.jsx";
+import FavoriteProfiles from "views/LandingPage/Sections/ProfilesList.jsx";
 
 import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
 
@@ -27,11 +27,10 @@ import {
 } from "store/selectors/githubProfiles";
 
 const dashboardRoutes = [];
-let count = 5;
 
 class GithubProfilesPage extends React.Component {
 	async componentDidMount() {
-		await this.props.requestAllGithubProfiles(1, 12);
+		await this.props.requestAllGithubProfiles(12);
 	}
 	renderGithubProfiles = () => {
 		let {allProfilesSuccess} = this.props;
@@ -40,8 +39,8 @@ class GithubProfilesPage extends React.Component {
 				<FavoriteProfiles
 					name="github"
 					title="People In Github"
+					requestAllGithubProfiles={this.props.requestAllGithubProfiles}
 					profiles={allProfilesSuccess}
-					count={count}
 				/>
 			)
 		}
@@ -86,8 +85,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		requestAllGithubProfiles: (currentPage, count)=> {
-			dispatch(githubProfiles.requestAllGithubProfiles(currentPage, count))
+		requestAllGithubProfiles: count => {
+			dispatch(githubProfiles.requestAllGithubProfiles(count))
 		},
 	};
 }

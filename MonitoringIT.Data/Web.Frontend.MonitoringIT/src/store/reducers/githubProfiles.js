@@ -6,7 +6,6 @@ export default function reduce(state = {}, action) {
 			return {
 				...state,
 				allProfilesLoading: true,
-				allProfilesSuccess: undefined,
 				allProfilesFailed: undefined
 			};
 		case types.SUCCEEDED_ALL_GITHUB_PROFILES:
@@ -27,7 +26,6 @@ export default function reduce(state = {}, action) {
 			return {
 				...state,
 				favoriteGithubProfilesLoading: true,
-				favoriteGithubProfilesSuccess: undefined,
 				favoriteGithubProfilesFailed: undefined
 			};
 		case types.SUCCEEDED_FAVORITE_GITHUB_PROFILES:
@@ -43,6 +41,11 @@ export default function reduce(state = {}, action) {
 				favoriteGithubProfilesLoading: true,
 				favoriteGithubProfilesSuccess: undefined,
 				favoriteGithubProfilesFailed: action.error
+			};
+		case types.SET_CURRENT_GITHUB_PAGE:
+			return {
+				...state,
+				currentGithubPage: action.page
 			};
 		default:
 			return state;

@@ -4,7 +4,7 @@ import classNames from "classnames";
 import {connect} from "react-redux";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import FavoriteProfiles from "views/LandingPage/Sections/FavoriteProfiles.jsx";
+import FavoriteProfiles from "views/LandingPage/Sections/ProfilesList.jsx";
 // @material-ui/icons
 
 // core components
@@ -17,32 +17,27 @@ import Parallax from "components/Parallax/Parallax.jsx";
 import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
 
 import * as jobs from "store/actions/jobs";
-
 // Sections for this page
 import {
-	byPageJobsLoadingSelector,
-	byPageJobsSuccessSelector,
-	byPageJobsFailedSelector,
+	jobsLoadingSelector,
+	jobsSuccessSelector,
+	jobsFailedSelector,
 } from "store/selectors/jobs";
-
-
 const dashboardRoutes = [];
-let count = 5;
 
 class JobsList extends React.Component {
 	async componentDidMount() {
-		await this.props.requestJobsByPage(1, 12);
+		await this.props.requestJobs(12);
 	}
-
 	renderJobs = () => {
-		let {byPageJobsSuccess} = this.props;
-		if (byPageJobsSuccess) {
+		let {jobsSuccess} = this.props;
+		if (jobsSuccess) {
 			return (
 				<FavoriteProfiles
 					name="job"
 					title="Jobs"
-					profiles={byPageJobsSuccess}
-					count={count}
+					requestJobs={this.props.requestJobs}
+					profiles={jobsSuccess}
 				/>
 			)
 		}
@@ -79,16 +74,16 @@ class JobsList extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		byPageJobsLoading: byPageJobsLoadingSelector(state),
-		byPageJobsSuccess: byPageJobsSuccessSelector(state),
-		byPageJobsFailed: byPageJobsFailedSelector(state),
+		jobsLoading: jobsLoadingSelector(state),
+		jobsSuccess: jobsSuccessSelector(state),
+		jobsFailed: jobsFailedSelector(state),
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		requestJobsByPage: (currentPage, count) => {
-			dispatch(jobs.requestJobsByPage(currentPage, count))
+		requestJobs: count => {
+			dispatch(jobs.requestJobs(count))
 		}
 	};
 }
