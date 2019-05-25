@@ -15,7 +15,6 @@ import NavigationBar from "components/Header/NavigationBar.jsx";
 import Parallax from "components/Parallax/Parallax.jsx";
 
 import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
-
 // Sections for this page
 import * as linkedinProfiles from "store/actions/linkedinProfiles"
 
@@ -25,14 +24,15 @@ import {
 	linkedinProfilesFailedSelector,
 } from "store/selectors/linkedinProfiles";
 
-
 const dashboardRoutes = [];
 
 class LinkedinProfilesPage extends React.Component {
 	async componentDidMount() {
 		await this.props.requestAllLinkedinProfiles(12);
 	}
-
+	componentWillUnmount() {
+		window.scrollTo(0, 0);
+	}
 	renderLinkedinProfiles = () => {
 		let {linkedinProfilesSuccess} = this.props;
 		if (linkedinProfilesSuccess) {

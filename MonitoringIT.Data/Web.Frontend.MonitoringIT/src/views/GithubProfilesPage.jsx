@@ -4,9 +4,6 @@ import classNames from "classnames";
 import {connect} from "react-redux";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-
-// @material-ui/icons
-
 // core components
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
@@ -31,6 +28,9 @@ const dashboardRoutes = [];
 class GithubProfilesPage extends React.Component {
 	async componentDidMount() {
 		await this.props.requestAllGithubProfiles(12);
+	}
+	componentWillUnmount() {
+		window.scrollTo(0, 0);
 	}
 	renderGithubProfiles = () => {
 		let {allProfilesSuccess} = this.props;
@@ -73,7 +73,6 @@ class GithubProfilesPage extends React.Component {
 		);
 	}
 }
-
 
 function mapStateToProps(state) {
 	return {

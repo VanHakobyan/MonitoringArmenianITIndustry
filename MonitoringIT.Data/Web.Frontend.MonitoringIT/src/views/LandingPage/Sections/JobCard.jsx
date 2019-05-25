@@ -13,60 +13,61 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
+
 let social = [
-    "Facebook",
-    "Linkedin",
-    "Twitter",
-    "Weekend"
+	"Facebook",
+	"Linkedin",
+	"Twitter",
+	"Weekend"
 ];
 
 class JobCard extends React.Component {
-    render() {
-        let {item, uniqueKey} = this.props;
-        const { classes } = this.props;
-        const imageClasses = classNames(
-            classes.imgRaised,
-            classes.imgRoundedCircle,
-            classes.imgFluid
-        );
-        return (
-            <GridItem key={uniqueKey} xs={12} sm={12} md={4}>
-                <Card plain>
-                    <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-                        <img src={`http://${item.Image}`} alt="..." className={imageClasses} />
-                    </GridItem>
-                    <h4 className={classes.cardTitle}>
-                        {item.Title}
-                        <br />
-                        <small className={classes.smallTitle}>{item.Category}</small>
-                    </h4>
-                    <CardBody>
-                        <p className={classes.description + " l-paragraph"}>
-                            {item.Description}
-                        </p>
-                    </CardBody>
-                    <CardFooter className={classes.justifyCenter}>
-                        {
-                            social.map((el, key) => {
-                                if(item[el])
-                                    return (
-                                        <Button
-                                            justIcon
-                                            color="transparent"
-                                            className={classes.margin5}
-                                            href={item[el]}
-                                            target="_blank"
-                                        >
-                                            <i className={`${classes.socialsfab} fab fa-${el.toLowerCase()}`} />
-                                        </Button>
-                                    )
-                            })
-                        }
-                    </CardFooter>
-                </Card>
-            </GridItem>
-        );
-    }
+	render() {
+		let {item, uniqueKey} = this.props;
+		const {classes} = this.props;
+		const imageClasses = classNames(
+			classes.imgRaised,
+			classes.imgRoundedCircle,
+			classes.imgFluid
+		);
+		return (
+			<GridItem key={uniqueKey} xs={12} sm={12} md={4}>
+				<Card plain>
+					<GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
+						<img src={`http://${item.Image}`} alt="..." className={imageClasses}/>
+					</GridItem>
+					<h4 className={classes.cardTitle}>
+						{item.Title}
+						<br/>
+						<small className={classes.smallTitle}>{item.Category}</small>
+					</h4>
+					<CardBody>
+						<p className={classes.description + " l-paragraph"}>
+							{item.Description}
+						</p>
+					</CardBody>
+					<CardFooter className={classes.justifyCenter}>
+						{
+							social.map((el, key) => {
+								if (item[el])
+									return (
+										<Button
+											justIcon
+											color="transparent"
+											className={classes.margin5}
+											href={item[el]}
+											target="_blank"
+										>
+											<i className={`${classes.socialsfab} fab fa-${el.toLowerCase()}`}/>
+										</Button>
+									)
+							})
+						}
+					</CardFooter>
+				</Card>
+			</GridItem>
+		);
+	}
 }
 
 export default withStyles(teamStyle)(JobCard);

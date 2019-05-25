@@ -29,6 +29,9 @@ class JobsList extends React.Component {
 	async componentDidMount() {
 		await this.props.requestJobs(12);
 	}
+	componentWillUnmount() {
+		window.scrollTo(0, 0);
+	}
 	renderJobs = () => {
 		let {jobsSuccess} = this.props;
 		if (jobsSuccess) {

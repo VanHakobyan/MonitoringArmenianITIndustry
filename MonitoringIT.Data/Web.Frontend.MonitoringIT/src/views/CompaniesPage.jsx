@@ -31,6 +31,9 @@ class CompaniesPage extends React.Component {
 	async componentDidMount() {
 		await this.props.requestCompanies(12);
 	}
+	componentWillUnmount() {
+		window.scrollTo(0, 0);
+	}
 	renderCompanies = () => {
 		let {companiesSuccess} = this.props;
 		if (companiesSuccess) {
