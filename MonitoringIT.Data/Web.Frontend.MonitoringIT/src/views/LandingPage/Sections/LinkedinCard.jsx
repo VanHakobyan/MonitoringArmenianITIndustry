@@ -3,6 +3,7 @@ import React from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
+import {Link} from "react-router-dom";
 
 // @material-ui/icons
 // core components
@@ -26,19 +27,21 @@ class LinkedinCard extends React.Component {
 		return (
 			<GridItem key={uniqueKey} xs={12} sm={12} md={4}>
 				<Card plain>
-					<GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-						<img src={item.ImageUrl} alt="..." className={imageClasses}/>
-					</GridItem>
-					<h4 className={classes.cardTitle}>
-						{item.FullName}
-						<br/>
-						<small className={classes.smallTitle}>{item.Company}</small>
-					</h4>
-					<CardBody>
-						<p className={classes.description + " lines-l"}>
-							{item.Specialty}
-						</p>
-					</CardBody>
+					<Link to={`/profile/linkedin/${item.Id}`}>
+						<GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
+							<img src={item.ImageUrl} alt="..." className={imageClasses}/>
+						</GridItem>
+						<h4 className={classes.cardTitle}>
+							{item.FullName}
+							<br/>
+							<small className={classes.smallTitle}>{item.Company}</small>
+						</h4>
+						<CardBody>
+							<p className={classes.description + " lines-l"}>
+								{item.Specialty}
+							</p>
+						</CardBody>
+					</Link>
 					<CardFooter className={classes.justifyCenter}>
 						<Button
 							justIcon

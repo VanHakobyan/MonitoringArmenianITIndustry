@@ -18,20 +18,67 @@ import {
 	currentProfileLoadingSelector,
 	currentProfileDataSelector,
 	currentProfileFailedSelector
-} from "store/selectors/profile"
+} from "store/selectors/profile";
+import MainInfo from "views/LandingPage/Sections/MainInfo";
+import DetailsCard from "views/LandingPage/Sections/DetailsCard";
+import RepoContainer from "views/LandingPage/Sections/RepoContainer";
+import SkillContainer from "views/LandingPage/Sections/SkillContainer";
 
 class ProfileSection extends React.Component {
 	async componentDidMount() {
 		let args = window.location.pathname.split("/");
 		await this.props.requestProfile(args[3], args[2]);
 	}
+	renderMainInfo = () => {
+		let {currentProfileData} = this.props;
+		if(currentProfileData && currentProfileData.main ) {
+			return (
+				<MainInfo
+					mainData={currentProfileData.main}
+				/>
+			);
+		}
+	};
+	renderDetails = () => {
+		let {currentProfileData} = this.props;
+		if(currentProfileData && currentProfileData.main ) {
+			return (
+				<DetailsCard
+					mainData={currentProfileData.main}
+				/>
+			);
+		}
+	};
+	renderRepos = () => {
+		let {currentProfileData} = this.props;
+		if(currentProfileData &&
+			currentProfileData.main &&
+			currentProfileData.main.info.GithubRepository &&
+			currentProfileData.main.info.GithubRepository.length > 0
+		){
+			return (
+				<RepoContainer
+					repos={currentProfileData.main.info.GithubRepository}
+				/>
+			)
+		}
+	};
+	renderSkills = () => {
+		let {currentProfileData} = this.props;
+		if(currentProfileData &&
+			currentProfileData.main &&
+			currentProfileData.main.info.LinkedinSkill &&
+			currentProfileData.main.info.LinkedinSkill.length > 0
+		){
+			return (
+				<SkillContainer
+					skills={currentProfileData.main.info.LinkedinSkill}
+				/>
+			)
+		}
+	};
 	render() {
 		const { classes, ...rest } = this.props;
-		const imageClasses = classNames(
-			classes.imgRaised,
-			classes.imgRoundedCircle,
-			classes.imgFluid
-		);
 		return (
 			<div>
 				<Header
@@ -49,25 +96,20 @@ class ProfileSection extends React.Component {
 				<Parallax small filter image={require("assets/img/profile-bg.jpg")} />
 				<div className={classNames(classes.main, classes.mainRaised)}>
 					<div className="profile-container">
-						<div className="main-info">
-							<div className="img-container">
-								<img className="profile-image" src={require("assets/img/profile-bg.jpg")}/>
-							</div>
-							<div className="profile-info">
-								<h2>Anun Azganun</h2>
-								<span className="lead">Web Developer</span>
-								<div className="bio">
-									Credibly embrace visionary internal or "organic" sources and business benefits. Collaboratively integrate efficient portals rather than customized customer service. Assertively deliver frictionless services via leveraged interfaces. Conveniently evisculate accurate sources and process-centric expertise.
-
-									Energistically fabricate customized imperatives through cooperative catalysts for change.
-								</div>
-								<div className="social">
-									<HeaderLinks/>
-								</div>
-							</div>
-						</div>
+						{this.renderMainInfo()}
 						<div className="details">
-
+							<div className="section-wrapper">
+								<div className="container-fluid">
+									<div className="row">
+										<div className="section-title">
+											<h3>Details</h3>
+										</div>
+									</div>
+									{this.renderDetails()}
+								</div>
+							</div>
+							{this.renderRepos()}
+							{this.renderSkills()}
 						</div>
 					</div>
 				</div>

@@ -31,7 +31,7 @@ function* getCrossProfiles() {
 // 3 replace {id}
 function checkCrossMap(crossData, social, id) {
 	return _.find(crossData, o => {
-		return o[socialDetails[social]["crossName"]].Id === 3;
+		return o[socialDetails[social]["crossName"]].Id === id;
 	});
 }
 
@@ -47,7 +47,7 @@ export function* getProfileData(api) {
 			yield put(profile.failedCrossProfile("no cross data"))
 		}
 		let profileData = {};
-		let result = yield call(get, `${api.social}/3`);
+		let result = yield call(get, `${api.social}/${api.id}`);
 		if(result.status < 400){
 			profileData = {
 				main: {},
