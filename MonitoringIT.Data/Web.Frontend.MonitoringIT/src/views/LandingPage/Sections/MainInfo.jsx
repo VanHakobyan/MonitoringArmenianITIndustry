@@ -1,8 +1,8 @@
 import React from "react";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-
 import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.jsx";
+import Modal from "views/Modal";
 
 class MainInfo extends React.Component {
 	githubMainRenderer = () => {
@@ -17,6 +17,7 @@ class MainInfo extends React.Component {
 					<span className="lead">{mainData.info.Bio}</span>
 					<div className="bio">{mainData.info.Company}</div>
 					<div className="social">
+						<Modal/>
 					</div>
 				</div>
 			</div>
@@ -39,6 +40,7 @@ class MainInfo extends React.Component {
 					</span>
 					<div className="bio">{mainData.info.Company}</div>
 					<div className="social">
+						<Modal/>
 					</div>
 				</div>
 			</div>
