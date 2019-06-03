@@ -7,11 +7,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
-import Button from "components/CustomButtons/Button.jsx";
-import Card from "components/Card/Card.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
 import JobCard from "views/LandingPage/Sections/JobCard";
 import GithubCard from "views/LandingPage/Sections/GithubCard";
 import LinkedinCard from "views/LandingPage/Sections/LinkedinCard";
@@ -22,7 +17,7 @@ import teamStyle from "assets/jss/material-kit-react/views/landingPageSections/t
 class FavoriteProfiles extends React.Component {
 	render() {
 		let {profiles, count, title, name} = this.props;
-		const { classes } = this.props;
+		const {classes} = this.props;
 		const imageClasses = classNames(
 			classes.imgRaised,
 			classes.imgRoundedCircle,
@@ -36,7 +31,7 @@ class FavoriteProfiles extends React.Component {
 						<GridContainer>
 							{
 								profiles.map((item, key) => {
-									if(name === "job"){
+									if (name === "job") {
 										return (
 											<JobCard
 												key={key}
@@ -51,7 +46,7 @@ class FavoriteProfiles extends React.Component {
 						<GridContainer>
 							{
 								profiles.map((item, key) => {
-									if(name === "github"){
+									if (name === "github") {
 										return (
 											<GithubCard
 												key={key}
@@ -66,7 +61,7 @@ class FavoriteProfiles extends React.Component {
 						<GridContainer>
 							{
 								profiles.map((item, key) => {
-									if(name === "linkedin"){
+									if (name === "linkedin") {
 										return (
 											<LinkedinCard
 												key={key}
@@ -81,7 +76,7 @@ class FavoriteProfiles extends React.Component {
 						<GridContainer>
 							{
 								profiles.map((item, key) => {
-									if(name === "company"){
+									if (name === "company") {
 										return (
 											<CompanyCard
 												key={key}

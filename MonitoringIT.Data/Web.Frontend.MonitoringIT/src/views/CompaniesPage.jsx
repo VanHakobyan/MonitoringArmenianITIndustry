@@ -4,7 +4,7 @@ import classNames from "classnames";
 import {connect} from "react-redux";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import FavoriteProfiles from "views/LandingPage/Sections/FavoriteProfiles.jsx";
+import ProfilesList from "views/LandingPage/Sections/ProfilesList.jsx";
 // @material-ui/icons
 
 // core components
@@ -20,34 +20,34 @@ import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.js
 import * as companies from "store/actions/companies";
 
 import {
-	byPageCompaniesLoadingSelector,
-	byPageCompaniesSuccessSelector,
-	byPageCompaniesFailedSelector,
+	companiesLoadingSelector,
+	companiesSuccessSelector,
+	companiesFailedSelector,
 } from "store/selectors/companies";
 
-
 const dashboardRoutes = [];
-let count = 5;
 
 class CompaniesPage extends React.Component {
+	async componentDidMount() {
+		await this.props.requestCompanies(12);
+	}
+	componentWillUnmount() {
+		window.scrollTo(0, 0);
+	}
+	renderCompanies = () => {
+		let {companiesSuccess} = this.props;
+		if (companiesSuccess) {
+			return (
+				<ProfilesList
+					name="company"
+					title="Companies"
+					requestCompanies={this.props.requestCompanies}
+					profiles={companiesSuccess}
+				/>
+			)
+		}
+	};
 
-    async componentDidMount() {
-        await this.props.requestCompaniesByPage(1, 12);
-    }
-
-    renderCompanies = () => {
-        let {byPageCompaniesSuccess} = this.props;
-        if (byPageCompaniesSuccess) {
-            return (
-                <FavoriteProfiles
-                    name="company"
-                    title="Companies"
-                    profiles={byPageCompaniesSuccess}
-                    count={count}
-                />
-            )
-        }
-    };
 	render() {
 		const {classes, ...rest} = this.props;
 		return (
@@ -80,16 +80,16 @@ class CompaniesPage extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		byPageCompaniesLoading: byPageCompaniesLoadingSelector(state),
-		byPageCompaniesSuccess: byPageCompaniesSuccessSelector(state),
-		byPageCompaniesFailed: byPageCompaniesFailedSelector(state),
+		companiesLoading: companiesLoadingSelector(state),
+		companiesSuccess: companiesSuccessSelector(state),
+		companiesFailed: companiesFailedSelector(state),
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		requestCompaniesByPage:  (currentPage,count) => {
-			dispatch(companies.requestCompaniesByPage (currentPage,count))
+		requestCompanies: count => {
+			dispatch(companies.requestCompanies(count))
 		}
 	};
 }

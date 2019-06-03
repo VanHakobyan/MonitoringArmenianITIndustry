@@ -27,7 +27,7 @@ class GithubCard extends React.Component {
 		return (
 			<GridItem key={uniqueKey} xs={12} sm={12} md={4}>
 				<Card plain>
-					<Link to={`/github/${item.Id}`}>
+					<Link to={`/profile/github/${item.Id}`}>
 						<GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
 							<img src={item.ImageUrl} alt="..." className={imageClasses}/>
 						</GridItem>

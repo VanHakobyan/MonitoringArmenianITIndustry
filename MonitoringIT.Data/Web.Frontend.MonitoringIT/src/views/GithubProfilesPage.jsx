@@ -4,9 +4,6 @@ import classNames from "classnames";
 import {connect} from "react-redux";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-
-// @material-ui/icons
-
 // core components
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
@@ -14,7 +11,7 @@ import HeaderLinks from "components/Header/HeaderLinks.jsx";
 import NavigationBar from "components/Header/NavigationBar.jsx";
 import Parallax from "components/Parallax/Parallax.jsx";
 
-import FavoriteProfiles from "views/LandingPage/Sections/FavoriteProfiles.jsx";
+import FavoriteProfiles from "views/LandingPage/Sections/ProfilesList.jsx";
 
 import landingPageStyle from "assets/jss/material-kit-react/views/landingPage.jsx";
 
@@ -27,11 +24,13 @@ import {
 } from "store/selectors/githubProfiles";
 
 const dashboardRoutes = [];
-let count = 5;
 
 class GithubProfilesPage extends React.Component {
 	async componentDidMount() {
-		await this.props.requestAllGithubProfiles(1, 12);
+		await this.props.requestAllGithubProfiles(12);
+	}
+	componentWillUnmount() {
+		window.scrollTo(0, 0);
 	}
 	renderGithubProfiles = () => {
 		let {allProfilesSuccess} = this.props;
@@ -40,8 +39,8 @@ class GithubProfilesPage extends React.Component {
 				<FavoriteProfiles
 					name="github"
 					title="People In Github"
+					requestAllGithubProfiles={this.props.requestAllGithubProfiles}
 					profiles={allProfilesSuccess}
-					count={count}
 				/>
 			)
 		}
@@ -75,7 +74,6 @@ class GithubProfilesPage extends React.Component {
 	}
 }
 
-
 function mapStateToProps(state) {
 	return {
 		allProfilesSuccess: allProfilesSuccessSelector(state),
@@ -86,8 +84,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		requestAllGithubProfiles: (currentPage, count)=> {
-			dispatch(githubProfiles.requestAllGithubProfiles(currentPage, count))
+		requestAllGithubProfiles: count => {
+			dispatch(githubProfiles.requestAllGithubProfiles(count))
 		},
 	};
 }
