@@ -25,6 +25,7 @@ class Parallax extends React.Component {
     });
     window.addEventListener("scroll", this.resetTransform);
   }
+
   componentWillUnmount() {
     window.removeEventListener("scroll", this.resetTransform);
   }

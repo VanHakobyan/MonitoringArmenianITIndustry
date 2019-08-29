@@ -19,6 +19,7 @@ function InfoArea({ ...props }) {
     [classes.icon]: true,
     [classes.iconVertical]: vertical
   });
+
   return (
     <div className={classes.infoArea}>
       <div className={iconWrapper}>
