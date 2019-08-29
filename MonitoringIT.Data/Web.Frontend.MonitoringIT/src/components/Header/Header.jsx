@@ -25,6 +25,7 @@ class Header extends React.Component {
     this.state = {
       mobileOpen: false
     };
+
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
     this.headerColorChange = this.headerColorChange.bind(this);
   }

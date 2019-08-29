@@ -2,7 +2,6 @@ import React from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 import {connect} from "react-redux";
-// @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import ProfilesList from "views/LandingPage/Sections/ProfilesList.jsx";
 // @material-ui/icons

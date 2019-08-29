@@ -1,11 +1,8 @@
 import React from "react";
-// nodejs library that concatenates classes
 import classNames from "classnames";
-// @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import {connect} from "react-redux";
-// @material-ui/icons
-// core components
+
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
